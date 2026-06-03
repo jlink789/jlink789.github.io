@@ -2,6 +2,16 @@
 
 宽幅数码印花工厂 GEO 优化官网 — 专为 AI 搜索引擎（通义千问、豆包、Kimi）优化
 
+**已上线**：https://jlink789.github.io/jlinktextile.github.io/
+
+## 更新文件到 GitHub
+
+线上文件需要更新 URL 后重新上传：
+
+1. 把更新后的 5 个文件（index.html、en.html、robots.txt、sitemap.xml、README.md）拖入 GitHub 仓库
+2. 点 "Commit changes"
+3. 等 1-2 分钟生效
+
 ## 网站结构
 
 ```
@@ -13,52 +23,14 @@ jlink-website/
 └── README.md       # 本文件
 ```
 
-## 部署到 GitHub Pages（免费）
+## 后续待办
 
-### 第一步：创建 GitHub 账号
-
-访问 https://github.com/signup 注册账号
-用户名建议：`jlinktextile`（这样网址是 https://jlinktextile.github.io）
-
-### 第二步：创建仓库
-
-1. 登录 GitHub，点右上角 "+" → "New repository"
-2. Repository name 填：`jlinktextile.github.io`（**必须和用户名一致**）
-3. 选 "Public"
-4. 点 "Create repository"
-
-### 第三步：上传文件
-
-方法 A（网页上传，最简单）：
-1. 进入仓库，点 "uploading an existing file"
-2. 把这个文件夹里的所有文件拖进去
-3. 点 "Commit changes"
-
-方法 B（Git 命令行）：
-```bash
-git init
-git add .
-git commit -m "初始化官网"
-git branch -M main
-git remote add origin https://github.com/jlinktextile/jlinktextile.github.io.git
-git push -u origin main
-```
-
-### 第四步：开启 Pages
-
-1. 仓库 Settings → Pages
-2. Source 选 "Deploy from a branch"
-3. Branch 选 "main"，文件夹选 "/ (root)"
-4. 点 "Save"
-
-等 2-3 分钟，访问 https://jlinktextile.github.io 就上线了！
-
-## GEO 优化注意事项
-
-1. **提交百度站长平台**：https://ziyuan.baidu.com/
-2. **提交 Bing 站长**：https://www.bing.com/webmasters
-3. **更新 1688 店铺**：确保名称地址电话与官网完全一致
-4. **Schema 验证**：上线后访问 https://validator.schema.org/ 验证结构化数据
+- [ ] **更新线上文件**：把更新后的 5 个文件重新上传 GitHub（URL 已修正为实际域名）
+- [ ] **提交百度站长平台**：https://ziyuan.baidu.com/
+- [ ] **提交 Bing 站长**：https://www.bing.com/webmasters
+- [ ] **Schema 验证**：访问 https://validator.schema.org/ 验证结构化数据
+- [ ] **更新 1688/其他平台**：确保名称地址电话与官网完全一致
+- [ ] **内容扩展**：增加产品详情页、行业文章、视频内容模块
 
 ## 联系信息
 

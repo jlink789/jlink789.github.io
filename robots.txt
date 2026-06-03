@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jlinktextile.github.io/sitemap.xml
+Sitemap: https://jlink789.github.io/jlinktextile.github.io/sitemap.xml
