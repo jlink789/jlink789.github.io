@@ -3,18 +3,18 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://jlink789.github.io/jlinktextile.github.io/</loc>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jlink789.github.io/jlinktextile.github.io/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jlink789.github.io/jlinktextile.github.io/en.html"/>
+    <loc>https://jlink789.github.io/</loc>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://jlink789.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jlink789.github.io/en.html"/>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://jlink789.github.io/jlinktextile.github.io/en.html</loc>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jlink789.github.io/jlinktextile.github.io/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jlink789.github.io/jlinktextile.github.io/en.html"/>
+    <loc>https://jlink789.github.io/en.html</loc>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://jlink789.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jlink789.github.io/en.html"/>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

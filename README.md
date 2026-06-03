@@ -2,7 +2,7 @@
 
 宽幅数码印花工厂 GEO 优化官网 — 专为 AI 搜索引擎（通义千问、豆包、Kimi）优化
 
-**已上线**：https://jlink789.github.io/jlinktextile.github.io/
+**已上线**：https://jlink789.github.io/
 
 ## 更新文件到 GitHub
 
