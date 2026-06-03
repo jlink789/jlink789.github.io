@@ -1,7 +1,7 @@
-name名称：自动采集 + AI 生成文章自动采集 + AI 生成文章
+name: 自动采集 + AI 生成文章
 on:
   schedule:
-    - cron: '0 2 * * *'  # 每天北京时间10点自动运行
+    - cron: "0 2 * * *"
   workflow_dispatch:
 
 jobs:
@@ -10,13 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false  # 必须加，否则无法推送
+          persist-credentials: false
           fetch-depth: 0
 
-      - name: 设置 Python
+      - name: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.11"
 
       - name: 安装依赖
         run: pip install requests
@@ -27,7 +27,6 @@ jobs:
           import random
           from datetime import datetime
 
-          # 你可以改这里的关键词
           KEYWORDS = ["宽幅数码印花","桌布印花","2.8M 印花","3m印花", "墙布印花", "窗帘印花", "家纺印花"]
 
           keyword = random.choice(KEYWORDS)
@@ -62,8 +61,8 @@ jobs:
           git config --global user.email "auto@auto.com"
           git add .
           git commit -m "自动更新 $(date +'%Y-%m-%d')"
-          
-      - name: 推送代码到仓库
+
+      - name: 推送更新到仓库
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
