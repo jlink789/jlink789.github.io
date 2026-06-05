@@ -7,16 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 加上这句，警告立刻消失
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-          fetch-depth: 0
+      - uses: actions/checkout@v4.2.2  # 已升级到 Node24 支持
 
       - name: 设置 Python 环境
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.5.0  # 已升级到 Node24 支持
         with:
           python-version: "3.11"
 
@@ -64,7 +59,7 @@ jobs:
           git add .
           git commit -m "自动更新 $(date +'%Y-%m-%d')"
 
-      - name: 推送更新到仓库
+      - name: 推送更新
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
