@@ -1,17 +1,19 @@
 name: 自动采集 + AI 生成文章
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 2 * * *" # UTC2点=北京时间10点
   workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # 全局强制Node24运行（实际已经用24执行）
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2  # 已升级到 Node24 支持
-
-      - name: 设置 Python 环境
-        uses: actions/setup-python@v5.5.0  # 已升级到 Node24 支持
+      - uses: actions/checkout@v4
+      - name: 安装Python
+        uses: actions/setup-python@v6 # v6是目前适配Node24最新正式版
         with:
           python-version: "3.11"
 
@@ -49,17 +51,12 @@ jobs:
           with open("article.html", "w", encoding="utf-8") as f:
               f.write(content)
           EOF
-
           python auto_article.py
 
-      - name: 提交更新
+      - name: 提交推送
         run: |
           git config --global user.name "auto"
           git config --global user.email "auto@auto.com"
           git add .
           git commit -m "自动更新 $(date +'%Y-%m-%d')"
-
-      - name: 推送更新
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git push
