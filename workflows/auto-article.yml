@@ -1,0 +1,34 @@
+name: 自动采集 + AI 生成文章
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 设置 Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: 自动生成文章并更新首页
+        run: python scripts/auto_article.py
+
+      - name: 提交并推送
+        run: |
+          git config --global user.name "auto"
+          git config --global user.email "auto@auto.com"
+          git add .
+          git diff --cached --quiet || git commit -m "自动资讯更新 $(date +'%Y-%m-%d')"
+          git push
