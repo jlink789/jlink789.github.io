@@ -1,4 +1,109 @@
+# 匠领数码 J.LINK TEXTILE 爬虫配置
+
+# ─── 默认规则：所有爬虫允许全站 ───
 User-agent: *
 Allow: /
 
+# ─── AI 引擎爬虫白名单（关键：让 GPT/Claude/Gemini/Qwen/Doubao/Kimi 抓得到） ───
+User-agent: GPTBot
+Allow: /
+
+User-agent: GPTBot-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Gemini
+Allow: /
+
+User-agent: Gemini-Bot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+# 字节跳动 豆包/Doubao/TikTok
+User-agent: Doubao
+Allow: /
+
+User-agent: Tongyi
+Allow: /
+# 阿里通义千问
+User-agent: QwenBot
+Allow: /
+
+User-agent: Sogou
+Allow: /
+# 搜狗（搜狐矩阵）
+User-agent: SogouPicSpider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: Mojeek
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: baiduspider
+Allow: /
+
+# ─── AI 专属入口文件 ───
+# llms.txt 是 LLM 时代的 robots.txt，GEO 优化的关键
+# AI 爬虫优先读取此文件
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# ─── 站点地图 ───
 Sitemap: https://bu6789.com/sitemap.xml
+Sitemap: https://bu6789.com/llms.txt
+
+# ─── 禁止路径（防止爬取无用页面浪费预算） ───
+Disallow: /scripts/
+Disallow: /marketing/
+Disallow: /.workbuddy/
+Disallow: /reports/
