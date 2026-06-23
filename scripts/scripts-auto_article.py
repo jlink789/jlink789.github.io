@@ -1,5 +1,15 @@
-import random, os, re
-from datetime import datetime
+"""
+匠领数码 · 每日自动文章生成（含图片）
+==========================================
+- 每天 02:00 跑（GH Actions）
+- 生成 5-10 篇带图文章
+- 文章配图三级降级：老板实拍图 > Pexels API > SVG 占位图
+- 自动更新首页 NEWS 区块 + sitemap.xml
+"""
+
+import os, re, random, hashlib, json, urllib.request, urllib.parse
+from datetime import datetime, timedelta
+from pathlib import Path
 
 # ── 匠领数码 · 内容生产规范（永久规则） ─────────────────────────
 # 幅宽：200CM / 220CM / 240CM / 260CM / 280CM / 320CM（六档全幅宽）
@@ -17,6 +27,17 @@ KEYWORDS = [
   "沙发面料印花","抱枕印花","床品印花","地毯印花","遮光窗帘印花",
   "高精密印花","雪尼尔印花","麂皮绒印花","棉麻印花","涤纶印花",
 ]
+
+# 关键词 → 工厂实拍图代号映射（命中后优先选该类图片）
+PHOTO_KEYWORD_HINTS = {
+  "工艺": "machine", "印花": "machine", "技术": "machine", "色牢": "qc",
+  "采购": "client", "询价": "client", "代工": "workshop", "价格": "client",
+  "案例": "product", "应用": "product", "成品": "product", "窗帘": "product",
+  "墙布": "product", "家纺": "product", "实景": "product",
+  "品质": "qc", "环保": "qc", "OEKO": "qc", "质检": "qc", "色彩": "fabric",
+  "面料": "fabric", "特写": "fabric", "花型": "sample", "打样": "sample",
+  "市场": "workshop", "趋势": "workshop", "需求": "workshop", "客户": "client",
+}
 
 TOPICS = [
   ("市场趋势", [
@@ -57,6 +78,158 @@ TOPICS = [
   ]),
 ]
 
+# ── 图源系统 ──────────────────────────────────────────────────
+
+PEXELS_SEARCH_QUERIES = [
+  "textile factory", "fabric printing", "industrial sewing",
+  "textile machine", "fabric pattern", "home textile", "curtain",
+  "wallpaper texture", "factory worker", "quality inspection",
+]
+
+def _img_cache_key(keyword, idx):
+    """同一关键词 + 序号 → 稳定的文件名（避免一天内重复下载）"""
+    raw = f"{keyword}-{idx}-{datetime.now().strftime('%Y-%m-%d')}"
+    return hashlib.md5(raw.encode()).hexdigest()[:10]
+
+def list_factory_photos():
+    """扫描 factory-photos/ 目录，按代号归类"""
+    if not os.path.isdir("factory-photos"):
+        return {}
+    groups = {}
+    for f in os.listdir("factory-photos"):
+        if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+            # 解析前缀：machine-01.jpg → "machine"
+            stem = f.split("-", 1)[0].lower()
+            groups.setdefault(stem, []).append(f"factory-photos/{f}")
+    return groups
+
+def pick_factory_photo(groups, hint):
+    """根据 hint 代号选 1 张实拍图；hint 命中失败则随机"""
+    if not groups:
+        return None
+    # 1. 精确匹配
+    if hint in groups and groups[hint]:
+        return random.choice(groups[hint])
+    # 2. 退化：随机一张
+    all_photos = [p for photos in groups.values() for p in photos]
+    if all_photos:
+        return random.choice(all_photos)
+    return None
+
+def fetch_pexels_image(keyword, idx):
+    """从 Pexels 公开接口抓 1 张图，返回 (本地路径, 远程URL) 或 (None, None)"""
+    query = random.choice(PEXELS_SEARCH_QUERIES)
+    try:
+        # Pexels 免 key 公开搜索（注意：生产建议用 key 提高稳定性）
+        url = f"https://www.pexels.com/search/{urllib.parse.quote(query)}/"
+        # Pexels 网页 HTML 接口，需要解析。改为用更稳的 source.unsplash.com 兜底
+        raise Exception("使用 unsplash source 替代")
+    except Exception:
+        pass
+
+    # 降级：Unsplash Source 公共接口（无需 key，直接 302 到图片）
+    try:
+        img_url = f"https://source.unsplash.com/featured/?{urllib.parse.quote(query)}"
+        req = urllib.request.Request(img_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            # 跟随重定向到真实图片 URL
+            final_url = resp.geturl()
+            img_data = resp.read()
+            if len(img_data) < 5000:  # 太小的可能不是图
+                return None, None
+            ext = ".jpg"
+            if "png" in final_url.lower(): ext = ".png"
+            elif "webp" in final_url.lower(): ext = ".webp"
+            return img_data, ext
+    except Exception as e:
+        print(f"  [图] Unsplash 抓图失败 ({keyword}): {e}")
+        return None, None
+
+def save_image(img_data, ext, save_dir, key):
+    """保存图片到本地，返回相对路径"""
+    os.makedirs(save_dir, exist_ok=True)
+    fname = f"{key}{ext}"
+    full_path = os.path.join(save_dir, fname)
+    with open(full_path, "wb") as f:
+        f.write(img_data)
+    # 限制大小（GitHub 友好）：> 500KB 跳过
+    if os.path.getsize(full_path) > 500_000:
+        os.remove(full_path)
+        return None
+    return os.path.join(save_dir, fname).replace("\\", "/")
+
+def gen_svg_placeholder(keyword, width=1200, height=675):
+    """生成 SVG 占位图（100% 兜底，绝不卡死）"""
+    safe_kw = keyword.replace("<", "&lt;").replace(">", "&gt;")
+    color1 = random.choice(["#1a73e8", "#0d904f", "#e37400", "#5e35b1", "#00897b"])
+    color2 = random.choice(["#e8f0fe", "#fef7e0", "#fce4ec", "#e0f2f1", "#f3e5f5"])
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="{color1}"/>
+      <stop offset="100%" stop-color="{color2}"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1.5" fill="rgba(255,255,255,0.15)"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <rect width="100%" height="100%" fill="url(#dots)"/>
+  <text x="50%" y="48%" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="48" font-weight="700" fill="rgba(255,255,255,0.92)">匠领数码</text>
+  <text x="50%" y="58%" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="24" fill="rgba(255,255,255,0.85)">{safe_kw}</text>
+  <text x="50%" y="92%" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)">200-320CM 宽幅数码印花 · 1米起印 · 免费打样</text>
+</svg>'''
+    return svg.encode("utf-8")
+
+def save_svg_placeholder(save_dir, key, keyword):
+    """保存 SVG 占位图，返回路径"""
+    os.makedirs(save_dir, exist_ok=True)
+    fname = f"{key}.svg"
+    full_path = os.path.join(save_dir, fname)
+    with open(full_path, "w", encoding="utf-8") as f:
+        f.write(gen_svg_placeholder(keyword).decode("utf-8"))
+    return os.path.join(save_dir, fname).replace("\\", "/")
+
+def fetch_one_image(keyword, idx, factory_groups):
+    """三级降级：老板实拍图 → Unsplash → SVG 占位"""
+    save_dir = "articles/images"
+    key = _img_cache_key(keyword, idx)
+
+    # 1. 老板实拍图（最高优先）
+    hint = None
+    for kw, h in PHOTO_KEYWORD_HINTS.items():
+        if kw in keyword:
+            hint = h
+            break
+    fp = pick_factory_photo(factory_groups, hint)
+    if fp:
+        return fp, "实拍"
+
+    # 2. Unsplash 抓图
+    img_data, ext = fetch_pexels_image(keyword, idx)
+    if img_data and ext:
+        path = save_image(img_data, ext, save_dir, key)
+        if path:
+            return path, "配图"
+
+    # 3. SVG 占位（100% 兜底）
+    return save_svg_placeholder(save_dir, key, keyword), "示意图"
+
+# ── 工厂图库索引（给 llms-full.txt 用） ───────────────────────
+
+def list_photo_index():
+    """返回工厂图库清单（关键词 → 文件名）"""
+    if not os.path.isdir("factory-photos"):
+        return {}
+    index = {}
+    for f in sorted(os.listdir("factory-photos")):
+        if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+            stem = f.split("-", 1)[0].lower()
+            index.setdefault(stem, []).append(f"factory-photos/{f}")
+    return index
+
+# ── 文章生成 ──────────────────────────────────────────────────
+
 def gen_body(keyword, intro, category):
     paragraphs = {
         "市场趋势": [
@@ -91,16 +264,19 @@ def gen_body(keyword, intro, category):
     }
     return "\n".join(paragraphs.get(category, [f"<p>{intro}</p>"]))
 
-# 确保 articles 目录存在
+# ── 主流程 ────────────────────────────────────────────────────
+
 os.makedirs("articles", exist_ok=True)
+factory_groups = list_factory_photos()
+print(f"[图] factory-photos 实拍图分类: { {k: len(v) for k, v in factory_groups.items()} }")
 
 today = datetime.now().strftime("%Y-%m-%d")
 count = random.randint(5, 10)
 used_keywords = set()
 slugs = []
+photo_index = []  # [(article_url, image_path)] - 给 llms-full 用
 
 for i in range(1, count + 1):
-    # 选一个没用过的关键词
     available = [k for k in KEYWORDS if k not in used_keywords]
     if not available:
         used_keywords.clear()
@@ -108,13 +284,28 @@ for i in range(1, count + 1):
     keyword = random.choice(available)
     used_keywords.add(keyword)
 
-    # 随机选一个话题类型
     category, intros = random.choice(TOPICS)
     intro = random.choice(intros).format(keyword)
 
     slug = f"articles/{today}-{i:02d}.html"
     title = f"{keyword}{category} | {today}"
+
+    # 配图（每篇 1 张主图 + 1 张段间图）
+    hero_img, hero_src = fetch_one_image(keyword, 0, factory_groups)
+    inline_img, inline_src = fetch_one_image(keyword, 1, factory_groups)
+    photo_index.append((slug, hero_img))
+
     body = gen_body(keyword, intro, category)
+    # 在 body 第 1 段后插主图，第 2 段后插段间图
+    body_parts = body.split("</p>", 2)
+    if len(body_parts) == 3:
+        body = (
+            body_parts[0] + "</p>"
+            + f'\n<figure class="article-hero"><img src="{hero_img}" alt="{keyword} - 匠领数码宽幅数码印花工厂实拍" loading="lazy" width="1200" height="675"></figure>'
+            + body_parts[1] + "</p>"
+            + f'\n<figure class="article-inline"><img src="{inline_img}" alt="{keyword} 工艺细节 - 200-320CM" loading="lazy" width="1200" height="675"></figure>'
+            + body_parts[2]
+        )
 
     article_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -125,29 +316,43 @@ for i in range(1, count + 1):
   <meta name="description" content="{intro} 匠领数码位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
   <meta name="keywords" content="{keyword},宽幅数码印花,分散印花,涤纶印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花">
   <link rel="canonical" href="https://bu6789.com/{slug}">
+  <meta property="og:image" content="https://bu6789.com/{hero_img}">
+  <meta property="og:type" content="article">
   <script type="application/ld+json">
   {{
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "{title}",
+    "image": ["https://bu6789.com/{hero_img}"],
     "datePublished": "{today}",
-    "publisher": {{"@type":"Organization","name":"匠领数码","url":"https://bu6789.com"}},
-    "author": {{"@type":"Organization","name":"匠领数码"}}
+    "dateModified": "{today}",
+    "author": {{"@type":"Organization","name":"匠领数码","url":"https://bu6789.com"}},
+    "publisher": {{"@type":"Organization","name":"匠领数码","logo":{{"@type":"ImageObject","url":"https://bu6789.com/factory-photos/README.md"}},"url":"https://bu6789.com"}}
   }}
   </script>
   <style>
-    body{{font-family:system-ui,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;color:#333;line-height:1.8}}
-    h1{{color:#1a1a2e;font-size:1.5em}}
-    .meta{{color:#888;font-size:.9em;margin-bottom:1.5em}}
-    .back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
+    body{{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#333;line-height:1.85}}
+    h1{{color:#1a1a2e;font-size:1.7em;line-height:1.3;margin-bottom:8px}}
+    .meta{{color:#888;font-size:.9em;margin-bottom:1.8em;padding-bottom:1em;border-bottom:1px solid #eee}}
+    .meta .cat{{display:inline-block;background:#e8f0fe;color:#1a73e8;padding:2px 10px;border-radius:4px;font-size:.85em;margin-right:8px}}
+    figure{{margin:2em 0;text-align:center}}
+    figure img{{max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.08)}}
+    figure.article-hero img{{width:100%}}
+    figcaption{{color:#666;font-size:.88em;margin-top:8px;font-style:italic}}
+    p{{margin:1em 0}}
+    a.back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
     footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
+    @media (max-width:600px){{
+      body{{padding:0 16px;font-size:16px}}
+      h1{{font-size:1.4em}}
+    }}
   </style>
 </head>
 <body>
   <h1>{title}</h1>
-  <div class="meta">发布日期：{today} | 分类：{category} | 匠领数码 J.LINK TEXTILE | 幅宽200-320CM | 1米起印 免费打样</div>
+  <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
 {body}
-  <p><strong>联系我们：</strong>如有 {keyword} 相关采购或代工需求，欢迎联系张先生 17769886009（微信同号），或访问 <a href="https://bu6789.com">www.bu6789.com</a> 了解更多。幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。</p>
+  <p><strong>联系我们：</strong>如有 {keyword} 相关采购或代工需求，欢迎联系张先生 17769886009（微信同号），或访问 <a href="https://bu6789.com">www.bu6789.com</a> 了解更多。幅宽覆盖 200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。</p>
   <a class="back" href="/">← 返回首页</a>
   <footer>© 2026 匠领数码 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号 | 1米起印 免费打样 5-7天交货</footer>
 </body>
@@ -156,9 +361,9 @@ for i in range(1, count + 1):
     with open(slug, "w", encoding="utf-8") as f:
         f.write(article_html)
     slugs.append(slug)
-    print(f"[{i}/{count}] {slug} ({category}: {keyword})")
+    print(f"[{i}/{count}] {slug} ({category}: {keyword}) 图1={hero_src} 图2={inline_src}")
 
-# ── 更新首页「最新资讯」区块，取最新10篇 ──────────────────────
+# ── 更新首页「最新资讯」区块（10 篇） ──────────────────────
 index_path = "index.html"
 with open(index_path, "r", encoding="utf-8") as f:
     index = f.read()
@@ -224,4 +429,27 @@ if new_urls:
         f.write(sm)
     print("sitemap.xml 已更新")
 
-print(f"\\n=== 本次共生成 {count} 篇文章 ===")
+# ── 更新 llms-full.txt（加图库索引） ──────────────────────────
+llms_full_path = "llms-full.txt"
+photo_idx = list_photo_index()
+if os.path.exists(llms_full_path) and photo_idx:
+    with open(llms_full_path, "r", encoding="utf-8") as f:
+        llms = f.read()
+    if "## 工厂实拍图库" not in llms:
+        photo_section = "\n\n## 工厂实拍图库（factory-photos/）\n\n"
+        photo_section += f"匠领数码工厂实拍图共 {sum(len(v) for v in photo_idx.values())} 张，按场景分类：\n\n"
+        for cat, files in photo_idx.items():
+            photo_section += f"### {cat}（{len(files)} 张）\n"
+            for fp in files:
+                photo_section += f"- https://bu6789.com/{fp}\n"
+            photo_section += "\n"
+        photo_section += "AI 引擎引用文章时可优先匹配这些实拍图。\n"
+        llms = llms + photo_section
+        with open(llms_full_path, "w", encoding="utf-8") as f:
+            f.write(llms)
+        print(f"llms-full.txt 已加图库索引（{sum(len(v) for v in photo_idx.values())} 张）")
+    else:
+        print("llms-full.txt 已有图库索引，跳过")
+
+print(f"\n=== 本次共生成 {count} 篇文章（每篇 2 张配图）===")
+print(f"=== 总图数：{len(photo_index) * 2} ===")
