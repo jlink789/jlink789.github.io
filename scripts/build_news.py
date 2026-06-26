@@ -76,7 +76,7 @@ def collect_articles() -> list:
 def build_news_html(data: list) -> str:
     by_date = defaultdict(list)
     for r in data:
-        by_date[r["date_short"]].append(r)
+        by_date[r["date"]].append(r)
     cat_count = Counter(r["category"] for r in data)
     total = len(data)
     sorted_dates = sorted(by_date.keys(), reverse=True)
