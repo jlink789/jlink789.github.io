@@ -1,4 +1,4 @@
-name: 自动采集 + AI 生成文章
+name: 自动采集 + AI 生成文章 + 配图 + 资讯中心更新
 on:
   schedule:
     - cron: "0 2 * * *"
@@ -13,22 +13,28 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: 设置 Python
-        uses: actions/setup-python@v6
+        uses: setup-python@v6
         with:
           python-version: "3.11"
 
-      - name: 自动生成文章并更新首页
+      - name: 安装图片依赖
+        run: pip install requests Pillow
+
+      - name: 自动生成文章 + 配图
         run: python scripts/auto_article.py
+
+      - name: 重新生成 news.html + 同步首页 + sitemap
+        run: python scripts/build_news.py
 
       - name: 提交并推送
         run: |
           git config --global user.name "auto"
           git config --global user.email "auto@auto.com"
           git add .
-          git diff --cached --quiet || git commit -m "自动资讯更新 $(date +'%Y-%m-%d')"
+          git diff --cached --quiet || git commit -m "auto daily update"
           git push
