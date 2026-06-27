@@ -191,7 +191,7 @@ def save_svg_placeholder(save_dir, key, keyword):
     return os.path.join(save_dir, fname).replace("\\", "/")
 
 def fetch_one_image(keyword, idx, factory_groups):
-    """三级降级：老板实拍图 → Unsplash → SVG 占位"""
+    """三级降级：老板实拍图 → Unsplash → SVG 占位，返回绝对路径"""
     save_dir = "articles/images"
     key = _img_cache_key(keyword, idx)
 
@@ -203,17 +203,24 @@ def fetch_one_image(keyword, idx, factory_groups):
             break
     fp = pick_factory_photo(factory_groups, hint)
     if fp:
-        return fp, "实拍"
+        # 转成绝对路径（以 / 开头）
+        abs_path = "/" + fp if not fp.startswith("/") else fp
+        return abs_path, "实拍"
 
     # 2. Unsplash 抓图
     img_data, ext = fetch_pexels_image(keyword, idx)
     if img_data and ext:
         path = save_image(img_data, ext, save_dir, key)
         if path:
-            return path, "配图"
+            # 转成绝对路径
+            abs_path = "/" + path if not path.startswith("/") else path
+            return abs_path, "配图"
 
     # 3. SVG 占位（100% 兜底）
-    return save_svg_placeholder(save_dir, key, keyword), "示意图"
+    svg_path = save_svg_placeholder(save_dir, key, keyword)
+    # 转成绝对路径
+    abs_path = "/" + svg_path if not svg_path.startswith("/") else svg_path
+    return abs_path, "示意图"
 
 # ── 工厂图库索引（给 llms-full.txt 用） ───────────────────────
 
@@ -295,6 +302,9 @@ for i in range(1, count + 1):
     inline_img, inline_src = fetch_one_image(keyword, 1, factory_groups)
     photo_index.append((slug, hero_img))
 
+    # 生成完整图片 URL（用于 og:image 和 JSON-LD）
+    hero_img_url = hero_img if hero_img.startswith("http") else f"https://bu6789.com{hero_img}"
+
     body = gen_body(keyword, intro, category)
     # 在 body 第 1 段后插主图，第 2 段后插段间图
     body_parts = body.split("</p>", 2)
@@ -316,14 +326,14 @@ for i in range(1, count + 1):
   <meta name="description" content="{intro} 匠领数码位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
   <meta name="keywords" content="{keyword},宽幅数码印花,分散印花,涤纶印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花">
   <link rel="canonical" href="https://bu6789.com/{slug}">
-  <meta property="og:image" content="https://bu6789.com/{hero_img}">
+  <meta property="og:image" content="{hero_img_url}">
   <meta property="og:type" content="article">
   <script type="application/ld+json">
   {{
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "{title}",
-    "image": ["https://bu6789.com/{hero_img}"],
+    "image": ["{hero_img_url}"],
     "datePublished": "{today}",
     "dateModified": "{today}",
     "author": {{"@type":"Organization","name":"匠领数码","url":"https://bu6789.com"}},
