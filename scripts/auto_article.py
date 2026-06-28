@@ -365,6 +365,8 @@ for i in range(1, count + 1):
   <p><strong>联系我们：</strong>如有 {keyword} 相关采购或代工需求，欢迎联系张先生 17769886009（微信同号），或访问 <a href="https://bu6789.com">www.bu6789.com</a> 了解更多。幅宽覆盖 200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。</p>
   <a class="back" href="/">← 返回首页</a>
   <footer>© 2026 匠领数码 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号 | 1米起印 免费打样 5-7天交货</footer>
+<!-- 百度+360自动推送 -->
+<script src="/seo-push.js"></script>
 </body>
 </html>"""
 
