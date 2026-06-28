@@ -5,13 +5,18 @@ on:
     - cron: "0 2 * * *"
   workflow_dispatch:
 
+concurrency:
+  group: auto-article
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -20,8 +25,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 安装图片依赖
-        run: pip install requests Pillow
+      - name: 安装依赖
+        run: pip install --no-cache-dir requests Pillow
 
       - name: 自动生成文章 + 配图
         run: python scripts/auto_article.py
@@ -30,9 +35,11 @@ jobs:
         run: python scripts/build_news.py
 
       - name: 提交并推送
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "auto"
           git config --global user.email "auto@auto.com"
           git add .
-          git diff --cached --quiet || git commit -m "auto daily update"
+          git diff --cached --quiet || git commit -m "自动资讯更新 $(date +'%Y-%m-%d')"
           git push
