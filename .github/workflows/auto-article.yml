@@ -34,6 +34,10 @@ jobs:
       - name: 重新生成 news.html + 同步首页 + sitemap
         run: python scripts/build_news.py
 
+      - name: 百度主动推送
+        continue-on-error: true
+        run: python scripts/baidu_push.py
+
       - name: 提交并推送
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
