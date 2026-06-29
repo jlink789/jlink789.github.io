@@ -102,10 +102,11 @@ def main():
     print("\n[1/3] 探测今日剩余配额...")
     probe = push_to_baidu([PRIORITY_URLS[0]])
     if "error" in probe:
-        print(f"  ❌ {probe['error']}")
+        print(f"  ⚠️ {probe['error']}（不影响workflow）")
         if "body" in probe:
             print(f"     {probe['body']}")
-        sys.exit(1)
+        print("  提示：seo-push.js 仍会在访客浏览时自动提交")
+        sys.exit(0)
 
     remain = probe.get("remain", 0)
     print(f"  剩余配额：{remain} 条")
@@ -151,10 +152,11 @@ def main():
     result = push_to_baidu(push_urls)
 
     if "error" in result:
-        print(f"  ❌ 推送失败：{result['error']}")
+        print(f"  ⚠️ 推送失败：{result['error']}（不影响workflow）")
         if "body" in result:
             print(f"     {result['body']}")
-        sys.exit(1)
+        print("  提示：seo-push.js 仍会在访客浏览时自动提交")
+        sys.exit(0)
 
     success = result.get("success", 0)
     remain_after = result.get("remain", 0)
