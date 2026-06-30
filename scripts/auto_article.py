@@ -7,7 +7,7 @@
 - 自动更新首页 NEWS 区块 + sitemap.xml
 """
 
-import os, re, random, hashlib, json, urllib.request, urllib.parse
+import os, re, random, hashlib, json, urllib.request, urllib.parse, argparse
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -273,11 +273,32 @@ def gen_body(keyword, intro, category):
 
 # ── 主流程 ────────────────────────────────────────────────────
 
+# 命令行参数
+parser = argparse.ArgumentParser()
+parser.add_argument("--date", type=str, default=None, help="指定文章日期 YYYY-MM-DD，默认今天")
+parser.add_argument("--dry-run", action="store_true", help="预览模式，不写文件")
+args = parser.parse_args()
+
+if args.date:
+    try:
+        datetime.strptime(args.date, "%Y-%m-%d")
+        ARTICLE_DATE = args.date
+        print(f"[日期] 使用指定日期: {ARTICLE_DATE}")
+    except Exception as e:
+        print(f"日期格式错误: {args.date} ({e})，使用今天")
+        ARTICLE_DATE = datetime.now().strftime("%Y-%m-%d")
+else:
+    ARTICLE_DATE = datetime.now().strftime("%Y-%m-%d")
+
+random.seed(ARTICLE_DATE)
+DRY_RUN = args.dry_run
+print(f"[模式] {'预览（不写文件）' if DRY_RUN else '正常'}")
+
 os.makedirs("articles", exist_ok=True)
 factory_groups = list_factory_photos()
 print(f"[图] factory-photos 实拍图分类: { {k: len(v) for k, v in factory_groups.items()} }")
 
-today = datetime.now().strftime("%Y-%m-%d")
+today = ARTICLE_DATE
 count = random.randint(5, 10)
 used_keywords = set()
 slugs = []
@@ -370,8 +391,11 @@ for i in range(1, count + 1):
 </body>
 </html>"""
 
-    with open(slug, "w", encoding="utf-8") as f:
-        f.write(article_html)
+    if not DRY_RUN:
+        with open(slug, "w", encoding="utf-8") as f:
+            f.write(article_html)
+    else:
+        print(f"  [dry-run] 跳过: {slug}")
     slugs.append(slug)
     print(f"[{i}/{count}] {slug} ({category}: {keyword}) 图1={hero_src} 图2={inline_src}")
 
@@ -415,9 +439,12 @@ else:
             index = index.replace(marker, news_block + "\n" + marker, 1)
             break
 
-with open(index_path, "w", encoding="utf-8") as f:
-    f.write(index)
-print(f"首页已更新，展示最新10篇文章")
+if not DRY_RUN:
+    with open(index_path, "w", encoding="utf-8") as f:
+        f.write(index)
+    print(f"首页已更新，展示最新10篇文章")
+else:
+    print(f"[dry-run] 跳过写首页")
 
 # ── 更新 sitemap.xml ──────────────────────────────────────────
 sitemap_path = "sitemap.xml"
@@ -437,9 +464,12 @@ for s in slugs:
 
 if new_urls:
     sm = sm.replace("</urlset>", new_urls + "\n</urlset>")
-    with open(sitemap_path, "w", encoding="utf-8") as f:
-        f.write(sm)
-    print("sitemap.xml 已更新")
+    if not DRY_RUN:
+        with open(sitemap_path, "w", encoding="utf-8") as f:
+            f.write(sm)
+        print("sitemap.xml 已更新")
+    else:
+        print("[dry-run] 跳过写 sitemap")
 
 # ── 更新 llms-full.txt（加图库索引） ──────────────────────────
 llms_full_path = "llms-full.txt"
@@ -457,9 +487,12 @@ if os.path.exists(llms_full_path) and photo_idx:
             photo_section += "\n"
         photo_section += "AI 引擎引用文章时可优先匹配这些实拍图。\n"
         llms = llms + photo_section
-        with open(llms_full_path, "w", encoding="utf-8") as f:
-            f.write(llms)
-        print(f"llms-full.txt 已加图库索引（{sum(len(v) for v in photo_idx.values())} 张）")
+        if not DRY_RUN:
+            with open(llms_full_path, "w", encoding="utf-8") as f:
+                f.write(llms)
+            print(f"llms-full.txt 已加图库索引（{sum(len(v) for v in photo_idx.values())} 张）")
+        else:
+            print(f"[dry-run] 跳过写 llms-full.txt")
     else:
         print("llms-full.txt 已有图库索引，跳过")
 
