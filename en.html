@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/site.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>J.LINK TEXTILE | Wide-Width Digital Printing | 320CM | Curtain & Fabric Printing | Shaoxing China</title>
@@ -80,128 +81,19 @@
   }
   </script>
 
-  <style>
-    :root {
-      --brand: #1a56db;
-      --brand-dark: #1341b8;
-      --accent: #f59e0b;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --bg: #ffffff;
-      --bg2: #f9fafb;
-      --border: #e5e7eb;
-      --radius: 8px;
-      --shadow: 0 2px 12px rgba(0,0,0,.08);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, 'Segoe UI', sans-serif; color: var(--text); line-height: 1.6; }
-
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: #fff; border-bottom: 1px solid var(--border);
-      padding: 0 24px; display: flex; align-items: center;
-      justify-content: space-between; height: 64px;
-    }
-    .nav-logo { font-size: 1.2rem; font-weight: 700; color: var(--brand); text-decoration: none; }
-    .nav-logo span { color: var(--muted); font-size: .82rem; font-weight: 400; margin-left: 8px; }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
-    .nav-links a { color: var(--text); text-decoration: none; font-size: .95rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--brand); }
-    .nav-cta { background: var(--brand); color: #fff !important; padding: 8px 18px; border-radius: 20px; }
-    .lang-switch { font-size: .85rem; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 6px 12px; border-radius: 16px; }
-    @media (max-width: 768px) { .nav-links { display: none; } }
-
-    .hero {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1a56db 100%);
-      color: #fff; padding: 80px 24px 96px; text-align: center;
-    }
-    .hero-content { max-width: 860px; margin: 0 auto; }
-    .hero-badge {
-      display: inline-block; background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.3); color: #fff;
-      padding: 4px 14px; border-radius: 20px; font-size: .85rem; margin-bottom: 20px;
-    }
-    .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
-    .hero h1 em { color: var(--accent); font-style: normal; }
-    .hero p { font-size: 1.05rem; color: rgba(255,255,255,.85); max-width: 620px; margin: 0 auto 36px; }
-    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--accent); color: #1a1a1a; padding: 13px 30px; border-radius: 25px; font-size: 1rem; font-weight: 700; text-decoration: none; }
-    .btn-outline { border: 2px solid rgba(255,255,255,.6); color: #fff; padding: 12px 28px; border-radius: 25px; text-decoration: none; }
-
-    .stats-bar { background: var(--brand); color: #fff; display: flex; justify-content: center; flex-wrap: wrap; }
-    .stat-item { padding: 20px 36px; text-align: center; border-right: 1px solid rgba(255,255,255,.2); }
-    .stat-item:last-child { border-right: none; }
-    .stat-num { font-size: 2rem; font-weight: 800; display: block; }
-    .stat-label { font-size: .82rem; opacity: .85; }
-
-    section { padding: 72px 24px; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .section-label { display: inline-block; background: #eff6ff; color: var(--brand); font-size: .78rem; font-weight: 600; padding: 4px 12px; border-radius: 12px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: .04em; }
-    .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 12px; }
-    .section-subtitle { font-size: 1rem; color: var(--muted); max-width: 600px; margin-bottom: 48px; }
-
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    .product-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); transition: transform .25s; }
-    .product-card:hover { transform: translateY(-4px); }
-    .product-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
-    .product-img.curtain { background: linear-gradient(135deg, #dbeafe, #93c5fd); }
-    .product-img.wall { background: linear-gradient(135deg, #fce7f3, #f9a8d4); }
-    .product-img.home { background: linear-gradient(135deg, #d1fae5, #6ee7b7); }
-    .product-body { padding: 24px; }
-    .product-body h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-    .product-body p { font-size: .9rem; color: var(--muted); margin-bottom: 16px; }
-    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag { background: #eff6ff; color: var(--brand); font-size: .75rem; padding: 3px 10px; border-radius: 10px; font-weight: 500; }
-
-    .adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .adv-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color .2s; }
-    .adv-card:hover { border-color: var(--brand); }
-    .adv-icon { font-size: 2.2rem; margin-bottom: 14px; }
-    .adv-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-    .adv-card p { font-size: .9rem; color: var(--muted); line-height: 1.6; }
-
-    .process-row { display: flex; flex-wrap: wrap; gap: 0; }
-    .pstep { flex: 1; min-width: 140px; text-align: center; padding: 24px 12px; position: relative; }
-    .pstep::after { content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); color: var(--brand); font-size: 1.4rem; }
-    .pstep:last-child::after { display: none; }
-    .step-circle { width: 52px; height: 52px; background: var(--brand); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0 auto 12px; }
-    .pstep h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
-    .pstep p { font-size: .8rem; color: var(--muted); }
-
-    details { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; }
-    summary { padding: 16px 20px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-    summary::after { content: '+'; font-size: 1.3rem; color: var(--brand); }
-    details[open] summary::after { content: '−'; }
-    details[open] { border-color: var(--brand); }
-    .faq-ans { padding: 0 20px 16px; color: var(--muted); font-size: .92rem; line-height: 1.7; }
-
-    .contact-section { background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #fff; padding: 72px 24px; }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1100px; margin: 0 auto; }
-    @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
-    .contact-item { display: flex; gap: 12px; margin-bottom: 20px; }
-    .contact-icon { font-size: 1.4rem; }
-    .contact-item strong { display: block; color: #fff; font-size: .95rem; }
-    .contact-item span { color: rgba(255,255,255,.7); font-size: .9rem; }
-    .contact-form { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; padding: 28px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: .88rem; color: rgba(255,255,255,.8); margin-bottom: 6px; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 10px 14px; border-radius: var(--radius); font-size: .92rem; outline: none; }
-    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.4); }
-    .form-group textarea { height: 100px; resize: vertical; }
-    .form-group select option { background: #1e3a8a; }
-    .btn-submit { width: 100%; background: var(--accent); color: #1a1a1a; border: none; padding: 13px; border-radius: 25px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 4px; }
-
-    footer { background: #0a0f1e; color: rgba(255,255,255,.5); padding: 28px 24px; text-align: center; font-size: .85rem; }
-    footer strong { color: rgba(255,255,255,.8); }
-    .float-cta { position: fixed; right: 24px; bottom: 32px; z-index: 200; }
-    .float-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color: #fff; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.2); text-decoration: none; }
-  </style>
+  
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="theme-color" content="#14171c">
+<meta property="og:image" content="https://bu6789.com/og-image.png">
 </head>
 
 <body>
 
 <nav>
-  <a class="nav-logo" href="/en.html">J.LINK TEXTILE <span>匠领数码</span></a>
+  <a class="nav-logo" href="/en.html"><img class="nav-logo-mark" src="assets/logo-mark-white.png" alt="J.LINK TEXTILE 匠领纺织" width="38" height="38"><span class="nav-logo-stack"><b>J.LINK TEXTILE</b><i>匠领数码 · 匠领纺织</i></span></a>
   <ul class="nav-links">
     <li><a href="#products">Products</a></li>
     <li><a href="#advantages">Why Us</a></li>
@@ -242,7 +134,7 @@
     <p class="section-subtitle">Comprehensive digital printing OEM service for home textile categories</p>
     <div class="product-grid">
       <div class="product-card">
-        <div class="product-img curtain">🪟</div>
+        <div class="product-img curtain"></div>
         <div class="product-body">
           <h3>Curtain Digital Printing</h3>
           <p>Ultra-wide seamless printing up to 320CM. Reactive & disperse processes for cotton, linen, polyester fabrics. High color precision, no plate-making required, flexible MOQ.</p>
@@ -253,7 +145,7 @@
         </div>
       </div>
       <div class="product-card">
-        <div class="product-img wall">🎨</div>
+        <div class="product-img wall"></div>
         <div class="product-body">
           <h3>Wallcovering Digital Printing</h3>
           <p>320CM full-width seamless printing on various base fabrics (cotton, non-woven, jacquard). Disperse printing for vibrant, UV-resistant colors. Ideal for full-wall décor.</p>
@@ -264,7 +156,7 @@
         </div>
       </div>
       <div class="product-card">
-        <div class="product-img home">🛏️</div>
+        <div class="product-img home"></div>
         <div class="product-body">
           <h3>Home Textile Digital Printing</h3>
           <p>Bedding, pillows, tablecloths and more. Reactive printing on cotton/blended fabrics. Soft hand feel, Grade 4+ color fastness, meets Oeko-Tex standards.</p>
@@ -385,11 +277,10 @@
   </div>
 </section>
 
-<footer>
+<footer><img class="footer-logo" src="assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">
   <p><strong>J.LINK TEXTILE (匠领数码)</strong> · Shaoxing Keqiao, Zhejiang, China · Wide-Width Digital Fabric Printing OEM<br>
   Contact: Mr. Zhang +86-177-6988-6009 · Mon–Sat 08:00–18:00 CST<br><br>
-  &copy; 2026 J.LINK TEXTILE · All Rights Reserved</p>
-</footer>
+  &copy; 2026 J.LINK TEXTILE · All Rights Reserved | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></p></footer>
 
 <div class="float-cta">
   <a href="tel:+8617769886009" class="float-btn" title="Call Us">📞</a>

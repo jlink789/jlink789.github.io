@@ -23,17 +23,39 @@ WIDTH_LINE = "200/220/240/260/280/320CM六大标准幅宽"
 PROCESS_LINE = "分散印花、涤纶印花、宽幅数码印花三大工艺"
 
 KEYWORDS = [
-  "宽幅数码印花","桌布印花","墙布印花","窗帘印花","家纺印花",
-  "沙发面料印花","抱枕印花","床品印花","地毯印花","遮光窗帘印花",
-  "高精密印花","雪尼尔印花","麂皮绒印花","棉麻印花","涤纶印花",
+  # 通用 / 宽幅
+  "宽幅数码印花","整幅无拼接数码印花","3.2米超宽幅印花代工","卷对卷宽幅印花加工","宽幅数码印花厂家",
+  # 一、窗帘窗饰
+  "窗帘数码印花","宽幅窗帘数码印花","整幅无拼接窗帘印花","2.8米窗帘印花代工","3.2米超宽窗帘印花","遮光窗帘印花","纱帘数码印花","罗马帘印花",
+  # 二、床品家纺
+  "床品印花","宽幅床品四件套印花","整幅被套数码印花","磨毛四件套印花","宽幅床单印花","家纺印花","纯棉床品面料印花",
+  # 三、家居软装
+  "沙发面料印花","整幅沙发套数码印花","无缝墙布壁布印花","法式宽幅桌布印花","抱枕印花","餐垫印花","飘窗垫整幅印花",
+  # 四、地毯地垫
+  "地毯印花","宽幅满铺地毯印花","走廊地毯数码印花","商用工程地毯印花","入户地垫宽幅印花","办公地毯印花",
+  # 五、广告会展
+  "舞台背景布整幅印花","宽幅广告布数码印花","企业旗帜条幅印花","展会背景墙整幅印花","软膜灯箱布宽幅印花","宽幅车身贴印花","广告帐篷面料印花",
+  # 六、户外遮阳
+  "宽幅遮阳篷布印花","露营帐篷整幅印花","户外休闲椅面料印花","遮阳棚数码印花","大尺寸户外篷布印花",
+  # 七、医疗公共
+  "宽幅医用隔帘印花","医院隔帘数码印花","医疗用布宽幅印花",
+  # 其余面料
+  "墙布印花","高精密印花","雪尼尔印花","麂皮绒印花","棉麻印花","涤纶印花",
 ]
 
 # 关键词 → 工厂实拍图代号映射（命中后优先选该类图片）
 PHOTO_KEYWORD_HINTS = {
   "工艺": "machine", "印花": "machine", "技术": "machine", "色牢": "qc",
   "采购": "client", "询价": "client", "代工": "workshop", "价格": "client",
-  "案例": "product", "应用": "product", "成品": "product", "窗帘": "product",
-  "墙布": "product", "家纺": "product", "实景": "product",
+  "案例": "product", "应用": "product", "成品": "product",
+  "窗帘": "product", "遮光": "product", "纱帘": "product", "罗马帘": "product",
+  "墙布": "product", "家纺": "product", "床品": "product", "被套": "product", "床单": "product",
+  "沙发": "product", "抱枕": "product", "桌布": "product", "餐垫": "product", "飘窗": "product",
+  "地毯": "product", "地垫": "product", "走廊": "product", "办公地毯": "product",
+  "广告": "product", "会展": "product", "旗帜": "product", "舞台": "product", "灯箱": "product", "车身贴": "product", "帐篷": "product",
+  "遮阳": "product", "户外": "product", "篷布": "product", "休闲椅": "product",
+  "医疗": "product", "医院": "product", "隔帘": "product",
+  "实景": "product",
   "品质": "qc", "环保": "qc", "OEKO": "qc", "质检": "qc", "色彩": "fabric",
   "面料": "fabric", "特写": "fabric", "花型": "sample", "打样": "sample",
   "市场": "workshop", "趋势": "workshop", "需求": "workshop", "客户": "client",
@@ -343,10 +365,15 @@ for i in range(1, count + 1):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>{title} | 匠领数码 | 200-320CM六大幅宽 | 1米起印</title>
-  <meta name="description" content="{intro} 匠领数码位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
+  <title>{title} | 匠领数码 · 匠领纺织 | 200-320CM六大幅宽 | 1米起印</title>
+  <meta name="description" content="{intro} 匠领数码·匠领纺织位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
   <meta name="keywords" content="{keyword},宽幅数码印花,分散印花,涤纶印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花">
   <link rel="canonical" href="https://bu6789.com/{slug}">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <meta name="theme-color" content="#14171c">
   <meta property="og:image" content="{hero_img_url}">
   <meta property="og:type" content="article">
   <script type="application/ld+json">
@@ -357,8 +384,8 @@ for i in range(1, count + 1):
     "image": ["{hero_img_url}"],
     "datePublished": "{today}",
     "dateModified": "{today}",
-    "author": {{"@type":"Organization","name":"匠领数码","url":"https://bu6789.com"}},
-    "publisher": {{"@type":"Organization","name":"匠领数码","logo":{{"@type":"ImageObject","url":"https://bu6789.com/factory-photos/README.md"}},"url":"https://bu6789.com"}}
+    "author": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","url":"https://bu6789.com"}},
+    "publisher": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","logo":{{"@type":"ImageObject","url":"https://bu6789.com/logo.png"}},"url":"https://bu6789.com"}}
   }}
   </script>
   <style>
@@ -373,6 +400,7 @@ for i in range(1, count + 1):
     p{{margin:1em 0}}
     a.back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
     footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
+    .footer-logo{{display:block;height:54px;width:auto;margin:0 auto 18px}}
     @media (max-width:600px){{
       body{{padding:0 16px;font-size:16px}}
       h1{{font-size:1.4em}}
@@ -381,11 +409,11 @@ for i in range(1, count + 1):
 </head>
 <body>
   <h1>{title}</h1>
-  <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
+  <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 · 匠领纺织 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
 {body}
   <p><strong>联系我们：</strong>如有 {keyword} 相关采购或代工需求，欢迎联系张先生 17769886009（微信同号），或访问 <a href="https://bu6789.com">www.bu6789.com</a> 了解更多。幅宽覆盖 200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。</p>
   <a class="back" href="/">← 返回首页</a>
-  <footer>© 2026 匠领数码 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号 | 1米起印 免费打样 5-7天交货</footer>
+  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号 | 1米起印 免费打样 5-7天交货 | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></footer>
 <!-- 百度+360自动推送 -->
 <script src="/seo-push.js"></script>
 </body>
