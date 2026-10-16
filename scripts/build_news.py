@@ -136,6 +136,8 @@ def build_news_html(data: list) -> str:
   <title>资讯中心 | 宽幅数码印花行业干货 - 匠领数码</title>
   <meta name="description" content="匠领数码资讯中心：宽幅数码印花、分散印花、涤纶印花等 B 端加工知识 · 工厂实拍 · 采购指南 · 每天 6 篇自动更新。">
   <link rel="canonical" href="https://bu6789.com/news.html">
+  <link rel="alternate" hreflang="zh" href="https://bu6789.com/news.html">
+  <link rel="alternate" hreflang="en" href="https://bu6789.com/en-news.html">
   <meta name="robots" content="index,follow">
   <meta property="og:title" content="资讯中心 | 匠领数码">
   <meta property="og:description" content="宽幅数码印花行业干货 · 每天 6 篇自动更新">
@@ -180,6 +182,8 @@ def build_news_html(data: list) -> str:
     <li><a href="news.html" style="color:var(--brand);font-weight:600">资讯中心</a></li>
     <li><a href="/#faq">常见问题</a></li>
     <li><a href="/#contact" class="nav-cta">立即咨询</a></li>
+    <li><a href="https://app.bu6789.com" target="_blank" rel="noopener">图库找图</a></li>
+    <li><a href="en-news.html">EN</a></li>
   </ul>
 </nav>
 

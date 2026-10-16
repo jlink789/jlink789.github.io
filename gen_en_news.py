@@ -31,13 +31,20 @@ html = html.replace(
     '<meta name="description" content="J.LINK TEXTILE News Center: wide-width digital printing, disperse printing, polyester printing B2B knowledge, factory insights and buying guides — 6 new articles auto-published daily.">',
     1)
 
-# 4. canonical (keep zh href, add en + hreflang alternates)
+# 4. canonical -> en page, and ensure hreflang alternates exist (idempotent).
+#    build_news.py already emits the hreflang alternates into news.html, so we
+#    just make sure they are present and point the canonical at the en page.
 html = html.replace(
     '<link rel="canonical" href="https://bu6789.com/news.html">',
-    '<link rel="canonical" href="https://bu6789.com/news.html">\n'
-    '  <link rel="alternate" hreflang="zh" href="https://bu6789.com/news.html">\n'
-    '  <link rel="alternate" hreflang="en" href="https://bu6789.com/en-news.html">',
+    '<link rel="canonical" href="https://bu6789.com/en-news.html">',
     1)
+if 'hreflang="zh" href="https://bu6789.com/news.html"' not in html:
+    html = html.replace(
+        '<link rel="canonical" href="https://bu6789.com/en-news.html">',
+        '<link rel="canonical" href="https://bu6789.com/en-news.html">\n'
+        '  <link rel="alternate" hreflang="zh" href="https://bu6789.com/news.html">\n'
+        '  <link rel="alternate" hreflang="en" href="https://bu6789.com/en-news.html">',
+        1)
 
 # 5. og meta
 html = html.replace(

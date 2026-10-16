@@ -34,6 +34,9 @@ jobs:
       - name: 重新生成 news.html + 同步首页 + sitemap
         run: python scripts/build_news.py
 
+      - name: 由 news.html 派生英文版 en-news.html
+        run: python gen_en_news.py
+
       - name: 百度主动推送
         continue-on-error: true
         run: python scripts/baidu_push.py
