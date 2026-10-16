@@ -287,8 +287,20 @@ ul{padding-left:22px}li{margin-bottom:8px}
 .anchor-bar a{padding:6px 14px;border-radius:999px;font-size:.88rem}
 .anchor-bar a:hover{background:var(--brand);color:#fff!important}
 .date-group{scroll-margin-top:140px;margin-bottom:40px}
+.date-group h3{font-size:1.25rem;color:var(--ink);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent);display:inline-block}
+.date-group h3 .news-date{font-size:.8rem;color:var(--muted);font-weight:400;margin-left:8px}
 .news-tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.8rem;white-space:nowrap;background:var(--brand-soft);color:var(--brand-dark)}
 .news-date{color:var(--muted);font-size:.85rem}
+.news-list{list-style:none;padding:0;margin:0}
+.news-list li{display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);transition:background .15s}
+.news-list li:hover{background:var(--bg2)}
+.news-list a{color:var(--ink);text-decoration:none;flex:1;font-weight:500}
+.news-list a:hover{color:var(--brand)}
+.cat-filter-row .filter-label{margin:8px 10px 0 0;color:var(--muted);font-weight:600}
+.anchor-bar .anchor-label{margin-right:12px;color:var(--muted);font-size:.85em}
+.anchor-bar a{color:var(--ink);background:var(--bg2);font-weight:600}
+.anchor-bar a:hover{background:var(--brand);color:#fff}
+.news-foot{text-align:center;color:var(--muted);padding:40px 0;border-top:1px solid var(--line);margin-top:40px}
 
 /* ---------- 页脚 ---------- */
 footer{background:var(--ink);color:#aab0b7;padding:46px 24px;text-align:center;font-size:.9rem;line-height:1.9}
