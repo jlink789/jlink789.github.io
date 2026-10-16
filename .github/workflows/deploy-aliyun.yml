@@ -1,0 +1,57 @@
+name: Deploy to Aliyun (bu6789.com)
+
+# 用途：把仓库内容 rsync 到阿里轻量云 47.98.252.216 的 Nginx web 根，
+# 使「每日自动生成文章」等 GitHub 端更新自动上线到 bu6789.com。
+# 依赖仓库 Secrets：ALIYUN_HOST / ALIYUN_PORT / ALIYUN_USER / ALIYUN_WEBROOT / ALIYUN_SSH_KEY
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # UTC 02:30 = 北京 10:30，作为自动文章工作流(push 触发)失败时的每日兜底
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-aliyun
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: 安装部署私钥
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.ALIYUN_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Rsync 推送到阿里云
+        env:
+          D_HOST: ${{ secrets.ALIYUN_HOST }}
+          D_PORT: ${{ secrets.ALIYUN_PORT }}
+          D_USER: ${{ secrets.ALIYUN_USER }}
+          D_ROOT: ${{ secrets.ALIYUN_WEBROOT }}
+        run: |
+          set -e
+          rsync -az --delete --stats \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.well-known' \
+            -e "ssh -p ${D_PORT} -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR" \
+            ./ "${D_USER}@${D_HOST}:${D_ROOT}/"
+          echo "✅ 已同步到 ${D_HOST}:${D_ROOT}"
+
+      - name: 线上健康检查
+        env:
+          D_HOST: ${{ secrets.ALIYUN_HOST }}
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -m 20 "https://bu6789.com/" || echo "ERR")
+          echo "https://bu6789.com/ -> $code"
+          test "$code" = "200"
