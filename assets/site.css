@@ -53,9 +53,21 @@ nav,.nav{
 .nav-links a:hover{color:var(--brand)}
 .nav-cta{background:var(--brand);color:#fff!important;padding:9px 18px;border-radius:999px;font-weight:600;transition:background .2s,transform .2s}
 .nav-cta:hover{background:var(--brand-dark);transform:translateY(-1px)}
-.lang-switch{font-size:.85rem;color:#d9dde2;text-decoration:none;border:1px solid rgba(255,255,255,.2);padding:6px 12px;border-radius:16px}
+/* 「图库找图」— 跳转图溯 app.bu6789.com，做成金铜描边胶囊以便和普通栏目区分 */
+.nav-app{color:#fff!important;border:1px solid rgba(184,137,59,.55);background:rgba(184,137,59,.14);padding:7px 15px;border-radius:999px;font-weight:600;white-space:nowrap;transition:background .2s,border-color .2s}
+.nav-app:hover{background:rgba(184,137,59,.3);border-color:var(--brand);color:#fff!important}
+.lang-switch{font-size:.85rem;color:#d9dde2;text-decoration:none;border:1px solid rgba(255,255,255,.2);padding:6px 12px;border-radius:16px;white-space:nowrap}
 .lang-switch:hover{color:var(--brand);border-color:var(--brand)}
-@media(max-width:860px){.nav-links,.nav-links li:not(.nav-cta-li){display:none}.nav-links{gap:14px}}
+/* ⚠ 移动端：不要隐藏导航。原规则把整个 .nav-links 藏掉，手机上完全无导航、点不到任何入口。
+   改成「导航条换行 + 链接横向可滑动」，保证所有入口（含图库找图 / 语言切换）在手机上也点得到。 */
+@media(max-width:860px){
+  nav,.nav{height:auto;flex-wrap:wrap;gap:4px;padding:10px 16px}
+  .nav-links{display:flex;width:100%;flex-wrap:nowrap;overflow-x:auto;gap:14px;justify-content:flex-start;padding:4px 0 6px;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links li,.nav-links>a{flex:0 0 auto;display:inline-block}
+  .nav-links a{white-space:nowrap;font-size:.86rem}
+  .nav-links .nav-cta{padding:7px 16px}
+}
 
 /* ---------- 首屏 Hero（多种类名兼容） ---------- */
 .hero,.prod-hero,.page-hero{
@@ -63,6 +75,9 @@ nav,.nav{
   background:linear-gradient(180deg,rgba(15,18,22,.74),rgba(15,18,22,.86)),
              url(/factory-photos/machine-001.jpg) center/cover no-repeat;
 }
+/* 首页首屏背景：七大业务实拍合成图（只覆盖 .hero，产品页/内页仍用工厂实拍图） */
+.hero{background:linear-gradient(180deg,rgba(15,18,22,.70),rgba(15,18,22,.88)),
+             url(/assets/hero/hero-seven-applications.jpg) center 42%/cover no-repeat}
 .hero::after,.prod-hero::after,.page-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--brand),#e8c98a,var(--brand))}
 .hero-content,.prod-hero,.page-hero{max-width:880px;margin:0 auto;position:relative;z-index:2}
 .hero-badge{
