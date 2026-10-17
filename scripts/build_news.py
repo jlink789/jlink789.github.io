@@ -12,7 +12,7 @@ build_news.py
 - news.html  (中文资讯中心)
 - en-news.html (英文界面资讯中心)
 - index.html (news 区块更新为最新 10 篇)
-- sitemap.xml (加 news.html 入口 + 最新文章 lastmod)
+  （sitemap.xml 统一由 scripts/gen_sitemap.py 全站扫描生成）
 """
 import json
 import re
@@ -386,24 +386,6 @@ def update_index_news(data: list) -> int:
     return 1
 
 
-def update_sitemap(data: list) -> int:
-    """确保 sitemap.xml 里有 news.html 入口。返回是否实际改动。"""
-    if not SITEMAP.exists():
-        return 0
-    content = SITEMAP.read_text(encoding="utf-8")
-    if "news.html" in content:
-        return 0
-    new_url = f'''  <url>
-    <loc>https://bu6789.com/news.html</loc>
-    <lastmod>{datetime.now().strftime("%Y-%m-%d")}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-'''
-    SITEMAP.write_text(content.replace("</urlset>", new_url + "</urlset>"), encoding="utf-8")
-    return 1
-
-
 def main():
     data = collect_articles()
     if not data:
@@ -415,8 +397,7 @@ def main():
         target.write_text(html, encoding="utf-8")
         print(f"OK: {len(data)} 篇 → {target.name} ({lang})")
     idx_changed = update_index_news(data)
-    sm_changed = update_sitemap(data)
-    print(f"首页{'已更新' if idx_changed else '无变化'} | sitemap{'已更新' if sm_changed else '无变化'}")
+    print(f"首页{'已更新' if idx_changed else '无变化'}")
 
 
 if __name__ == "__main__":

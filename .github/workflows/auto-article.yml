@@ -31,8 +31,11 @@ jobs:
       - name: 自动生成文章 + 配图
         run: python scripts/auto_article.py
 
-      - name: 重新生成 news.html + en-news.html + 同步首页 + sitemap
+      - name: 重新生成 news.html + en-news.html + 同步首页
         run: python scripts/build_news.py
+
+      - name: 全站生成 sitemap.xml（核心页+英文版+文章，含 hreflang）
+        run: python scripts/gen_sitemap.py
 
       - name: 百度主动推送
         continue-on-error: true

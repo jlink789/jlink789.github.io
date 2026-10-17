@@ -474,30 +474,8 @@ if not DRY_RUN:
 else:
     print(f"[dry-run] 跳过写首页")
 
-# ── 更新 sitemap.xml ──────────────────────────────────────────
-sitemap_path = "sitemap.xml"
-with open(sitemap_path, "r", encoding="utf-8") as f:
-    sm = f.read()
-
-new_urls = ""
-for s in slugs:
-    if s not in sm:
-        new_urls += f"""
-  <url>
-    <loc>https://bu6789.com/{s}</loc>
-    <lastmod>{today}</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>"""
-
-if new_urls:
-    sm = sm.replace("</urlset>", new_urls + "\n</urlset>")
-    if not DRY_RUN:
-        with open(sitemap_path, "w", encoding="utf-8") as f:
-            f.write(sm)
-        print("sitemap.xml 已更新")
-    else:
-        print("[dry-run] 跳过写 sitemap")
+# ── sitemap.xml 统一由 scripts/gen_sitemap.py 全站扫描生成 ──
+# （在 auto-article.yml 中于 build_news.py 之后调用，取代此处的增量追加）
 
 # ── 更新 llms-full.txt（加图库索引） ──────────────────────────
 llms_full_path = "llms-full.txt"
