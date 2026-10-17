@@ -54,7 +54,11 @@ def page_md(lang, data):
 # ───────────────────────── Markdown → HTML（受控子集） ─────────────────────────
 def _inline(s: str) -> str:
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
-    s = re.sub(r"\[([^\]]+)\]\((https?://[^)]+)\)", r'<a href="\1" target="_blank" rel="noopener">\2</a>', s)
+    def _link(m):
+        text, url = m.group(1), m.group(2)
+        blank = ' target="_blank" rel="noopener"' if url.startswith("http") else ""
+        return f'<a href="{url}"{blank}>{text}</a>'
+    s = re.sub(r"\[([^\]]+)\]\((https?://[^)]+|/[^)]*|#[^)]*)\)", _link, s)
     return s
 
 def md_to_html(md: str) -> str:

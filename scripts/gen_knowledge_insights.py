@@ -13,6 +13,7 @@ gen_knowledge_insights.py — 生成「每日知识快报」子栏目（行业�
 """
 import datetime
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -60,6 +61,19 @@ def fix_paths(html: str) -> str:
     return html.replace("../assets/", "/assets/").replace("../favicon.ico", "/favicon.ico")
 
 
+def fix_kb_links(html: str, lang: str) -> str:
+    """正文内链指向 /knowledge/ 下页面时，若本地文件不存在（多为尚未上线的队列专题），
+    回退到知识库 hub，避免任何 404。专题上线后对应链接会自动恢复正常。"""
+    hub = "/knowledge/index.html" if lang == "zh" else "/knowledge/index-en.html"
+    def repl(m):
+        href = m.group(1)
+        slug = href.split("/knowledge/", 1)[1]
+        if (KB / slug).exists():
+            return m.group(0)
+        return m.group(0).replace(f'href="{href}"', f'href="{hub}"')
+    return re.sub(r'href="(https://bu6789\.com/knowledge/[^"]+)"', repl, html)
+
+
 def build_one(lang):
     item = INSIGHTS[(RUN_DATE - EPOCH).days % len(INSIGHTS)]
     data = item[lang]
@@ -74,6 +88,7 @@ def build_one(lang):
         f'  <link rel="alternate" hreflang="x-default" href="{zh_url}">'
     )
     body = G.md_to_html(data["md"] + f"\n\n发布日期：{DATE}" + (G.EN_GLANCE if lang == "en" else ZH_GLANCE))
+    body = fix_kb_links(body, lang)
     faq_html = ""
     if data.get("faq"):
         faq_html = '<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list">'
