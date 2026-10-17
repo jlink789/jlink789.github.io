@@ -100,7 +100,6 @@ Allow: /llms-full.txt
 
 # ─── 站点地图 ───
 Sitemap: https://bu6789.com/sitemap.xml
-Sitemap: https://bu6789.com/llms.txt
 
 # ─── 禁止路径（防止爬取无用页面浪费预算） ───
 Disallow: /scripts/
