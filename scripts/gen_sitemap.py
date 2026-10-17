@@ -47,6 +47,18 @@ PAIRS = [
     ("products/curtain.html", "products/en-curtain.html"),
     ("products/wallcovering.html", "products/en-wallcovering.html"),
     ("products/home-textile.html", "products/en-home-textile.html"),
+    # 知识库 GEO 白皮书栏目（中英双语）
+    ("knowledge/index.html", "knowledge/index-en.html"),
+    ("knowledge/wide-format-digital-printing.html", "knowledge/en-wide-format-digital-printing.html"),
+    ("knowledge/320cm-wide-format-printing.html", "knowledge/en-320cm-wide-format-printing.html"),
+    ("knowledge/digital-vs-traditional-printing.html", "knowledge/en-digital-vs-traditional-printing.html"),
+    ("knowledge/how-to-choose-printing-factory.html", "knowledge/en-how-to-choose-printing-factory.html"),
+    ("knowledge/curtain-digital-printing.html", "knowledge/en-curtain-digital-printing.html"),
+    ("knowledge/wallcovering-digital-printing.html", "knowledge/en-wallcovering-digital-printing.html"),
+    ("knowledge/home-textile-digital-printing.html", "knowledge/en-home-textile-digital-printing.html"),
+    ("knowledge/disperse-dye-printing.html", "knowledge/en-disperse-dye-printing.html"),
+    ("knowledge/small-batch-custom-printing.html", "knowledge/en-small-batch-custom-printing.html"),
+    ("knowledge/shaoxing-keqiao-printing-factory.html", "knowledge/en-shaoxing-keqiao-printing-factory.html"),
 ]
 
 # ── 页面属性 override：changefreq / priority ──────────────
@@ -65,6 +77,29 @@ PAGE_META = {
     "products/en-curtain.html": ("monthly", 0.7),
     "products/en-wallcovering.html": ("monthly", 0.7),
     "products/en-home-textile.html": ("monthly", 0.7),
+    # 知识库 GEO 白皮书栏目
+    "knowledge/index.html": ("monthly", 0.7),
+    "knowledge/index-en.html": ("monthly", 0.6),
+    "knowledge/wide-format-digital-printing.html": ("monthly", 0.6),
+    "knowledge/en-wide-format-digital-printing.html": ("monthly", 0.5),
+    "knowledge/320cm-wide-format-printing.html": ("monthly", 0.6),
+    "knowledge/en-320cm-wide-format-printing.html": ("monthly", 0.5),
+    "knowledge/digital-vs-traditional-printing.html": ("monthly", 0.6),
+    "knowledge/en-digital-vs-traditional-printing.html": ("monthly", 0.5),
+    "knowledge/how-to-choose-printing-factory.html": ("monthly", 0.6),
+    "knowledge/en-how-to-choose-printing-factory.html": ("monthly", 0.5),
+    "knowledge/curtain-digital-printing.html": ("monthly", 0.6),
+    "knowledge/en-curtain-digital-printing.html": ("monthly", 0.5),
+    "knowledge/wallcovering-digital-printing.html": ("monthly", 0.6),
+    "knowledge/en-wallcovering-digital-printing.html": ("monthly", 0.5),
+    "knowledge/home-textile-digital-printing.html": ("monthly", 0.6),
+    "knowledge/en-home-textile-digital-printing.html": ("monthly", 0.5),
+    "knowledge/disperse-dye-printing.html": ("monthly", 0.6),
+    "knowledge/en-disperse-dye-printing.html": ("monthly", 0.5),
+    "knowledge/small-batch-custom-printing.html": ("monthly", 0.6),
+    "knowledge/en-small-batch-custom-printing.html": ("monthly", 0.5),
+    "knowledge/shaoxing-keqiao-printing-factory.html": ("monthly", 0.6),
+    "knowledge/en-shaoxing-keqiao-printing-factory.html": ("monthly", 0.5),
 }
 
 
