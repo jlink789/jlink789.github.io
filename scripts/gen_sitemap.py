@@ -59,6 +59,17 @@ PAIRS = [
     ("knowledge/disperse-dye-printing.html", "knowledge/en-disperse-dye-printing.html"),
     ("knowledge/small-batch-custom-printing.html", "knowledge/en-small-batch-custom-printing.html"),
     ("knowledge/shaoxing-keqiao-printing-factory.html", "knowledge/en-shaoxing-keqiao-printing-factory.html"),
+    # 知识库增长队列专题（定时自动上线，上线后由本配对补齐 hreflang）
+    ("knowledge/color-management.html", "knowledge/en-color-management.html"),
+    ("knowledge/polyester-fabric.html", "knowledge/en-polyester-fabric.html"),
+    ("knowledge/curtain-oem.html", "knowledge/en-curtain-oem.html"),
+    ("knowledge/wallcovering-seamless.html", "knowledge/en-wallcovering-seamless.html"),
+    ("knowledge/home-textile-fabric.html", "knowledge/en-home-textile-fabric.html"),
+    ("knowledge/export-quality.html", "knowledge/en-export-quality.html"),
+    ("knowledge/batch-consistency.html", "knowledge/en-batch-consistency.html"),
+    ("knowledge/keqiao-sourcing.html", "knowledge/en-keqiao-sourcing.html"),
+    # 每日知识快报索引
+    ("knowledge/insights/index.html", "knowledge/insights/index-en.html"),
 ]
 
 # ── 页面属性 override：changefreq / priority ──────────────
@@ -100,6 +111,26 @@ PAGE_META = {
     "knowledge/en-small-batch-custom-printing.html": ("monthly", 0.5),
     "knowledge/shaoxing-keqiao-printing-factory.html": ("monthly", 0.6),
     "knowledge/en-shaoxing-keqiao-printing-factory.html": ("monthly", 0.5),
+    # 知识库增长队列专题（与 PAIRS 配对一致）
+    "knowledge/color-management.html": ("monthly", 0.6),
+    "knowledge/en-color-management.html": ("monthly", 0.5),
+    "knowledge/polyester-fabric.html": ("monthly", 0.6),
+    "knowledge/en-polyester-fabric.html": ("monthly", 0.5),
+    "knowledge/curtain-oem.html": ("monthly", 0.6),
+    "knowledge/en-curtain-oem.html": ("monthly", 0.5),
+    "knowledge/wallcovering-seamless.html": ("monthly", 0.6),
+    "knowledge/en-wallcovering-seamless.html": ("monthly", 0.5),
+    "knowledge/home-textile-fabric.html": ("monthly", 0.6),
+    "knowledge/en-home-textile-fabric.html": ("monthly", 0.5),
+    "knowledge/export-quality.html": ("monthly", 0.6),
+    "knowledge/en-export-quality.html": ("monthly", 0.5),
+    "knowledge/batch-consistency.html": ("monthly", 0.6),
+    "knowledge/en-batch-consistency.html": ("monthly", 0.5),
+    "knowledge/keqiao-sourcing.html": ("monthly", 0.6),
+    "knowledge/en-keqiao-sourcing.html": ("monthly", 0.5),
+    # 每日知识快报索引（每日更新）
+    "knowledge/insights/index.html": ("daily", 0.5),
+    "knowledge/insights/index-en.html": ("daily", 0.4),
 }
 
 

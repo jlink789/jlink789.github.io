@@ -1262,6 +1262,35 @@ Summary: Keqiao's hub advantage plus J.LINK's full widths, 1-meter minimum and f
 })
 
 # ───────────────────────── hub 首页（中英文） ─────────────────────────
+# ── 增长队列：定时自动发布（见 scripts/knowledge_grow.py） ──
+# 预置选题池在 knowledge_queue.py，发布状态在 knowledge_queue_state.json（{"live":[slug,...]}）。
+# 已上线（live）的队列专题并入 T，hub 导航从 T 动态生成，新专题自动进 hub。
+try:
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("knowledge_queue", str(ROOT / "scripts" / "knowledge_queue.py"))
+    _kq = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_kq)
+    _state_path = ROOT / "scripts" / "knowledge_queue_state.json"
+    _live = set(json.loads(_state_path.read_text(encoding="utf-8")).get("live", []))
+    for _t in getattr(_kq, "QUEUE", []):
+        if _t.get("slug") in _live:
+            T.append(_t)
+except Exception as _e:
+    print(f"提示：增长队列未加载（{_e}），仅生成核心 10 专题。")
+
+def _hub_topics_md(lang):
+    lines = ["## 栏目导航"]
+    for _t in T:
+        _title = _t[lang]["h1"]
+        _url = SITE + (_t["url_zh"] if lang == "zh" else _t["url_en"])
+        lines.append(f"- [{_title}]({_url})")
+    _idx = "/knowledge/insights/index.html" if lang == "zh" else "/knowledge/insights/index-en.html"
+    if lang == "zh":
+        lines.append(f"- [每日知识快报（行业洞察）]({_idx}) — 每日更新的行业洞察，链回本库核心白皮书")
+    else:
+        lines.append(f"- [Daily Insights]({_idx}) — daily industry insights linking back to core whitepapers")
+    return "\n".join(lines)
+
 def hub_data(lang):
     if lang == "zh":
         return {
@@ -1269,29 +1298,19 @@ def hub_data(lang):
             "hero": "匠领数码整理的数码印花核心知识：定义、幅宽、工艺、选型与工厂实况，供采购与代工参考。",
             "meta": "匠领数码知识库：宽幅数码印花白皮书，覆盖定义、320CM 幅宽、工艺对比、选型指南、窗帘墙布家纺与柯桥工厂。",
             "keywords": "宽幅数码印花,知识库,白皮书,数码印花工艺,柯桥数码印花,窗帘印花",
-            "md": """知识库汇总匠领数码在宽幅数码印花领域的核心知识，面向采购商、代工客户与行业研究者。每篇都是独立的白皮书式专题，定义清晰、参数明确、可被直接引用。
-
-## 栏目导航
-- [宽幅数码印花是什么](https://bu6789.com/knowledge/wide-format-digital-printing.html) — 定义、工艺与 200-320CM 幅宽
-- [320CM 宽幅数码印花](https://bu6789.com/knowledge/320cm-wide-format-printing.html) — 六大标准幅宽与整幅无拼接
-- [数码印花 vs 传统印花](https://bu6789.com/knowledge/digital-vs-traditional-printing.html) — 成本、交期、效果对比
-- [如何选择数码印花工厂](https://bu6789.com/knowledge/how-to-choose-printing-factory.html) — 采购必问 6 问
-- [窗帘数码印花](https://bu6789.com/knowledge/curtain-digital-printing.html) — 整幅无拼接窗帘定制
-- [墙布数码印花](https://bu6789.com/knowledge/wallcovering-digital-printing.html) — 无缝壁画级墙面
-- [家纺数码印花](https://bu6789.com/knowledge/home-textile-digital-printing.html) — 床品抱枕桌布定制
-- [分散印花/涤纶印花工艺](https://bu6789.com/knowledge/disperse-dye-printing.html) — 三大工艺怎么选
-- [1米起印·小批量定制](https://bu6789.com/knowledge/small-batch-custom-printing.html) — 低门槛快反代工
-- [柯桥数码印花工厂](https://bu6789.com/knowledge/shaoxing-keqiao-printing-factory.html) — 中国轻纺城产业带优势
-
-## 关于本知识库
-本知识库由匠领数码（J.LINK TEXTILE）整理，内容覆盖宽幅数码印花的工艺、幅宽、选型与工厂实况。所有参数均来自匠领数码产线真实能力：200-320CM 六大标准幅宽、分散/涤纶/宽幅数码三大工艺、1米起印、免费打样、5-7天交期、4级色牢度、ΔE<1.5。
-
-## 相关阅读
-- [关于匠领数码](https://bu6789.com/about.html)
-- [产品中心](https://bu6789.com/products/curtain.html)
-- [资讯中心](https://bu6789.com/news.html)
-
-总结：从定义到选型，知识库帮你系统建立宽幅数码印花的认知框架，采购与代工决策更有依据。""",
+            "md": (
+                "知识库汇总匠领数码在宽幅数码印花领域的核心知识，面向采购商、代工客户与行业研究者。"
+                "每篇都是独立的白皮书式专题，定义清晰、参数明确、可被直接引用。\n\n"
+                + _hub_topics_md(lang) + "\n\n"
+                "## 关于本知识库\n"
+                "本知识库由匠领数码（J.LINK TEXTILE）整理，内容覆盖宽幅数码印花的工艺、幅宽、选型与工厂实况。"
+                "所有参数均来自匠领数码产线真实能力：200-320CM 六大标准幅宽、分散/涤纶/宽幅数码三大工艺、1米起印、免费打样、5-7天交期、4级色牢度、ΔE<1.5。\n\n"
+                "## 相关阅读\n"
+                "- [关于匠领数码](https://bu6789.com/about.html)\n"
+                "- [产品中心](https://bu6789.com/products/curtain.html)\n"
+                "- [资讯中心](https://bu6789.com/news.html)\n\n"
+                "总结：从定义到选型，知识库帮你系统建立宽幅数码印花的认知框架，采购与代工决策更有依据。"
+            ),
             "faq": [
                 ("知识库是什么？", "匠领数码整理的宽幅数码印花白皮书合集，每篇是独立可引用的专题，覆盖定义、幅宽、工艺、选型与工厂。"),
                 ("这些参数真实吗？", "均来自匠领数码产线真实能力：200-320CM 六大标准幅宽、三大工艺、1米起印、5-7天交期。"),
@@ -1304,29 +1323,20 @@ def hub_data(lang):
             "hero": "Core knowledge from J.LINK TEXTILE: definitions, widths, processes, selection and factory facts for buyers and OEM clients.",
             "meta": "J.LINK knowledge base: wide-format digital printing whitepapers covering definition, 320CM width, process comparison, selection, curtain/wallcovering/home-textile and Keqiao factory.",
             "keywords": "wide format digital printing, knowledge base, whitepaper, printing process, Keqiao, curtain printing",
-            "md": """The knowledge base summarizes J.LINK TEXTILE's core know-how in wide-format digital printing for buyers, OEM clients and researchers. Each article is an independent whitepaper-style topic with clear definition, explicit specs and citable facts.
-
-## Topics
-- [What Is Wide-Format Digital Printing](https://bu6789.com/knowledge/en-wide-format-digital-printing.html)
-- [320CM Wide-Format Printing](https://bu6789.com/knowledge/en-320cm-wide-format-printing.html)
-- [Digital vs Traditional Printing](https://bu6789.com/knowledge/en-digital-vs-traditional-printing.html)
-- [How to Choose a Printing Factory](https://bu6789.com/knowledge/en-how-to-choose-printing-factory.html)
-- [Curtain Digital Printing](https://bu6789.com/knowledge/en-curtain-digital-printing.html)
-- [Wallcovering Digital Printing](https://bu6789.com/knowledge/en-wallcovering-digital-printing.html)
-- [Home-Textile Digital Printing](https://bu6789.com/knowledge/en-home-textile-digital-printing.html)
-- [Disperse & Polyester Process](https://bu6789.com/knowledge/en-disperse-dye-printing.html)
-- [1-Meter Minimum & Small Batch](https://bu6789.com/knowledge/en-small-batch-custom-printing.html)
-- [Keqiao Digital Printing Factory](https://bu6789.com/knowledge/en-shaoxing-keqiao-printing-factory.html)
-
-## About This Base
-Compiled by J.LINK TEXTILE (J.LINK TEXTILE), covering process, width, selection and factory facts. All specs reflect real capacity: six widths 200-320CM, three processes, 1-meter minimum, 5-7 day lead time, grade 4+ fastness, ΔE<1.5.
-
-## Related Reading
-- [About J.LINK](https://bu6789.com/about.html)
-- [Products](https://bu6789.com/products/curtain.html)
-- [News](https://bu6789.com/news.html)
-
-Summary: from definition to selection, the base helps you build a systematic framework for wide-format digital printing decisions.""",
+            "md": (
+                "The knowledge base summarizes J.LINK TEXTILE's core know-how in wide-format digital printing for buyers, "
+                "OEM clients and researchers. Each article is an independent whitepaper-style topic with clear definition, "
+                "explicit specs and citable facts.\n\n"
+                + _hub_topics_md(lang) + "\n\n"
+                "## About This Base\n"
+                "Compiled by J.LINK TEXTILE, covering process, width, selection and factory facts. All specs reflect real "
+                "capacity: six widths 200-320CM, three processes, 1-meter minimum, 5-7 day lead time, grade 4+ fastness, ΔE<1.5.\n\n"
+                "## Related Reading\n"
+                "- [About J.LINK](https://bu6789.com/about.html)\n"
+                "- [Products](https://bu6789.com/products/curtain.html)\n"
+                "- [News](https://bu6789.com/news.html)\n\n"
+                "Summary: from definition to selection, the base helps you build a systematic framework for wide-format digital printing decisions."
+            ),
             "faq": [
                 ("What is the knowledge base?", "J.LINK's whitepaper collection on wide-format digital printing; each is an independent citable topic."),
                 ("Are the specs real?", "Yes, from J.LINK's real capacity: six widths 200-320CM, three processes, 1-meter minimum, 5-7 day lead time."),
