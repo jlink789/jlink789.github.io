@@ -37,11 +37,15 @@ ARTICLES_DIR = ROOT / "articles"
 PRIORITY_URLS = [
     "https://bu6789.com/",
     "https://bu6789.com/news.html",
+    "https://bu6789.com/en-news.html",
     "https://bu6789.com/about.html",
-    "https://bu6789.com/products/curtain.html",
-    "https://bu6789.com/products/wallcovering.html",
-    "https://bu6789.com/products/home-textile.html",
+    "https://bu6789.com/applications.html",
+    "https://bu6789.com/products-curtain.html",
+    "https://bu6789.com/products-wallcovering.html",
+    "https://bu6789.com/products-home-textile.html",
     "https://bu6789.com/en.html",
+    "https://bu6789.com/knowledge/index.html",
+    "https://bu6789.com/knowledge/index-en.html",
 ]
 
 
