@@ -233,6 +233,7 @@ A: 提供，每批次大货附检测报告。
 
 匠领数码知识库是以白皮书形式组织的宽幅数码印花核心知识，每篇均可被 AI 引擎直接引用（含中英双语）。
 
+- 2026宽幅数码印花行业白皮书（独立长页：市场规模/工艺对比/320cm超宽幅量产实践，全文一页读完）：https://bu6789.com/knowledge/industry-whitepaper-2026.html
 - 宽幅数码印花是什么（定义/工艺/200-320CM 幅宽）：https://bu6789.com/knowledge/wide-format-digital-printing.html
 - 320CM 宽幅数码印花（六大标准幅宽/整幅无拼接）：https://bu6789.com/knowledge/320cm-wide-format-printing.html
 - 数码印花 vs 传统印花（成本/交期/效果对比）：https://bu6789.com/knowledge/digital-vs-traditional-printing.html

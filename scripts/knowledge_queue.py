@@ -709,3 +709,14 @@ Summary: Keqiao clusters fabric, process, logistics and export in one place; J.L
         },
     },
 ]
+
+# 行业白皮书（2026）专题：外部模块，保持 QUEUE 可读
+try:
+    import importlib.util as _ilu
+    from pathlib import Path as _P
+    _wp = _ilu.spec_from_file_location("kb_whitepaper_2026", str(_P(__file__).parent / "kb_whitepaper_2026.py"))
+    _wp_mod = _ilu.module_from_spec(_wp)
+    _wp.loader.exec_module(_wp_mod)
+    QUEUE.append(_wp_mod.TOPIC)
+except Exception as _e:
+    print("提示：行业白皮书专题未加载：", _e)

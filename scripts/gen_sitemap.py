@@ -70,6 +70,8 @@ PAIRS = [
     ("knowledge/keqiao-sourcing.html", "knowledge/en-keqiao-sourcing.html"),
     # 每日知识快报索引
     ("knowledge/insights/index.html", "knowledge/insights/index-en.html"),
+    # 行业白皮书（独立长页）
+    ("knowledge/industry-whitepaper-2026.html", "knowledge/en-industry-whitepaper-2026.html"),
 ]
 
 # ── 页面属性 override：changefreq / priority ──────────────
@@ -131,6 +133,9 @@ PAGE_META = {
     # 每日知识快报索引（每日更新）
     "knowledge/insights/index.html": ("daily", 0.5),
     "knowledge/insights/index-en.html": ("daily", 0.4),
+    # 行业白皮书（独立长页，重磅内容权重更高）
+    "knowledge/industry-whitepaper-2026.html": ("yearly", 0.7),
+    "knowledge/en-industry-whitepaper-2026.html": ("yearly", 0.6),
 }
 
 
