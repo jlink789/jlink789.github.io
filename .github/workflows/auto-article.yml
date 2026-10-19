@@ -41,6 +41,10 @@ jobs:
         continue-on-error: true
         run: python scripts/baidu_push.py
 
+      - name: IndexNow 推送（Bing / Yandex）
+        continue-on-error: true
+        run: python scripts/indexnow_push.py --today
+
       - name: 提交并推送
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
