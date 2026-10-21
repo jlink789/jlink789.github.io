@@ -388,6 +388,27 @@ for i in range(1, count + 1):
     "publisher": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","logo":{{"@type":"ImageObject","url":"https://bu6789.com/logo.png"}},"url":"https://bu6789.com"}}
   }}
   </script>
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://bu6789.com/#localbusiness",
+    "name": "匠领数码",
+    "alternateName": "J.LINK TEXTILE 绍兴柯桥宽幅数码印花厂",
+    "description": "绍兴柯桥宽幅数码印花加工厂，专注窗帘、墙布、家纺数码印花，幅宽200-320CM，分散印花/涤纶印花/宽幅数码印花，1米起印、免费打样",
+    "image": "https://bu6789.com/logo.png",
+    "url": "https://bu6789.com/",
+    "telephone": "+86-177-6988-6009",
+    "address": {{
+      "@type": "PostalAddress",
+      "streetAddress": "齐贤镇兴浦路88号盛超针纺园区二幢南面五楼",
+      "addressLocality": "绍兴市柯桥区",
+      "addressRegion": "浙江省",
+      "postalCode": "312000",
+      "addressCountry": "CN"
+    }}
+  }}
+  </script>
   <style>
     body{{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#333;line-height:1.85}}
     h1{{color:#1a1a2e;font-size:1.7em;line-height:1.3;margin-bottom:8px}}
