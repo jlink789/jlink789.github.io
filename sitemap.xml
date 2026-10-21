@@ -7,7 +7,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/about.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/en-about.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/about.html"/>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6313,7 +6313,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/news.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/en-news.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/news.html"/>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6322,7 +6322,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/"/>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -6331,7 +6331,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/"/>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -6535,49 +6535,61 @@
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/2026-10-17.html</loc>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/2026-10-18.html</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/2026-10-19.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/2026-10-20.html</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bu6789.com/knowledge/insights/2026-10-21.html</loc>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/en-2026-10-17.html</loc>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/en-2026-10-18.html</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/en-2026-10-19.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://bu6789.com/knowledge/insights/en-2026-10-20.html</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bu6789.com/knowledge/insights/en-2026-10-21.html</loc>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -6586,7 +6598,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/knowledge/insights/index.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/knowledge/insights/index-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/knowledge/insights/index.html"/>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.4</priority>
   </url>
@@ -6595,7 +6607,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/knowledge/insights/index.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/knowledge/insights/index-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/knowledge/insights/index.html"/>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
@@ -6640,7 +6652,7 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://bu6789.com/news.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bu6789.com/en-news.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bu6789.com/news.html"/>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
