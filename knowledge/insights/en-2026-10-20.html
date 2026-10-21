@@ -64,6 +64,38 @@
         "@type": "Answer",
         "text": "Sealed sample as the only standard, per-line ICC curves to lock drift, standardized fixing for batch ΔE<1.5."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is random fixing dangerous?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Varying steaming/washing shifts color later; right at ship, off at receipt, hard to trace."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How to keep reorders same color?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Archived seal + per-line ICC curves, consistent across machines, not by memory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What to write in the contract?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ΔE<1.5 acceptance, reorder-consistency clause, seal archive period."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do plain colors need sealing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Low-fidelity can simplify but sealing is still advised as backup."
+      }
     }
   ]
 }
@@ -126,23 +158,29 @@
 
 <section>
   <div class="container">
-<p>Bulk differing from the approved sample is the top complaint in printing OEM, but the root cause almost always falls into two types: no sealed sample, or uncontrolled machine drift.</p>
+<p>Bulk differing from the approved sample is the top complaint in printing OEM, but the root cause almost always falls into two types: no sealed sample, or uncontrolled machine drift. Many disputes are avoidable — pin the standard at the very start.</p>
 <h2>Root-cause breakdown</h2>
 <ul>
-<li>No seal: no single reference, bulk judged by eye, subjective and drifting</li>
-<li>Machine drift: different machines/batches with inconsistent curves output different colors</li>
-<li>Random fixing: varying steaming/washing shifts color later</li>
+<li><strong>No seal</strong>: no single reference, bulk judged by eye, subjective and drifting, he-said-she-said in disputes.</li>
+<li><strong>Machine drift</strong>: different machines/batches with inconsistent curves output different colors, obvious on cross-line reorders.</li>
+<li><strong>Random fixing</strong>: varying steaming/washing shifts color later; right at shipment, off in the customer's hand.</li>
 </ul>
 <h2>Three-step fix</h2>
-<p>1. Seal the sample: first piece or supplied sample sealed as the only bulk standard</p>
-<p>2. Curve lock: independent ICC curve per line for cross-machine consistency</p>
-<p>3. Standardized fixing: fixed steaming/washing/finishing, no color shift</p>
+<p>1. <strong>Seal the sample</strong>: first piece or supplied sample sealed as the only bulk standard, reference when disputed.</p>
+<p>2. <strong>Curve lock</strong>: independent ICC curve per line for cross-machine consistency, reorders not by memory.</p>
+<p>3. <strong>Standardized fixing</strong>: fixed steaming/washing/finishing, no color shift, shipment equals receipt.</p>
 <p>Done well, batch ΔE stays under 1.5 — sample equals bulk.</p>
+<h2>Data and capacity</h2>
+<p>Stability relies on system, not individuals: 8 inks at 16.7M colors base, ICC curves quantify and lock device differences; six widths 200-320CM full-width direct printing avoids micro-seam color differences; grade 4+ fastness resists sun and washing.</p>
+<h2>Practical notes</h2>
+<p>Write ΔE<1.5 acceptance and reorder-consistency clauses; archive the sealed sample through project end; first-piece check against the seal, stop the line on mismatch. Move from people-control to system-control.</p>
+<h2>Fit and limits</h2>
+<p>Seal + ICC are critical for high-fidelity curtains, wallcoverings, home textiles and projects; plain colors may simplify but sealing is still advised.</p>
 <h2>Related Reading</h2>
 <ul>
-<li><a href="/knowledge/index-en.html" target="_blank" rel="noopener">Sampling-to-Bulk Consistency</a></li>
 <li><a href="https://bu6789.com/knowledge/en-color-management.html" target="_blank" rel="noopener">Color Management</a></li>
-<li><a href="https://bu6789.com/knowledge/en-how-to-choose-printing-factory.html" target="_blank" rel="noopener">How to Choose a Factory</a></li>
+<li><a href="https://bu6789.com/knowledge/en-curtain-digital-printing.html" target="_blank" rel="noopener">Curtain Digital Printing</a></li>
+<li><a href="https://bu6789.com/knowledge/en-industry-whitepaper-2026.html" target="_blank" rel="noopener">2026 Industry Whitepaper</a></li>
 </ul>
 <p>Summary: color complaints root in no seal or drift; fix with sealed-sample baseline, ICC curves and standard fixing for ΔE<1.5.</p>
 <p>发布日期：2026-10-20</p>
@@ -160,7 +198,16 @@
   </div>
 </section>
 
-<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list"><details><summary>Most common root cause of color complaints?</summary><div class="faq-ans"><p>No sealed sample (no single standard) or uncontrolled machine drift.</p></div></details><details><summary>How to control color difference?</summary><div class="faq-ans"><p>Sealed sample as the only standard, per-line ICC curves to lock drift, standardized fixing for batch ΔE<1.5.</p></div></details></div></div></section>
+<section><div class="container"><h2>Selection Checklist</h2><p>Check each item before ordering to reduce rework and color drift:</p><ul class="kb-checklist"><li>Seal sample immediately after approval as the only bulk standard</li>
+<li>Require per-line independent ICC curves to lock drift</li>
+<li>Fix steaming/washing/finishing params to stop later shift</li>
+<li>Contract ΔE<1.5 acceptance and reorder-consistency</li>
+<li>Archive the seal through project/order end</li>
+<li>First-piece check vs seal; stop line on mismatch</li>
+<li>Confirm grade 4+ fastness, sun/wash resistant</li>
+<li>Shift color control from people to system</li></ul></div></section><section><div class="container"><h2>Common Myths</h2><p>Several misconceptions circulate in the industry; clarifying them helps rational selection:</p><div class="kb-myth"><p class="kb-myth-q"><b>误区：</b>A master's eye is enough</p><p class="kb-myth-a"><b>正解：</b>Subjective and drifting; seal + ICC pin the standard.</p></div><div class="kb-myth"><p class="kb-myth-q"><b>误区：</b>Same factory, same device, no drift</p><p class="kb-myth-a"><b>正解：</b>Batch curves can still drift; ICC must quantify and lock.</p></div><div class="kb-myth"><p class="kb-myth-q"><b>误区：</b>Right at shipment means fine</p><p class="kb-myth-a"><b>正解：</b>Unfixed params shift later; off at customer, untraceable.</p></div></div></section>
+
+<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list"><details><summary>Most common root cause of color complaints?</summary><div class="faq-ans"><p>No sealed sample (no single standard) or uncontrolled machine drift.</p></div></details><details><summary>How to control color difference?</summary><div class="faq-ans"><p>Sealed sample as the only standard, per-line ICC curves to lock drift, standardized fixing for batch ΔE<1.5.</p></div></details><details><summary>Why is random fixing dangerous?</summary><div class="faq-ans"><p>Varying steaming/washing shifts color later; right at ship, off at receipt, hard to trace.</p></div></details><details><summary>How to keep reorders same color?</summary><div class="faq-ans"><p>Archived seal + per-line ICC curves, consistent across machines, not by memory.</p></div></details><details><summary>What to write in the contract?</summary><div class="faq-ans"><p>ΔE<1.5 acceptance, reorder-consistency clause, seal archive period.</p></div></details><details><summary>Do plain colors need sealing?</summary><div class="faq-ans"><p>Low-fidelity can simplify but sealing is still advised as backup.</p></div></details></div></div></section>
 
 <div class="container">
   <div class="cta-box">
