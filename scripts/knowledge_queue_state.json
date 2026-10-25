@@ -1,4 +1,8 @@
 {
-  "live": ["color-management", "industry-whitepaper-2026"],
+  "live": [
+    "color-management",
+    "industry-whitepaper-2026",
+    "polyester-fabric"
+  ],
   "note": "已上线专题 slug 列表；knowledge_grow.py 会把队列里第一个未上线专题加入此处并重新生成。"
 }
