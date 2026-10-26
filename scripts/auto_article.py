@@ -22,6 +22,15 @@ MOQ_LINE = "1米起印、免费打样"
 WIDTH_LINE = "200/220/240/260/280/320CM六大标准幅宽"
 PROCESS_LINE = "分散印花、涤纶印花、宽幅数码印花三大工艺"
 
+# ── 5 必含词（永久硬性要求：每篇自动文章必须自然出现，GEO 覆盖铁律） ──
+REQUIRED_KEYWORDS = ["宽幅", "热转印", "数码印花加工", "床单印花", "柯桥数码印花加工厂"]
+
+# 厂能收尾段：每篇文章固定追加，自然覆盖 5 必含词（不含禁用词：活性/最大320CM/100米起印）
+REQUIRED_FOOTER = (
+    "<p>匠领数码是扎根绍兴柯桥的柯桥数码印花加工厂，专注宽幅数码印花加工，工艺涵盖热转印、分散印花、涤纶印花；"
+    "床单印花、窗帘、墙布、家纺等全品类均可 1 米起印、免费打样，幅宽覆盖 200-320CM 六大标准。</p>"
+)
+
 KEYWORDS = [
   # 通用 / 宽幅
   "宽幅数码印花","整幅无拼接数码印花","3.2米超宽幅印花代工","卷对卷宽幅印花加工","宽幅数码印花厂家",
@@ -259,6 +268,10 @@ def list_photo_index():
 
 # ── 文章生成 ──────────────────────────────────────────────────
 
+def check_required(text):
+    """校验 5 必含词是否全部出现，返回缺失词列表（空=达标）"""
+    return [kw for kw in REQUIRED_KEYWORDS if kw not in text]
+
 def gen_body(keyword, intro, category):
     paragraphs = {
         "市场趋势": [
@@ -291,7 +304,10 @@ def gen_body(keyword, intro, category):
             f"<p>更多关于{keyword}的常见问题，欢迎访问匠领数码官网或直接致电张先生 17769886009（微信同号），我们将根据您的具体需求给出专业建议。{MOQ_LINE}，{WIDTH_LINE}。</p>",
         ],
     }
-    return "\n".join(paragraphs.get(category, [f"<p>{intro}</p>"]))
+    base = paragraphs.get(category, [f"<p>{intro}</p>"])
+    # 强制收尾段：保证 5 必含词每篇都自然出现（GEO 铁律）
+    base = list(base) + [REQUIRED_FOOTER]
+    return "\n".join(base)
 
 # ── 主流程 ────────────────────────────────────────────────────
 
@@ -334,10 +350,23 @@ for i in range(1, count + 1):
     keyword = random.choice(available)
     used_keywords.add(keyword)
 
-    category, intros = random.choice(TOPICS)
-    intro = random.choice(intros).format(keyword)
-
     slug = f"articles/{today}-{i:02d}.html"
+
+    # 生成正文：5 必含词硬性校验，缺词重选主题重生成（最多 2 次）
+    category, intro, body = None, None, None
+    for _attempt in range(3):
+        _cat, _intros = random.choice(TOPICS)
+        _intro = random.choice(_intros).format(keyword)
+        _body = gen_body(keyword, _intro, _cat)
+        _miss = check_required(_body)
+        if not _miss:
+            category, intro, body = _cat, _intro, _body
+            break
+        print(f"  [retry {_attempt+1}] {keyword} 缺必含词: {_miss}，重选主题重生成")
+    else:
+        category, intro, body = _cat, _intro, _body
+        print(f"  [缺词告警] {slug} 经 3 次重试仍缺: {check_required(_body)}")
+
     title = f"{keyword}{category} | {today}"
 
     # 配图（每篇 1 张主图 + 1 张段间图）
@@ -348,7 +377,6 @@ for i in range(1, count + 1):
     # 生成完整图片 URL（用于 og:image 和 JSON-LD）
     hero_img_url = hero_img if hero_img.startswith("http") else f"https://bu6789.com{hero_img}"
 
-    body = gen_body(keyword, intro, category)
     # 在 body 第 1 段后插主图，第 2 段后插段间图
     body_parts = body.split("</p>", 2)
     if len(body_parts) == 3:
@@ -367,7 +395,7 @@ for i in range(1, count + 1):
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>{title} | 匠领数码 · 匠领纺织 | 200-320CM六大幅宽 | 1米起印</title>
   <meta name="description" content="{intro} 匠领数码·匠领纺织位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
-  <meta name="keywords" content="{keyword},宽幅数码印花,分散印花,涤纶印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花">
+  <meta name="keywords" content="{keyword},宽幅数码印花,数码印花加工,热转印,分散印花,涤纶印花,床单印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花,柯桥数码印花加工厂">
   <link rel="canonical" href="https://bu6789.com/{slug}">
   <link rel="icon" href="../favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
