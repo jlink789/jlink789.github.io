@@ -720,3 +720,23 @@ try:
     QUEUE.append(_wp_mod.TOPIC)
 except Exception as _e:
     print("提示：行业白皮书专题未加载：", _e)
+
+# 2026-10-31 主营业务长尾词专题（18 篇，中英双语，覆盖窗帘/墙布/家纺×地域/工艺/幅宽/场景）
+try:
+    import importlib.util as _ilu_lt
+    from pathlib import Path as _P_lt
+    _longtail_mods = [
+        "kb_keqiao-curtain-printing", "kb_heat-transfer-curtain-printing", "kb_polyester-curtain-printing",
+        "kb_320cm-curtain-printing", "kb_seamless-curtain-printing", "kb_blackout-curtain-printing",
+        "kb_hotel-curtain-printing", "kb_chenille-curtain-printing",
+        "kb_keqiao-wallcovering-printing", "kb_direct-wallcovering-printing", "kb_ultra-wide-wallcovering-printing", "kb_mural-wallcovering-printing",
+        "kb_keqiao-bedding-printing", "kb_bedding-set-printing", "kb_320cm-bedding-printing", "kb_sublimation-bedding-printing",
+        "kb_curtain-printing-factory", "kb_small-batch-curtain-printing",
+    ]
+    for _nm in _longtail_mods:
+        _sp = _ilu_lt.spec_from_file_location(_nm, str(_P_lt(__file__).parent / (_nm + ".py")))
+        _md = _ilu_lt.module_from_spec(_sp)
+        _sp.loader.exec_module(_md)
+        QUEUE.append(_md.TOPIC)
+except Exception as _e_lt:
+    print("提示：长尾词专题未加载：", _e_lt)

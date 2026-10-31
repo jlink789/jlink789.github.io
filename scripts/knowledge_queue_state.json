@@ -2,7 +2,31 @@
   "live": [
     "color-management",
     "industry-whitepaper-2026",
-    "polyester-fabric"
+    "polyester-fabric",
+    "curtain-oem",
+    "wallcovering-seamless",
+    "home-textile-fabric",
+    "export-quality",
+    "batch-consistency",
+    "keqiao-sourcing",
+    "keqiao-curtain-printing",
+    "heat-transfer-curtain-printing",
+    "polyester-curtain-printing",
+    "320cm-curtain-printing",
+    "seamless-curtain-printing",
+    "blackout-curtain-printing",
+    "hotel-curtain-printing",
+    "chenille-curtain-printing",
+    "keqiao-wallcovering-printing",
+    "direct-wallcovering-printing",
+    "ultra-wide-wallcovering-printing",
+    "mural-wallcovering-printing",
+    "keqiao-bedding-printing",
+    "bedding-set-printing",
+    "320cm-bedding-printing",
+    "sublimation-bedding-printing",
+    "curtain-printing-factory",
+    "small-batch-curtain-printing"
   ],
   "note": "已上线专题 slug 列表；knowledge_grow.py 会把队列里第一个未上线专题加入此处并重新生成。"
 }
