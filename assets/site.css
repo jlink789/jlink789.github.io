@@ -411,6 +411,27 @@ footer a:hover{text-decoration:underline}
   margin:0 0 10px;border:0;padding:0;font-weight:800;letter-spacing:-.01em
 }
 .company-block .cb-sub{margin:0 0 22px;color:var(--muted);font-size:.94rem}
+/* 问答式收尾：Q/A 卡片（承接当篇选题 → 能力与匹配度） */
+.company-block .cb-qa{margin:0 0 30px;display:grid;gap:14px}
+.company-block .cb-qa-item{
+  padding:18px 22px;background:#fff;border:1px solid var(--line);
+  border-left:3px solid var(--brand);border-radius:12px
+}
+.company-block .cb-q{
+  display:flex;gap:10px;align-items:flex-start;
+  margin:0 0 10px;font-size:1rem;font-weight:800;color:var(--ink);line-height:1.65
+}
+.company-block .cb-a{
+  display:flex;gap:10px;align-items:flex-start;
+  margin:0;font-size:.96rem;line-height:1.9;color:var(--ink-2)
+}
+.company-block .cb-qtag,.company-block .cb-atag{
+  flex:0 0 22px;width:22px;height:22px;border-radius:50%;margin-top:3px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:800;line-height:1
+}
+.company-block .cb-qtag{background:var(--brand);color:#fff}
+.company-block .cb-atag{background:var(--brand-soft);color:var(--brand-dark)}
 .company-block .cb-intro{
   margin:0 0 30px;font-size:1rem;line-height:1.95;color:var(--ink-2);max-width:920px
 }
@@ -461,7 +482,8 @@ footer a:hover{text-decoration:underline}
 .company-block .cb-links a{color:var(--brand-dark);font-weight:600;margin:0 4px}
 .company-block .cb-links a:hover{color:var(--brand)}
 @media(max-width:820px){
-  .company-block{padding:46px 0 52px}
+  .company-block{padding:34px 0 0}
+  .company-block .cb-qa-item{padding:16px 16px}
   .company-block .cb-list{grid-template-columns:1fr}
   .company-block .cb-contact{grid-template-columns:1fr}
 }

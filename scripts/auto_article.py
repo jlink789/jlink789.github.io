@@ -459,6 +459,13 @@ for i in range(1, count + 1):
     .company-block .cb-kicker{{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:#8a6326;background:#f3e9d6;padding:5px 12px;border-radius:999px;margin:0 0 14px}}
     .company-block h2{{color:#14171c;font-size:1.25em;line-height:1.4;margin:0 0 8px;border:0;padding:0}}
     .company-block .cb-sub{{color:#6b7178;font-size:.88em;margin:0 0 18px}}
+    .company-block .cb-qa{{margin:0 0 24px}}
+    .company-block .cb-qa-item{{padding:14px 16px;background:#fff;border:1px solid #e7e1d6;border-left:3px solid #b8893b;border-radius:10px;margin:0 0 11px}}
+    .company-block .cb-q{{display:flex;gap:9px;align-items:flex-start;margin:0 0 8px;font-size:.96em;font-weight:800;color:#14171c;line-height:1.65}}
+    .company-block .cb-a{{display:flex;gap:9px;align-items:flex-start;margin:0;font-size:.92em;line-height:1.85;color:#2a2f36}}
+    .company-block .cb-qtag,.company-block .cb-atag{{flex:0 0 20px;width:20px;height:20px;border-radius:50%;margin-top:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.7em;font-weight:800;line-height:1}}
+    .company-block .cb-qtag{{background:#b8893b;color:#fff}}
+    .company-block .cb-atag{{background:#f3e9d6;color:#8a6326}}
     .company-block .cb-intro{{font-size:.96em;line-height:1.95;color:#2a2f36;margin:0 0 22px}}
     .company-block .cb-h3{{display:flex;align-items:center;gap:9px;font-size:.96em;font-weight:800;color:#14171c;margin:0 0 14px}}
     .company-block .cb-h3::before{{content:"";width:4px;height:17px;border-radius:2px;background:#b8893b}}
@@ -483,7 +490,7 @@ for i in range(1, count + 1):
   <h1>{title}</h1>
   <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 · 匠领纺织 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
 {body}
-{company_block("zh")}
+{company_block("zh", {"slug": slug, "h1": title, "keywords": keyword, "meta": intro})}
   <a class="back" href="/">← 返回首页</a>
   <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 5-7天交货 | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></footer>
 <!-- 百度+360自动推送 -->

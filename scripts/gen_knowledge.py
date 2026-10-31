@@ -23,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(Path(__file__).parent))
-from company_block import company_block, company_jsonld  # noqa: E402
+from company_block import company_block, company_jsonld, qa_pairs  # noqa: E402
 KB = ROOT / "knowledge"
 KB.mkdir(exist_ok=True)
 TODAY = "2026-10-17"
@@ -188,6 +188,13 @@ def breadcrumb_jsonld(trail):
 
 def build_page(lang, topic, is_hub=False):
     data = topic["zh"] if lang == "zh" else topic["en"]
+    # 收尾问答的主题上下文：slug + 当篇标题/关键词/摘要 → 决定问答组（结合当篇内容）
+    ctx = {
+        "slug": topic.get("slug", ""),
+        "h1": data.get("h1", ""),
+        "keywords": data.get("keywords", ""),
+        "meta": data.get("meta", ""),
+    }
     url = SITE + (topic["url_zh"] if lang == "zh" else topic["url_en"])
     zh_url = SITE + topic["url_zh"]
     en_url = SITE + topic["url_en"]
@@ -219,11 +226,17 @@ def build_page(lang, topic, is_hub=False):
         })
     else:
         json_blocks.append(article_jsonld(lang, data, url))
-        if data.get("faq"):
-            json_blocks.append(faq_jsonld(data["faq"]))
+    # FAQPage 同时覆盖「页面常见问题」与「收尾问答」（两者都在页面上可见）
+    _qa = list(data.get("faq") or []) + list(qa_pairs(lang, ctx)[1])
+    if _qa:
+        json_blocks.append(faq_jsonld(_qa))
     json_blocks.append(breadcrumb_jsonld(breadcrumb))
     json_blocks.append(json.loads(company_jsonld()))
-    head_json = "\n  ".join(json.dumps(b, ensure_ascii=False, indent=2) for b in json_blocks)
+    # 每个结构化数据块独立一个 <script>：多对象拼在一段里是非法 JSON，会被搜索引擎整体忽略
+    head_json = "\n".join(
+        '<script type="application/ld+json">\n%s\n</script>'
+        % json.dumps(b, ensure_ascii=False, indent=2)
+        for b in json_blocks)
 
     breadcrumb_html = '<div class="breadcrumb">'
     for i, (n, u) in enumerate(breadcrumb):
@@ -251,9 +264,7 @@ def build_page(lang, topic, is_hub=False):
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="匠领数码 · 匠领纺织">
   <link rel="icon" href="../favicon.ico">
-  <script type="application/ld+json">
   {head_json}
-  </script>
 </head>
 <body>
 {nav_html(lang, topic)}
@@ -268,8 +279,8 @@ def build_page(lang, topic, is_hub=False):
 <section>
   <div class="container">
 {body}
+{company_block(lang, ctx)}
 {faq_html}
-{company_block(lang)}
   </div>
 </section>
 
@@ -1354,6 +1365,7 @@ def hub_data(lang):
 
 def build_hub(lang):
     data = hub_data(lang)
+    ctx = {}  # hub 是合集页，收尾用通用问答组
     url = SITE + ("/knowledge/index.html" if lang == "zh" else "/knowledge/index-en.html")
     zh_url = SITE + "/knowledge/index.html"
     en_url = SITE + "/knowledge/index-en.html"
@@ -1377,9 +1389,14 @@ def build_hub(lang):
     json_blocks = [
         {"@context": "https://schema.org", "@type": "WebPage", "name": data["h1"],
          "description": data["meta"], "url": url, "inLanguage": "zh-CN" if lang=="zh" else "en"},
+        faq_jsonld(list(data["faq"]) + list(qa_pairs(lang, ctx)[1])),
         breadcrumb_jsonld(breadcrumb),
     ]
-    head_json = "\n  ".join(json.dumps(b, ensure_ascii=False, indent=2) for b in json_blocks)
+    # 每个结构化数据块独立一个 <script>：多对象拼在一段里是非法 JSON，会被搜索引擎整体忽略
+    head_json = "\n".join(
+        '<script type="application/ld+json">\n%s\n</script>'
+        % json.dumps(b, ensure_ascii=False, indent=2)
+        for b in json_blocks)
     html = f"""<!DOCTYPE html>
 <html lang="{('zh-CN' if lang=='zh' else 'en')}">
 <head>
@@ -1398,9 +1415,7 @@ def build_hub(lang):
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="匠领数码 · 匠领纺织">
   <link rel="icon" href="../favicon.ico">
-  <script type="application/ld+json">
   {head_json}
-  </script>
 </head>
 <body>
 {nav_html(lang, topic)}
@@ -1415,8 +1430,8 @@ def build_hub(lang):
 <section>
   <div class="container">
 {body}
+{company_block(lang, ctx)}
 {faq_html}
-{company_block(lang)}
   </div>
 </section>
 

@@ -25,6 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import gen_knowledge as G
+from company_block import company_block, qa_pairs
 from knowledge_insights_pool import INSIGHTS
 
 SITE = G.SITE
@@ -139,6 +140,13 @@ def build_one(lang, run_date=None):
     date_str = rd.isoformat()
     item = INSIGHTS[(rd - EPOCH).days % len(INSIGHTS)]
     data = item[lang]
+    # 收尾问答的主题上下文：快报选题 slug + 当篇标题/关键词/摘要
+    ctx = {
+        "slug": item.get("slug", ""),
+        "h1": data.get("h1", ""),
+        "keywords": data.get("keywords", ""),
+        "meta": data.get("meta", ""),
+    }
     url_zh = f"/knowledge/insights/{date_str}.html"
     url_en = f"/knowledge/insights/en-{date_str}.html"
     url = SITE + (url_zh if lang == "zh" else url_en)
@@ -152,8 +160,9 @@ def build_one(lang, run_date=None):
     body = G.md_to_html(data["md"] + f"\n\n发布日期：{date_str}" + (G.EN_GLANCE if lang == "en" else ZH_GLANCE))
     body = fix_kb_links(body, lang)
     faq_html = ""
+    _faq_t = "常见问题" if lang == "zh" else "FAQ"
     if data.get("faq"):
-        faq_html = '<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list">'
+        faq_html = f'<section id="faq"><div class="container"><h2>{_faq_t}</h2><div class="faq-list">'
         for q, a in data["faq"]:
             faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
         faq_html += "</div></div></section>"
@@ -187,10 +196,14 @@ def build_one(lang, run_date=None):
             "keywords": data["keywords"],
         },
     ]
-    if data.get("faq"):
-        json_blocks.append(G.faq_jsonld(data["faq"]))
+    _qaf = list(data.get("faq") or []) + list(qa_pairs(lang, ctx)[1])
+    if _qaf:
+        json_blocks.append(G.faq_jsonld(_qaf))
     json_blocks.append(G.breadcrumb_jsonld(trail))
-    head_json = "\n  ".join(json.dumps(b, ensure_ascii=False, indent=2) for b in json_blocks)
+    head_json = "\n".join(
+        '<script type="application/ld+json">\n%s\n</script>'
+        % json.dumps(b, ensure_ascii=False, indent=2)
+        for b in json_blocks)
 
     topic = {"url_zh": url_zh, "url_en": url_en}
     html = f"""<!DOCTYPE html>
@@ -211,9 +224,7 @@ def build_one(lang, run_date=None):
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="匠领数码 · 匠领纺织">
   <link rel="icon" href="/favicon.ico">
-  <script type="application/ld+json">
   {head_json}
-  </script>
 </head>
 <body>
 {G.nav_html(lang, topic)}
@@ -233,6 +244,12 @@ def build_one(lang, run_date=None):
 </section>
 
 {extra_html}
+
+<section>
+  <div class="container">
+{company_block(lang, ctx)}
+  </div>
+</section>
 
 {faq_html}
 
