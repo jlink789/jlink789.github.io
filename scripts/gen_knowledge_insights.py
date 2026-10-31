@@ -164,7 +164,7 @@ def build_one(lang, run_date=None):
     if data.get("faq"):
         faq_html = f'<section id="faq"><div class="container"><h2>{_faq_t}</h2><div class="faq-list">'
         for q, a in data["faq"]:
-            faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
+            faq_html += f'<div class="faq-item"><p class="faq-q">{q}</p><p class="faq-a">{a}</p></div>'
         faq_html += "</div></div></section>"
 
     extra_html = render_extra(data, lang)

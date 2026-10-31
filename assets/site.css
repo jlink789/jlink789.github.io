@@ -235,6 +235,15 @@ nav,.nav{
 .faq-list summary,.faq-q{cursor:pointer;font-weight:700;font-size:1.02rem;padding:16px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
 .faq-list summary::-webkit-details-marker{display:none}
 .faq-list summary::after{content:"+";color:var(--brand);font-size:1.4rem;font-weight:400}
+/* 展开式 FAQ（2026-10-31 老板定：不再折叠收起，Q/A 直接铺开，利于 AI 引擎抓取引用） */
+.faq-list .faq-item{padding:2px 22px 4px}
+.faq-list .faq-q{cursor:default;justify-content:flex-start;gap:10px;padding:17px 0 8px}
+.faq-list .faq-q::before{
+  content:"Q";flex:0 0 24px;width:24px;height:24px;border-radius:50%;margin-top:1px;
+  background:var(--brand);color:#fff;font-size:.78rem;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;line-height:1
+}
+.faq-list .faq-a{padding:0 0 20px 34px}
 /* 知识库专题页：FAQ 作为正文内的区块（不再是页面级独立 section，2026-10-31） */
 #faq.kb-faq{background:transparent;margin:46px 0 0;padding:0}
 .faq-list details[open] summary::after{content:"−"}

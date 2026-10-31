@@ -209,7 +209,7 @@ def build_page(lang, topic, is_hub=False):
         _faq_t = "常见问题" if lang == "zh" else "FAQ"
         faq_html = f'<div class="kb-faq" id="faq"><h2>{_faq_t}</h2><div class="faq-list">'
         for q, a in data["faq"]:
-            faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
+            faq_html += f'<div class="faq-item"><p class="faq-q">{q}</p><p class="faq-a">{a}</p></div>'
         faq_html += "</div></div>"
 
     if is_hub:
@@ -1378,7 +1378,7 @@ def build_hub(lang):
     _faq_t = "常见问题" if lang == "zh" else "FAQ"
     faq_html = f'<div class="kb-faq" id="faq"><h2>{_faq_t}</h2><div class="faq-list">'
     for q, a in data["faq"]:
-        faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
+        faq_html += f'<div class="faq-item"><p class="faq-q">{q}</p><p class="faq-a">{a}</p></div>'
     faq_html += "</div></div>"
     breadcrumb = [("首页", SITE + "/"), ("知识库", url)]
     breadcrumb_html = '<div class="breadcrumb">'
