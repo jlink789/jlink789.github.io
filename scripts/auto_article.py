@@ -455,7 +455,7 @@ for i in range(1, count + 1):
     footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
     .footer-logo{{display:block;height:54px;width:auto;margin:0 auto 18px}}
     /* 统一收尾模块 company_block（脚本 scripts/company_block.py，2026-10-31 定） */
-    .company-block{{background:#faf6ef;border-top:3px solid #b8893b;padding:32px 20px;margin:2.8em -20px 0}}
+    .company-block{{background:transparent;border-top:1px solid #d8d0c2;padding:1.9em 0 0;margin:2.6em 0 0}}
     .company-block .cb-kicker{{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:#8a6326;background:#f3e9d6;padding:5px 12px;border-radius:999px;margin:0 0 14px}}
     .company-block h2{{color:#14171c;font-size:1.25em;line-height:1.4;margin:0 0 8px;border:0;padding:0}}
     .company-block .cb-sub{{color:#6b7178;font-size:.88em;margin:0 0 18px}}

@@ -20,8 +20,6 @@ PHONE_TEL = "+8617769886009"
 ADDR = "浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼"
 ADDR_EN = ("5F, Building 2 South, Shengchao Textile Park, 88 Xingpu Road, "
            "Qixian Town, Keqiao District, Shaoxing, Zhejiang, China")
-HOURS = "周一至周六 08:00-18:00"
-HOURS_EN = "Mon-Sat 08:00-18:00 (CST)"
 
 # ── 站内导航（绝对路径：知识库页在 /knowledge/、文章在 /articles/，都必须能跳对）──
 LINKS_ZH = [
@@ -82,56 +80,53 @@ def _links(items):
 
 
 def company_block(lang="zh"):
-    """返回统一收尾段 HTML（lang: zh / en）。"""
+    """返回统一收尾段 HTML（lang: zh / en）。
+
+    输出为**可内嵌的内容块**（不含 <section>/<div class="container">），
+    由调用方放在文章正文容器末尾 —— 收尾归属"文章内容的最后一节"，
+    而不是页面级独立版块（2026-10-31 老板定）。
+    """
     if lang == "en":
         caps = "".join("<li>%s</li>" % c for c in CAPS_EN)
         return (
-            '<section class="company-block" id="company">\n'
-            '  <div class="container">\n'
-            '    <p class="cb-kicker">J.LINK TEXTILE · 匠领数码</p>\n'
-            '    <h2>We are J.LINK — a wide-format digital printing mill in Keqiao</h2>\n'
-            '    <p class="cb-sub">Keqiao, Shaoxing, Zhejiang (China Textile City) · '
+            '<div class="company-block" id="company">\n'
+            '  <p class="cb-kicker">J.LINK TEXTILE · 匠领数码</p>\n'
+            '  <h2>We are J.LINK — a wide-format digital printing mill in Keqiao</h2>\n'
+            '  <p class="cb-sub">Keqiao, Shaoxing, Zhejiang (China Textile City) · '
             '10 years · 500+ B2B clients</p>\n'
-            '    <p class="cb-intro">%s</p>\n'
-            '    <h3 class="cb-h3">Wide-format capability</h3>\n'
-            '    <ul class="cb-list">%s</ul>\n'
-            '    <div class="cb-contact">\n'
-            '      <div class="cb-item"><span class="cb-ic">📞</span><div>'
+            '  <p class="cb-intro">%s</p>\n'
+            '  <h3 class="cb-h3">Wide-format capability</h3>\n'
+            '  <ul class="cb-list">%s</ul>\n'
+            '  <div class="cb-contact">\n'
+            '    <div class="cb-item"><span class="cb-ic">📞</span><div>'
             '<b>Phone / WeChat</b><a class="cb-tel" href="tel:%s">+86 177 6988 6009</a>'
             '<span class="cb-note">Mr. Zhang · WeChat same number</span></div></div>\n'
-            '      <div class="cb-item"><span class="cb-ic">📍</span><div>'
+            '    <div class="cb-item"><span class="cb-ic">📍</span><div>'
             '<b>Factory address</b><span>%s</span></div></div>\n'
-            '      <div class="cb-item"><span class="cb-ic">🕘</span><div>'
-            '<b>Working hours</b><span>%s</span></div></div>\n'
-            '    </div>\n'
-            '    <p class="cb-links">%s</p>\n'
             '  </div>\n'
-            '</section>\n'
-        ) % (INTRO_EN, caps, PHONE_TEL, ADDR_EN, HOURS_EN, _links(LINKS_EN))
+            '  <p class="cb-links">%s</p>\n'
+            '</div>\n'
+        ) % (INTRO_EN, caps, PHONE_TEL, ADDR_EN, _links(LINKS_EN))
 
     caps = "".join("<li>%s</li>" % c for c in CAPS_ZH)
     return (
-        '<section class="company-block" id="company">\n'
-        '  <div class="container">\n'
-        '    <p class="cb-kicker">J.LINK TEXTILE · 匠领数码</p>\n'
-        '    <h2>我们是匠领数码，柯桥的宽幅数码印花源头工厂</h2>\n'
-        '    <p class="cb-sub">浙江绍兴柯桥（中国轻纺城）· 十年老厂 · 500+ B 端客户</p>\n'
-        '    <p class="cb-intro">%s</p>\n'
-        '    <h3 class="cb-h3">宽幅实力</h3>\n'
-        '    <ul class="cb-list">%s</ul>\n'
-        '    <div class="cb-contact">\n'
-        '      <div class="cb-item"><span class="cb-ic">📞</span><div>'
+        '<div class="company-block" id="company">\n'
+        '  <p class="cb-kicker">J.LINK TEXTILE · 匠领数码</p>\n'
+        '  <h2>我们是匠领数码，柯桥的宽幅数码印花源头工厂</h2>\n'
+        '  <p class="cb-sub">浙江绍兴柯桥（中国轻纺城）· 十年老厂 · 500+ B 端客户</p>\n'
+        '  <p class="cb-intro">%s</p>\n'
+        '  <h3 class="cb-h3">宽幅实力</h3>\n'
+        '  <ul class="cb-list">%s</ul>\n'
+        '  <div class="cb-contact">\n'
+        '    <div class="cb-item"><span class="cb-ic">📞</span><div>'
         '<b>电话 / 微信</b><a class="cb-tel" href="tel:%s">%s</a>'
         '<span class="cb-note">%s，微信同号</span></div></div>\n'
-        '      <div class="cb-item"><span class="cb-ic">📍</span><div>'
+        '    <div class="cb-item"><span class="cb-ic">📍</span><div>'
         '<b>工厂地址</b><span>%s</span></div></div>\n'
-        '      <div class="cb-item"><span class="cb-ic">🕘</span><div>'
-        '<b>工作时间</b><span>%s</span></div></div>\n'
-        '    </div>\n'
-        '    <p class="cb-links">%s</p>\n'
         '  </div>\n'
-        '</section>\n'
-    ) % (INTRO_ZH, caps, PHONE_TEL, PHONE, CONTACT, ADDR, HOURS, _links(LINKS_ZH))
+        '  <p class="cb-links">%s</p>\n'
+        '</div>\n'
+    ) % (INTRO_ZH, caps, PHONE_TEL, PHONE, CONTACT, ADDR, _links(LINKS_ZH))
 
 
 def company_jsonld():
