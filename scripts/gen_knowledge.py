@@ -141,7 +141,7 @@ def footer_html() -> str:
         '<footer><img class="footer-logo" src="../assets/logo-white.png" '
         'alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">\n  <p>\n'
         '    <strong>匠领数码 · 匠领纺织 J.LINK TEXTILE</strong> · 浙江省绍兴市柯桥区 · 专注宽幅数码印花加工<br>\n'
-        '    联系人：张先生 17769886009 · 工作时间：周一至周六 08:00-18:00<br><br>\n'
+        '    联系人：张先生 17769886009（微信同号）<br><br>\n'
         '    &copy; 2026 匠领数码 版权所有 · 宽幅数码印花加工专家\n'
         '   | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></p>\n'
         '  <script src="/seo-push.js"></script>\n</footer>'
@@ -199,10 +199,11 @@ def build_page(lang, topic, is_hub=False):
     body = md_to_html(page_md(lang, data))
     faq_html = ""
     if data.get("faq"):
-        faq_html = '<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list">'
+        _faq_t = "常见问题" if lang == "zh" else "FAQ"
+        faq_html = f'<div class="kb-faq" id="faq"><h2>{_faq_t}</h2><div class="faq-list">'
         for q, a in data["faq"]:
             faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
-        faq_html += "</div></div></section>"
+        faq_html += "</div></div>"
 
     if is_hub:
         breadcrumb = [("首页", SITE + "/"), ("知识库", url)]
@@ -267,12 +268,10 @@ def build_page(lang, topic, is_hub=False):
 <section>
   <div class="container">
 {body}
+{faq_html}
+{company_block(lang)}
   </div>
 </section>
-
-{faq_html}
-
-{company_block(lang)}
 
 <div class="container">
   <div class="cta-box">
@@ -1217,7 +1216,7 @@ T.append({
       ("匠领数码在哪？", "浙江省绍兴市柯桥区中国轻纺城，成立于 2018 年，专注宽幅数码印花代工。"),
       ("柯桥工厂能接跨境订单吗？", "能。具备 Oeko-Tex、SGS 合作、国家纺织检测中心送检合格等资质，出口级环保合规。"),
       ("物流方便吗？", "距杭州萧山机场约 40 公里、宁波港约 120 公里，物流便利，可服务全国与跨境。"),
-      ("怎么联系匠领数码？", "联系人张先生，电话/微信 17769886009，工作时间周一至周六 08:00-18:00。"),
+      ("怎么联系匠领数码？", "联系人张先生，电话/微信 17769886009（微信同号）。"),
     ],
   },
   "en": {
@@ -1364,10 +1363,11 @@ def build_hub(lang):
         f'  <link rel="alternate" hreflang="x-default" href="{zh_url}">'
     )
     body = md_to_html(data["md"])
-    faq_html = '<section id="faq"><div class="container"><h2>常见问题</h2><div class="faq-list">'
+    _faq_t = "常见问题" if lang == "zh" else "FAQ"
+    faq_html = f'<div class="kb-faq" id="faq"><h2>{_faq_t}</h2><div class="faq-list">'
     for q, a in data["faq"]:
         faq_html += f'<details><summary>{q}</summary><div class="faq-ans"><p>{a}</p></div></details>'
-    faq_html += "</div></div></section>"
+    faq_html += "</div></div>"
     breadcrumb = [("首页", SITE + "/"), ("知识库", url)]
     breadcrumb_html = '<div class="breadcrumb">'
     for i, (n, u) in enumerate(breadcrumb):
@@ -1415,12 +1415,10 @@ def build_hub(lang):
 <section>
   <div class="container">
 {body}
+{faq_html}
+{company_block(lang)}
   </div>
 </section>
-
-{faq_html}
-
-{company_block(lang)}
 
 <div class="container">
   <div class="cta-box">

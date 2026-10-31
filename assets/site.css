@@ -235,6 +235,8 @@ nav,.nav{
 .faq-list summary,.faq-q{cursor:pointer;font-weight:700;font-size:1.02rem;padding:16px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
 .faq-list summary::-webkit-details-marker{display:none}
 .faq-list summary::after{content:"+";color:var(--brand);font-size:1.4rem;font-weight:400}
+/* 知识库专题页：FAQ 作为正文内的区块（不再是页面级独立 section，2026-10-31） */
+#faq.kb-faq{background:transparent;margin:46px 0 0;padding:0}
 .faq-list details[open] summary::after{content:"−"}
 .faq-ans,.faq-a{color:var(--muted);font-size:.94rem;padding:0 0 18px;margin:0;line-height:1.8}
 
@@ -391,12 +393,13 @@ footer a:hover{text-decoration:underline}
 
 /* ============================================================
    统一收尾模块 company_block（业务介绍 + 宽幅实力 + NAP 联系方式）
-   用途：知识库专题页 / 每日文章页 页面底部统一收尾（2026-10-31 定）
+   用途：作为「文章正文的最后一节」收尾，随正文容器宽度走，不做整页版块
+        （知识库专题页 / 每日文章页共用，2026-10-31 定）
    数据源：scripts/company_block.py
    ============================================================ */
 .company-block{
-  padding:60px 0 68px;background:var(--bg2);
-  border-top:3px solid var(--brand);
+  margin:56px 0 0;padding:36px 0 0;background:transparent;
+  border-top:1px solid var(--line-strong);
 }
 .company-block .cb-kicker{
   display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.22em;
@@ -404,7 +407,7 @@ footer a:hover{text-decoration:underline}
   padding:6px 14px;border-radius:999px;margin:0 0 16px;text-transform:uppercase
 }
 .company-block h2{
-  font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.4;color:var(--ink);
+  display:block;font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.4;color:var(--ink);
   margin:0 0 10px;border:0;padding:0;font-weight:800;letter-spacing:-.01em
 }
 .company-block .cb-sub{margin:0 0 22px;color:var(--muted);font-size:.94rem}
@@ -433,7 +436,7 @@ footer a:hover{text-decoration:underline}
   font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center
 }
 .company-block .cb-contact{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 24px
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:0 0 24px
 }
 .company-block .cb-item{
   display:flex;gap:12px;align-items:flex-start;
