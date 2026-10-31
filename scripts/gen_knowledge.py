@@ -22,6 +22,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).parent))
+from company_block import company_block, company_jsonld  # noqa: E402
 KB = ROOT / "knowledge"
 KB.mkdir(exist_ok=True)
 TODAY = "2026-10-17"
@@ -219,6 +221,7 @@ def build_page(lang, topic, is_hub=False):
         if data.get("faq"):
             json_blocks.append(faq_jsonld(data["faq"]))
     json_blocks.append(breadcrumb_jsonld(breadcrumb))
+    json_blocks.append(json.loads(company_jsonld()))
     head_json = "\n  ".join(json.dumps(b, ensure_ascii=False, indent=2) for b in json_blocks)
 
     breadcrumb_html = '<div class="breadcrumb">'
@@ -268,6 +271,8 @@ def build_page(lang, topic, is_hub=False):
 </section>
 
 {faq_html}
+
+{company_block(lang)}
 
 <div class="container">
   <div class="cta-box">
@@ -1414,6 +1419,8 @@ def build_hub(lang):
 </section>
 
 {faq_html}
+
+{company_block(lang)}
 
 <div class="container">
   <div class="cta-box">

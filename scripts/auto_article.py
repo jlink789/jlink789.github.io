@@ -7,9 +7,13 @@
 - 自动更新首页 NEWS 区块 + sitemap.xml
 """
 
-import os, re, random, hashlib, json, urllib.request, urllib.parse, argparse
+import os, re, random, hashlib, json, urllib.request, urllib.parse, argparse, sys
 from datetime import datetime, timedelta
 from pathlib import Path
+
+# 统一收尾模块（与知识库页共用同一份 NAP 口径，2026-10-31 定）
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from company_block import company_block  # noqa: E402
 
 # ── 匠领数码 · 内容生产规范（永久规则） ─────────────────────────
 # 幅宽：200CM / 220CM / 240CM / 260CM / 280CM / 320CM（六档全幅宽）
@@ -450,6 +454,25 @@ for i in range(1, count + 1):
     a.back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
     footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
     .footer-logo{{display:block;height:54px;width:auto;margin:0 auto 18px}}
+    /* 统一收尾模块 company_block（脚本 scripts/company_block.py，2026-10-31 定） */
+    .company-block{{background:#faf6ef;border-top:3px solid #b8893b;padding:32px 20px;margin:2.8em -20px 0}}
+    .company-block .cb-kicker{{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:#8a6326;background:#f3e9d6;padding:5px 12px;border-radius:999px;margin:0 0 14px}}
+    .company-block h2{{color:#14171c;font-size:1.25em;line-height:1.4;margin:0 0 8px;border:0;padding:0}}
+    .company-block .cb-sub{{color:#6b7178;font-size:.88em;margin:0 0 18px}}
+    .company-block .cb-intro{{font-size:.96em;line-height:1.95;color:#2a2f36;margin:0 0 22px}}
+    .company-block .cb-h3{{display:flex;align-items:center;gap:9px;font-size:.96em;font-weight:800;color:#14171c;margin:0 0 14px}}
+    .company-block .cb-h3::before{{content:"";width:4px;height:17px;border-radius:2px;background:#b8893b}}
+    .company-block .cb-list{{list-style:none;margin:0 0 24px;padding:0}}
+    .company-block .cb-list li{{position:relative;padding:12px 14px 12px 40px;background:#fff;border:1px solid #e7e1d6;border-radius:10px;font-size:.92em;line-height:1.7;color:#2a2f36;margin:0 0 9px}}
+    .company-block .cb-list li::before{{content:"✓";position:absolute;left:13px;top:13px;width:19px;height:19px;border-radius:50%;background:#b8893b;color:#fff;font-size:.75em;font-weight:700;display:flex;align-items:center;justify-content:center}}
+    .company-block .cb-contact{{margin:0 0 20px}}
+    .company-block .cb-item{{display:flex;gap:11px;align-items:flex-start;background:#14171c;border-radius:12px;padding:15px 16px;margin:0 0 10px}}
+    .company-block .cb-item b{{display:block;color:#e8c98a;font-size:.76em;font-weight:700;letter-spacing:.06em;margin:0 0 4px;line-height:1.5}}
+    .company-block .cb-item span,.company-block .cb-item div{{color:#f2ece2;font-size:.9em;line-height:1.65}}
+    .company-block .cb-item .cb-tel{{display:block;color:#fff;font-size:1.1em;font-weight:800;margin:0 0 2px}}
+    .company-block .cb-item .cb-note{{color:#b9b2a6;font-size:.8em;display:block;font-weight:400}}
+    .company-block .cb-links{{margin:0;padding-top:16px;border-top:1px solid #d8d0c2;font-size:.88em;color:#6b7178}}
+    .company-block .cb-links a{{color:#8a6326;font-weight:600;margin:0 3px}}
     @media (max-width:600px){{
       body{{padding:0 16px;font-size:16px}}
       h1{{font-size:1.4em}}
@@ -460,9 +483,9 @@ for i in range(1, count + 1):
   <h1>{title}</h1>
   <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 · 匠领纺织 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
 {body}
-  <p><strong>联系我们：</strong>如有 {keyword} 相关采购或代工需求，欢迎联系张先生 17769886009（微信同号），或访问 <a href="https://bu6789.com">www.bu6789.com</a> 了解更多。幅宽覆盖 200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。</p>
+{company_block("zh")}
   <a class="back" href="/">← 返回首页</a>
-  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号 | 1米起印 免费打样 5-7天交货 | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></footer>
+  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 5-7天交货 | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></footer>
 <!-- 百度+360自动推送 -->
 <script src="/seo-push.js"></script>
 </body>
