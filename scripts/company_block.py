@@ -76,6 +76,10 @@ INTRO_EN = (
     "contact from sample to bulk."
 )
 
+# 收尾固定主标题（老板 2026-11-01 定：以后所有新文章统一用这句开头）
+H2_ZH = "我们是匠领数码——柯桥宽门幅数码印花源头工厂"
+H2_EN = "We are J.LINK — a wide-width digital printing source factory in Keqiao"
+
 BRIDGE_ZH = "上面这些答案不是话术，而是我们每天在产线上做的事——"
 BRIDGE_EN = "These are not sales lines — they are what our line does every day. "
 
@@ -363,6 +367,7 @@ def company_block(lang="zh", topic=None):
             '  <h2>%s</h2>\n'
             '  <p class="cb-sub">Keqiao, Shaoxing, Zhejiang (China Textile City) · '
             '10 years · 500+ B2B clients</p>\n'
+            '  <h3 class="cb-h3 cb-h3-qa">%s</h3>\n'
             '%s\n'
             '  <p class="cb-intro">%s</p>\n'
             '  <h3 class="cb-h3">Wide-format capability</h3>\n'
@@ -376,7 +381,7 @@ def company_block(lang="zh", topic=None):
             '  </div>\n'
             '  <p class="cb-links">%s</p>\n'
             '</div>\n'
-        ) % (title, qa_html, BRIDGE_EN + INTRO_EN, caps, PHONE_TEL, ADDR_EN, _links(LINKS_EN))
+        ) % (H2_EN, title, qa_html, BRIDGE_EN + INTRO_EN, caps, PHONE_TEL, ADDR_EN, _links(LINKS_EN))
 
     caps = "".join("<li>%s</li>" % c for c in CAPS_ZH)
     return (
@@ -384,6 +389,7 @@ def company_block(lang="zh", topic=None):
         '  <p class="cb-kicker">J.LINK TEXTILE · 匠领数码</p>\n'
         '  <h2>%s</h2>\n'
         '  <p class="cb-sub">浙江绍兴柯桥（中国轻纺城）· 十年老厂 · 500+ B 端客户</p>\n'
+        '  <h3 class="cb-h3 cb-h3-qa">%s</h3>\n'
         '%s\n'
         '  <p class="cb-intro">%s</p>\n'
         '  <h3 class="cb-h3">宽幅实力</h3>\n'
@@ -397,7 +403,7 @@ def company_block(lang="zh", topic=None):
         '  </div>\n'
         '  <p class="cb-links">%s</p>\n'
         '</div>\n'
-    ) % (title, qa_html, BRIDGE_ZH + INTRO_ZH, caps, PHONE_TEL, PHONE, CONTACT, ADDR, _links(LINKS_ZH))
+    ) % (H2_ZH, title, qa_html, BRIDGE_ZH + INTRO_ZH, caps, PHONE_TEL, PHONE, CONTACT, ADDR, _links(LINKS_ZH))
 
 
 def company_jsonld():

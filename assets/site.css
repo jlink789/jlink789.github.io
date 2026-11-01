@@ -451,6 +451,8 @@ footer a:hover{text-decoration:underline}
 .company-block .cb-h3::before{
   content:"";width:4px;height:18px;border-radius:2px;background:var(--brand)
 }
+/* 问答小标题（h2 固定品牌句，这里放当篇品类的问句） */
+.company-block .cb-h3-qa{margin:2px 0 14px;font-size:.98rem;color:var(--ink-2)}
 .company-block .cb-list{
   list-style:none;margin:0 0 30px;padding:0;
   display:grid;grid-template-columns:1fr 1fr;gap:12px 22px
