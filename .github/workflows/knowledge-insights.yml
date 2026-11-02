@@ -42,6 +42,14 @@ jobs:
             echo "✅ 无变更，跳过提交"
           else
             git commit -m "每日知识快报 $(date +'%Y-%m-%d')"
-            git push
-            echo "✅ 已提交并推送"
+            # 并发推送兜底：远端若已前进（别人的提交先落地），把本次改动叠到最新 main 上再推
+            for i in 1 2 3; do
+              if git push; then echo "✅ 已提交并推送"; exit 0; fi
+              echo "push 失败，第 $i 次重试：对齐最新 main 后重新提交"
+              git fetch origin main
+              git reset --soft origin/main
+              git commit -m "每日知识快报 $(date +'%Y-%m-%d')" || true
+              sleep 5
+            done
+            echo "❌ 推送三次仍失败"; exit 1
           fi
