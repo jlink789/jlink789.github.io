@@ -7,8 +7,16 @@ name: Deploy to Aliyun (bu6789.com)
 on:
   push:
     branches: [main]
+  # 关键：自动发文/快报/知识库增长用的是 GITHUB_TOKEN 推送，这种推送不会再触发其它工作流，
+  # 所以额外用 workflow_run 在它们跑完后拉起部署，否则要等次日 10:30 兜底才上线。
+  workflow_run:
+    workflows:
+      - "自动采集 + AI 生成文章 + 配图 + 资讯中心更新"
+      - "每日知识快报生成（行业洞察）"
+      - "知识库增长（每周自动新增白皮书专题）"
+    types: [completed]
   schedule:
-    # UTC 02:30 = 北京 10:30，作为自动文章工作流(push 触发)失败时的每日兜底
+    # UTC 02:30 = 北京 10:30，作为上述通道都失败时的每日兜底
     - cron: '30 2 * * *'
   workflow_dispatch:
 
@@ -18,6 +26,8 @@ concurrency:
 
 jobs:
   deploy:
+    # workflow_run 触发时只在源工作流成功后才部署
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
