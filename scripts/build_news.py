@@ -95,6 +95,7 @@ ZH_NAV = '''<nav>
     <li><a href="applications.html">应用领域</a></li>
     <li><a href="/about.html">关于我们</a></li>
     <li><a href="/news.html">资讯中心</a></li>
+    <li><a href="/knowledge/index.html">知识库</a></li>
     <li><a href="/#faq">常见问题</a></li>
         <li><a href="https://app.bu6789.com:8443/#/books" target="_blank" rel="noopener" class="nav-app">电子画册</a></li>
         <li><a href="https://app.bu6789.com:8443" target="_blank" rel="noopener" class="nav-app">图库找图</a></li>
@@ -111,6 +112,7 @@ EN_NAV = '''<nav>
     <li><a href="en-applications.html">Applications</a></li>
     <li><a href="/en.html#about">About</a></li>
     <li><a href="en-news.html" style="color:var(--brand);font-weight:600">News</a></li>
+    <li><a href="/knowledge/index-en.html">Knowledge</a></li>
     <li><a href="/en.html#faq">FAQ</a></li>
         <li><a href="https://app.bu6789.com:8443/#/books" target="_blank" rel="noopener" class="nav-app">Catalog</a></li>
         <li><a href="https://app.bu6789.com:8443" target="_blank" rel="noopener" class="nav-app">Image Search</a></li>
