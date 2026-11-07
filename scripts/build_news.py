@@ -21,6 +21,8 @@ from pathlib import Path
 from collections import defaultdict, Counter
 from datetime import datetime
 
+from beian_footer import BEIAN_LINE
+
 ROOT = Path(__file__).parent.parent  # 项目根
 ARTICLES = ROOT / "articles"
 NEWS_HTML = ROOT / "news.html"
@@ -121,20 +123,22 @@ EN_NAV = '''<nav>
   </ul>
 </nav>'''
 
-ZH_FOOTER = '''<footer>
+ZH_FOOTER = f'''<footer>
   <img class="footer-logo" src="assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">
   <p><strong>匠领数码 · J.LINK TEXTILE</strong></p>
   <p>浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼</p>
   <p>📞 张先生 17769886009</p>
   <p>© 2026 匠领数码 · 主营 200-320CM 宽幅数码印花 · 分散印花 · 涤纶印花 · 1米起印</p>
+  {BEIAN_LINE}
 </footer>'''
 
-EN_FOOTER = '''<footer>
+EN_FOOTER = f'''<footer>
   <img class="footer-logo" src="assets/logo-white.png" alt="J.LINK TEXTILE 匠领数码 · 匠领纺织" loading="lazy">
   <p><strong>J.LINK TEXTILE · 匠领数码</strong></p>
   <p>No.88 Xingpu Road, Qixian Town, Keqiao District, Shaoxing, Zhejiang</p>
   <p>📞 Mr. Zhang +86-177-6988-6009</p>
   <p>© 2026 J.LINK TEXTILE · Wide-width digital printing 200-320CM · disperse & polyester printing · MOQ 1m</p>
+  {BEIAN_LINE}
 </footer>'''
 
 STRINGS = {

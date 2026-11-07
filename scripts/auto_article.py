@@ -14,6 +14,7 @@ from pathlib import Path
 # 统一收尾模块（与知识库页共用同一份 NAP 口径，2026-10-31 定）
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from company_block import company_block  # noqa: E402
+from beian_footer import ICP_LINK, GONGAN_AFTER_ICP  # noqa: E402
 
 # ── 匠领数码 · 内容生产规范（永久规则） ─────────────────────────
 # 幅宽：200CM / 220CM / 240CM / 260CM / 280CM / 320CM（六档全幅宽）
@@ -492,7 +493,7 @@ for i in range(1, count + 1):
 {body}
 {company_block("zh", {"slug": slug, "h1": title, "keywords": keyword, "meta": intro})}
   <a class="back" href="/">← 返回首页</a>
-  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 5-7天交货 | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></footer>
+  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 5-7天交货 | {ICP_LINK}{GONGAN_AFTER_ICP}</footer>
 <!-- 百度+360自动推送 -->
 <script src="/seo-push.js"></script>
 </body>

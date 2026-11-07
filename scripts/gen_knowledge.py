@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(Path(__file__).parent))
 from company_block import company_block, company_jsonld, qa_pairs  # noqa: E402
+from beian_footer import ICP_LINK, GONGAN_AFTER_ICP  # noqa: E402
 KB = ROOT / "knowledge"
 KB.mkdir(exist_ok=True)
 TODAY = "2026-10-17"
@@ -143,7 +144,7 @@ def footer_html() -> str:
         '    <strong>匠领数码 · 匠领纺织 J.LINK TEXTILE</strong> · 浙江省绍兴市柯桥区 · 专注宽幅数码印花加工<br>\n'
         '    联系人：张先生 17769886009（微信同号）<br><br>\n'
         '    &copy; 2026 匠领数码 版权所有 · 宽幅数码印花加工专家\n'
-        '   | <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备20007773号-3</a></p>\n'
+        '   | ' + ICP_LINK + GONGAN_AFTER_ICP + '</p>\n'
         '  <script src="/seo-push.js"></script>\n</footer>'
     )
 
