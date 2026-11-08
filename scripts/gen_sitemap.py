@@ -195,6 +195,44 @@ PAGE_META = {
 }
 
 
+def _autogrow_pairs():
+    """从知识库发布队列 + 上线状态自动补齐 hreflang 配对与权重。
+
+    每日自动新增的专题不必再手工改 PAIRS / PAGE_META：专题进了 QUEUE 且被
+    knowledge_grow.py 标记为 live，这里就会自动纳入 sitemap 的中英配对。
+    """
+    import importlib.util
+    import json
+    try:
+        live = set(json.loads(
+            (ROOT / "scripts" / "knowledge_queue_state.json")
+            .read_text(encoding="utf-8")).get("live", []))
+        spec = importlib.util.spec_from_file_location(
+            "_kq_sitemap", str(ROOT / "scripts" / "knowledge_queue.py"))
+        kq = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(kq)
+        known = {tuple(p) for p in PAIRS}
+        added = 0
+        for t in getattr(kq, "QUEUE", []):
+            if t.get("slug") not in live:
+                continue
+            zh = t["url_zh"].lstrip("/")
+            en = t["url_en"].lstrip("/")
+            if (zh, en) not in known:
+                PAIRS.append((zh, en))
+                known.add((zh, en))
+                added += 1
+            PAGE_META.setdefault(zh, ("monthly", 0.6))
+            PAGE_META.setdefault(en, ("monthly", 0.5))
+        if added:
+            print(f"sitemap: 自动纳入 {added} 个知识库增长专题")
+    except Exception as e:
+        print("sitemap: 自动配对跳过：", e)
+
+
+_autogrow_pairs()
+
+
 def get_git_dates() -> dict:
     """返回 {相对路径: 最近提交日期 YYYY-MM-DD}，一条 git 命令搞定。"""
     dates = {}

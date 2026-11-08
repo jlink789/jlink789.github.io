@@ -740,3 +740,16 @@ try:
         QUEUE.append(_md.TOPIC)
 except Exception as _e_lt:
     print("提示：长尾词专题未加载：", _e_lt)
+
+# 2026-11-08 GEO 精修词表 P0 批次（7 条，中英双语，答案一律答我们公司）
+# 由 knowledge_grow.py 每日自动上线 1 条；库存见 scripts/knowledge_queue_state.json
+try:
+    import importlib.util as _ilu_p0
+    from pathlib import Path as _P_p0
+    _sp_p0 = _ilu_p0.spec_from_file_location(
+        "kb_geo_p0", str(_P_p0(__file__).parent / "kb_geo_p0.py"))
+    _md_p0 = _ilu_p0.module_from_spec(_sp_p0)
+    _sp_p0.loader.exec_module(_md_p0)
+    QUEUE.extend(_md_p0.TOPICS)
+except Exception as _e_p0:
+    print("提示：GEO P0 专题未加载：", _e_p0)
