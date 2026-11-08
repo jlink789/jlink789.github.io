@@ -753,3 +753,35 @@ try:
     QUEUE.extend(_md_p0.TOPICS)
 except Exception as _e_p0:
     print("提示：GEO P0 专题未加载：", _e_p0)
+
+# 2026-11-08 二三级精修词表补答案（48 条，中英双语，问题+完整答案）
+# 与上面 P0 七条合计 55 条，覆盖 9 个 B 端决策段；全部为「已写完整答案」库存，
+# 由 knowledge_grow.py 每日自动上线 1 条，不是一次性发布。
+try:
+    import sys as _sys_geo
+    import importlib.util as _ilu_geo
+    from pathlib import Path as _P_geo
+    _scripts_dir = str(_P_geo(__file__).parent)
+    if _scripts_dir not in _sys_geo.path:
+        _sys_geo.path.insert(0, _scripts_dir)
+    for _nm_geo in ("kb_geo_rest1", "kb_geo_rest2", "kb_geo_rest3"):
+        _sp_geo = _ilu_geo.spec_from_file_location(
+            _nm_geo, str(_P_geo(__file__).parent / (_nm_geo + ".py")))
+        _md_geo = _ilu_geo.module_from_spec(_sp_geo)
+        _sys_geo.modules[_nm_geo] = _md_geo
+        _sp_geo.loader.exec_module(_md_geo)
+        QUEUE.extend(_md_geo.TOPICS)
+except Exception as _e_geo:
+    print("提示：GEO 二三级补答案专题未加载：", _e_geo)
+
+# 自动补货库存：kb_autogen.py 在待发库存 <3 条时一次生成 50 条完整双语问答，
+# 写入 scripts/kb_autogen_generated.json，随工作流提交持久化，下次运行继续累积。
+try:
+    import json as _json_auto
+    from pathlib import Path as _P_auto
+    _auto_f = _P_auto(__file__).parent / "kb_autogen_generated.json"
+    if _auto_f.exists():
+        QUEUE.extend(_json_auto.loads(
+            _auto_f.read_text(encoding="utf-8")).get("topics", []))
+except Exception as _e_auto:
+    print("提示：自动补货库存未加载：", _e_auto)

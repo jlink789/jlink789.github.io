@@ -10,8 +10,10 @@ knowledge_grow.py — 知识库增长发布（每日自动，每天至少一条�
 5. 调用 gen_knowledge.main() 重新生成（hub 会动态纳入新专题）
 之后由工作流运行 gen_sitemap.py 重建站点地图（sitemap 会自动派生 hreflang / 权重）。
 
-断供保护：队列没有待发布专题时，输出 GitHub Actions ::warning:: 黄色告警，
-不再静默空跑；库存 ≤3 条时同样告警，提示尽快把下一批已补完整答案的专题灌入 QUEUE。
+自动补货（老板 2026-11-08 定）：待发布库存 <3 条时，调用 kb_autogen.ensure_inventory()
+一次生成 50 条全新的中英双语完整问答（问题+答案都完整、禁用词 0、组合去重），
+写入 scripts/kb_autogen_generated.json 并随工作流提交持久化，保证每天至少能发 1 条。
+队列真的无待发布专题时仍输出 ::warning:: 黄色告警，不静默空跑。
 
 禁用词铁律：工艺只用 分散印花/涤纶印花/宽幅数码印花；幅宽 200-320CM 六档；
 最小起印 1米起印/免费打样；不出现旧规格禁用词。
@@ -28,6 +30,12 @@ LLMS_FILES = (ROOT / "llms.txt", ROOT / "llms-full.txt")
 SITE = "https://bu6789.com"
 MARK_S = "<!-- KB-GROW:START -->"
 MARK_E = "<!-- KB-GROW:END -->"
+MIN_STOCK = 3     # 库存低于此数触发自动补货
+BATCH = 50        # 每次自动补充的完整问答条数
+
+# 保证从任意工作目录运行时都能 import 同目录脚本（GitHub Actions / 本地手动均适用）
+if str(Path(__file__).parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).parent))
 
 
 def load_queue():
@@ -73,6 +81,14 @@ def main():
     live = set(state.get("live", []))
     pending = [t for t in queue if t["slug"] not in live]
     print(f"队列库存：共 {len(queue)} 条，已上线 {len(live)} 条，待发布 {len(pending)} 条")
+
+    # 自动补货：库存 < MIN_STOCK 时一次生成 BATCH 条完整问答并持久化，随后重新加载队列
+    import kb_autogen
+    added = kb_autogen.ensure_inventory(len(pending), min_stock=MIN_STOCK, batch=BATCH)
+    if added:
+        queue = load_queue()
+        pending = [t for t in queue if t["slug"] not in live]
+        print(f"补货后队列：共 {len(queue)} 条，待发布 {len(pending)} 条")
 
     if not pending:
         msg = ("知识库队列已断供：没有待发布专题，今天无法新增页面。"
