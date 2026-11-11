@@ -1,8 +1,11 @@
 name: 自动采集 + AI 生成文章 + 配图 + 资讯中心更新
 
 on:
-  schedule:
-    - cron: "0 2 * * *"
+  # 2026-11-11 起暂停每日自动日更（老板确认，止血）。
+  # 原 cron "0 2 * * *"（北京 10:00）每天产出 10 篇，累计 1164 篇占全站 URL 89.3%，
+  # 82.6% 页面共享同一句模板文案、每篇 73.8% 句子为跨篇复现句，继续发会持续稀释站级质量分。
+  # 恢复条件：auto_article.py 接入按选题专属的真实内容源并通过 quality_gate() 质量门槛。
+  # 注意：本工作流 name 被 deploy-aliyun.yml 的 workflow_run 名单引用，改名必须同步。
   workflow_dispatch:
 
 concurrency:

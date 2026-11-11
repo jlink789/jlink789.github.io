@@ -1,10 +1,12 @@
 """
-匠领数码 · 每日自动文章生成（含图片）
+匠领数码 · 长尾文章生成器（含图片）
 ==========================================
-- 每天 02:00 跑（GH Actions）
-- 生成 5-10 篇带图文章
-- 文章配图三级降级：老板实拍图 > Pexels API > SVG 占位图
-- 自动更新首页 NEWS 区块 + sitemap.xml
+2026-11-11 起暂停每日自动日更（老板确认，止血）：
+  原 cron 每天 10 篇，累计 1164 篇占全站 URL 89.3%，82.6% 页面共享同一句
+  模板文案；继续发只会持续稀释站级质量分。
+恢复日更的前置条件：接入「按选题专属」的真实内容源（事实卡参数 + 案例 +
+  参数表），并通过 quality_gate() 质量门槛。本脚本默认 strict，不达标不写文件。
+保留 workflow_dispatch 供手动调试；--dry-run 预览；--allow-thin 仅调试用。
 """
 
 import os, re, random, hashlib, json, urllib.request, urllib.parse, argparse, sys
@@ -27,14 +29,18 @@ MOQ_LINE = "1米起印、免费打样"
 WIDTH_LINE = "200/220/240/260/280/320CM六大标准幅宽"
 PROCESS_LINE = "分散印花、涤纶印花、宽幅数码印花三大工艺"
 
-# ── 5 必含词（永久硬性要求：每篇自动文章必须自然出现，GEO 覆盖铁律） ──
-REQUIRED_KEYWORDS = ["宽幅", "热转印", "数码印花加工", "床单印花", "柯桥数码印花加工厂"]
+# ── 关键词轮换素材池（2026-11-01 老板定：可选素材，不是必含） ──────────
+# 按选题自然带 1-2 个即可；禁止每篇五词全塞，那正是全站内容同质化的根因。
+ROTATION_KEYWORDS = ["宽幅", "热转印", "数码印花加工", "床单印花", "柯桥数码印花加工厂"]
 
-# 厂能收尾段：每篇文章固定追加，自然覆盖 5 必含词（不含禁用词：活性/最大320CM/100米起印）
-REQUIRED_FOOTER = (
-    "<p>匠领数码是扎根绍兴柯桥的柯桥数码印花加工厂，专注宽幅数码印花加工，工艺涵盖热转印、分散印花、涤纶印花；"
-    "床单印花、窗帘、墙布、家纺等全品类均可 1 米起印、免费打样，幅宽覆盖 200-320CM 六大标准。</p>"
-)
+# ── 禁用词（无条件禁区，出现即拦截） ─────────────────────────────────
+BANNED = ["活性", "拼接", "拼缝", "拼花", "拼块", "分八块",
+          "最大320CM", "最宽320CM", "100米起印", "100米起订", "100米每花型",
+          "断花", "花型对不上", "窄幅"]
+
+# ── 发布质量门槛（2026-11-11 定；未达标不写文件） ─────────────────────
+MIN_BODY_CHARS = 1200
+MIN_H2 = 3
 
 KEYWORDS = [
   # 通用 / 宽幅
@@ -79,38 +85,38 @@ TOPICS = [
   ("市场趋势", [
     "随着家居定制化需求快速增长，2026年{}市场迎来新一轮扩张期，柯桥产区凭借完整供应链持续领跑。",
     "{}出口贸易回暖，东南亚及中东市场需求旺盛，国产数码印花品质获国际认可。",
-    "2026年一季度柯桥轻纺城{}成交量同比上升，宽幅订单占比持续走高。",
-    "{}市调显示：终端消费者对个性化印花面料偏好持续增强，定制化订单量增幅超30%。",
+    "{}询单里，六档幅宽的打样需求都在增加，客户更关注门幅与色准的一次确认。",
+    "{}客户越来越倾向小批量多花型试单，我们把 1 米起印与首单 1–2 花型免费打样作为常规服务。",
   ]),
   ("技术解析", [
     "{}技术解析：分散印花、涤纶印花、宽幅数码印花三大工艺如何选择，看完这篇你就懂了。",
     "深度解读{}：200-320CM宽幅数码印花为何成为高端家纺首选工艺？解析五大核心优势。",
     "{}色牢度对比：分散印花vs涤纶印花vs宽幅数码印花，不同面料匹配哪种印花工艺？技术参数全解读。",
-    "{}色彩还原技术突破：1670万色精准输出，花纹细腻度达到行业新高度。",
+    "{}色彩控制：打样批间色差 ΔE≤2.0、成品对比确认样 ΔE≤1.5，同批同光源复核。",
   ]),
   ("采购指南", [
     "{}采购必看：宽幅数码印花如何避坑？资深从业者总结五大验收标准。",
-    "{}代工指南：从打样到量产全流程解析，1米起印、免费打样、5-7天交货是怎么做到的？",
+    "{}代工指南：从打样到量产全流程解析，1 米起印、首单免费打样、大货交期按订单评审。",
     "{}询价技巧：影响数码印花单价的关键因素有哪些？面料、工艺、色数一文讲透。",
     "初次采购{}注意事项：幅宽确认（200-320CM六档）、色差标准、水洗要求，提前了解少走弯路。",
   ]),
   ("应用案例", [
-    "案例分享：某高端酒店全面采用{}数码印花方案，200-320CM多幅宽一体成型墙布效果惊艳。",
+    "案例分享：酒店大堂挑高空间采用{}方案，320CM 整幅一次成、无切断。",
     "{}实景案例：别墅窗帘采用宽幅数码印花，整幅一次成无切断的高端体验如何？",
     "{}应用新场景：从家居到商业空间，数码印花正重新定义织物表面装饰。",
     "客户案例：品牌服装公司采用{}数码印花实现快反模式，1米起印小单快返降本增效。",
   ]),
   ("环保与品质", [
-    "环保数码印花：{}采用环保墨水，Oeko-Tex国际认证，出口欧美无门槛。",
-    "品质对话：{}如何确保每米布色彩一致？看匠领数码的5道质检流程。",
-    "{}绿色生产：数码印花比传统印花节水70%以上，低碳环保成行业新标准。",
+    "环保数码印花：{}按 OEKO-TEX 标准控制墨水与成品，出口订单按客户指定标准复核。",
+    "品质对话：{}如何确保每米布色彩一致？看我们 7 项逐米全检 + 双人复核。",
+    "{}绿色生产：数码印花按需喷墨、无需制版，减少传统印花的制版与洗网环节。",
     "客户关心的{}问题：耐水洗、耐日晒、耐摩擦，实测数据告诉你真实表现。",
   ]),
   ("行业问答", [
     "问：{}数码印花最小起订量多少？答：1米起印，单花型不限数量，免费打样。",
     "问：{}数码印花和传统印花的成本差异大吗？对比分析来了。",
     "问：做{}数码印花需要准备什么文件？AI/PSD/PDF格式要求说明。",
-    "问：{}数码印花交期一般多久？标准5-7天，急单可协调加急3天出。",
+    "问：{}数码印花交期一般多久？答：打样常规 3–5 天，大货按花型复杂度与门幅评审。",
   ]),
 ]
 
@@ -273,26 +279,43 @@ def list_photo_index():
 
 # ── 文章生成 ──────────────────────────────────────────────────
 
-def check_required(text):
-    """校验 5 必含词是否全部出现，返回缺失词列表（空=达标）"""
-    return [kw for kw in REQUIRED_KEYWORDS if kw not in text]
+def quality_gate(html_body):
+    """发布门槛：返回 (是否达标, 未达标原因)。不达标时主流程跳过写文件。
+
+    2026-11-11 诊断：原模板正文约 400 字、0 个 h2、0 张表格、73.8% 句子为
+    跨篇复现句。门槛把「薄模板文」挡在发布之前，避免继续稀释站级质量分。
+    """
+    text = re.sub(r"<[^>]+>", "", html_body).strip()
+    reasons = []
+    if len(text) < MIN_BODY_CHARS:
+        reasons.append(f"正文 {len(text)} 字 < {MIN_BODY_CHARS}")
+    if len(re.findall(r"<h2", html_body)) < MIN_H2:
+        reasons.append(f"h2 少于 {MIN_H2} 个")
+    if "<table" not in html_body:
+        reasons.append("缺参数表")
+    if "faq" not in html_body.lower():
+        reasons.append("缺 FAQ")
+    hit = [b for b in BANNED if b in html_body]
+    if hit:
+        reasons.append("禁用词: " + "/".join(hit))
+    return (not reasons), reasons
 
 def gen_body(keyword, intro, category):
     paragraphs = {
         "市场趋势": [
             f"<p>{intro}</p>",
-            f"<p>业内人士分析指出，{keyword}领域在2026年延续了强势增长态势。产能区域分布仍以绍兴柯桥为核心，占全国数码印花产能40%以上。</p>",
-            f"<p>匠领数码作为柯桥产区代表企业之一，拥有进口高速数码印花产线，幅宽覆盖{WIDTH_LINE}，{PROCESS_LINE}，{MOQ_LINE}，满足国内外客户一站式加工需求。</p>",
+            f"<p>我们匠领数码在柯桥接到的 {keyword} 询单里，200/220/240/260/280/320CM 六档幅宽都在常规排产，其中 280CM 与 320CM 多用于挑高空间与酒店工程帘。</p>",
+            f"<p>匠领数码作为柯桥产区代表企业之一，自有宽幅数码印花产线，幅宽覆盖{WIDTH_LINE}，{PROCESS_LINE}，{MOQ_LINE}，满足国内外客户一站式加工需求。</p>",
         ],
         "技术解析": [
             f"<p>{intro}</p>",
-            f"<p>数码印花是直接将设计图案通过数字喷墨方式打印在面料上的技术，相比传统印花具有无需制版、色彩丰富（1670万色）、小单快返等核心优势。</p>",
-            f"<p>匠领数码配备{PROCESS_LINE}三条产线，分别适配涤纶化纤、家纺面料、大幅面整幅加工。{WIDTH_LINE}，{MOQ_LINE}，适用于窗帘、墙布、家纺等大幅面产品。</p>",
+            f"<p>数码印花是直接将设计图案通过数字喷墨方式打印在面料上的技术，相比传统印花具有无需制版、按 720dpi 精度输出、小单快返等核心优势。</p>",
+            f"<p>我们匠领数码按{PROCESS_LINE}组织生产，分别适配涤纶化纤、家纺面料、大幅面整幅加工。{WIDTH_LINE}，{MOQ_LINE}，适用于窗帘、墙布、家纺等大幅面产品。</p>",
         ],
         "采购指南": [
             f"<p>{intro}</p>",
             f"<p>作为B端采购商，选择数码印花合作工厂时建议重点关注：设备品牌与成色、打样能力与色准、起印门槛与最小起印弹性、交期稳定性、品质一致性这五个维度。</p>",
-            f"<p>匠领数码提供免费打样服务，{MOQ_LINE}，标准交期5-7天，支持来图来样定制、合同生产等多种合作模式。{WIDTH_LINE}，{PROCESS_LINE}，覆盖全品类需求。</p>",
+            f"<p>匠领数码提供免费打样服务，{MOQ_LINE}，大货交期按花型复杂度与门幅评审，支持来图来样定制、合同生产等多种合作模式。{WIDTH_LINE}，{PROCESS_LINE}，覆盖全品类需求。</p>",
         ],
         "应用案例": [
             f"<p>{intro}</p>",
@@ -301,8 +324,8 @@ def gen_body(keyword, intro, category):
         ],
         "环保与品质": [
             f"<p>{intro}</p>",
-            f"<p>环保已成为数码印花行业的核心竞争力之一。我们采用的进口墨水通过Oeko-Tex Standard 100国际认证，适用于欧美及日本等高标准出口市场。</p>",
-            f"<p>品质控制方面，从进厂坯布检验到成品终检，匠领数码建立了5道全流程质检体系，确保每米布的色差、渗透、手感均达标。{MOQ_LINE}、5-7天交货。</p>",
+            f"<p>环保已成为数码印花行业的核心竞争力之一。我们按 OEKO-TEX 标准控制墨水与成品，出口订单按客户指定标准复核。</p>",
+            f"<p>品质控制方面，从进厂坯布检验到成品终检，匠领数码执行 7 项逐米全检（色差、花型偏差、克重、门幅、色牢度、缩水率、表面瑕疵）并双人复核。{MOQ_LINE}。</p>",
         ],
         "行业问答": [
             f"<p>{intro}</p>",
@@ -311,7 +334,6 @@ def gen_body(keyword, intro, category):
     }
     base = paragraphs.get(category, [f"<p>{intro}</p>"])
     # 强制收尾段：保证 5 必含词每篇都自然出现（GEO 铁律）
-    base = list(base) + [REQUIRED_FOOTER]
     return "\n".join(base)
 
 # ── 主流程 ────────────────────────────────────────────────────
@@ -320,6 +342,7 @@ def gen_body(keyword, intro, category):
 parser = argparse.ArgumentParser()
 parser.add_argument("--date", type=str, default=None, help="指定文章日期 YYYY-MM-DD，默认今天")
 parser.add_argument("--dry-run", action="store_true", help="预览模式，不写文件")
+parser.add_argument("--allow-thin", action="store_true", help="仅调试：跳过质量门槛，允许产出薄文")
 args = parser.parse_args()
 
 if args.date:
@@ -334,6 +357,7 @@ else:
     ARTICLE_DATE = datetime.now().strftime("%Y-%m-%d")
 
 random.seed(ARTICLE_DATE)
+STRICT = not args.allow_thin
 DRY_RUN = args.dry_run
 print(f"[模式] {'预览（不写文件）' if DRY_RUN else '正常'}")
 
@@ -357,20 +381,16 @@ for i in range(1, count + 1):
 
     slug = f"articles/{today}-{i:02d}.html"
 
-    # 生成正文：5 必含词硬性校验，缺词重选主题重生成（最多 2 次）
-    category, intro, body = None, None, None
-    for _attempt in range(3):
-        _cat, _intros = random.choice(TOPICS)
-        _intro = random.choice(_intros).format(keyword)
-        _body = gen_body(keyword, _intro, _cat)
-        _miss = check_required(_body)
-        if not _miss:
-            category, intro, body = _cat, _intro, _body
-            break
-        print(f"  [retry {_attempt+1}] {keyword} 缺必含词: {_miss}，重选主题重生成")
-    else:
-        category, intro, body = _cat, _intro, _body
-        print(f"  [缺词告警] {slug} 经 3 次重试仍缺: {check_required(_body)}")
+    # 生成正文：不再做「5 必含词」硬校验（2026-11-01 口径：可选素材池）
+    category, intros = random.choice(TOPICS)
+    intro = random.choice(intros).format(keyword)
+    body = gen_body(keyword, intro, category)
+
+    # 发布质量门槛：不达标不写文件，避免再产出薄模板文
+    ok, reasons = quality_gate(body)
+    if STRICT and not ok:
+        print(f"  [门槛拦截] {slug} 跳过发布：{'；'.join(reasons)}")
+        continue
 
     title = f"{keyword}{category} | {today}"
 
@@ -493,7 +513,7 @@ for i in range(1, count + 1):
 {body}
 {company_block("zh", {"slug": slug, "h1": title, "keywords": keyword, "meta": intro})}
   <a class="back" href="/">← 返回首页</a>
-  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 5-7天交货 | {ICP_LINK}{GONGAN_AFTER_ICP}</footer>
+  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 大货交期按订单评审 | {ICP_LINK}{GONGAN_AFTER_ICP}</footer>
 <!-- 百度+360自动推送 -->
 <script src="/seo-push.js"></script>
 </body>
@@ -582,5 +602,5 @@ if os.path.exists(llms_full_path) and photo_idx:
     else:
         print("llms-full.txt 已有图库索引，跳过")
 
-print(f"\n=== 本次共生成 {count} 篇文章（每篇 2 张配图）===")
+print(f"\n=== 本次通过质量门槛并写入 {len(slugs)} 篇（计划 {count} 篇）===")
 print(f"=== 总图数：{len(photo_index) * 2} ===")

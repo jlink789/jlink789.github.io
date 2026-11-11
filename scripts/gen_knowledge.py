@@ -116,7 +116,8 @@ def md_to_html(md: str) -> str:
 def nav_html(lang: str, topic: dict) -> str:
     if lang == "zh":
         links = [("/", "首页"), ("/#products", "产品中心"), ("/about.html", "关于我们"),
-                 ("/news.html", "资讯中心"), ("/knowledge/index.html", "知识库"), ("/#faq", "常见问题")]
+                 ("/news.html", "资讯中心"), ("/knowledge/index.html", "知识库"),
+                 ("/pillars/index.html", "深度专题"), ("/#faq", "常见问题")]
         app = ('<li><a href="https://app.bu6789.com:8443/#/books" target="_blank" rel="noopener" class="nav-app">电子画册</a></li>\n'
                '        <li><a href="https://app.bu6789.com:8443" target="_blank" rel="noopener" class="nav-app">图库找图</a></li>')
         cta = '<li><a href="/#contact" class="nav-cta">立即咨询</a></li>'

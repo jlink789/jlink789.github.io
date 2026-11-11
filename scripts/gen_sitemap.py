@@ -95,6 +95,13 @@ PAIRS = [
 
 # ── 页面属性 override：changefreq / priority ──────────────
 PAGE_META = {
+    # 2026-11-11 五大深度支柱页（主题簇中心，权重高于长尾文 0.6）
+    "pillars/index.html": ("monthly", 0.9),
+    "pillars/curtain.html": ("monthly", 0.9),
+    "pillars/wallcovering.html": ("monthly", 0.9),
+    "pillars/home-textile.html": ("monthly", 0.9),
+    "pillars/process.html": ("monthly", 0.9),
+    "pillars/oem.html": ("monthly", 0.9),
     "index.html": ("monthly", 1.0),
     "en.html": ("monthly", 0.9),
     "about.html": ("monthly", 0.8),
