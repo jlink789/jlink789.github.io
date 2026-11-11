@@ -1388,6 +1388,17 @@ def build_hub(lang):
         breadcrumb_html += f'<a href="{u}">{n}</a> &gt; ' if i < len(breadcrumb)-1 else f'<span>{n}</span>'
     breadcrumb_html += "</div>"
     topic = {"url_zh": "/knowledge/index.html", "url_en": "/knowledge/index-en.html"}
+    # 2026-11-11 五大深度支柱页入口：固化在生成器里，避免每日自动重生成把注入条冲掉
+    _pillar_cards = [("curtain", "窗帘印花"), ("wallcovering", "墙布印花"),
+                     ("home-textile", "家纺印花"), ("process", "工艺流程"), ("oem", "来图加工")]
+    _pl = " · ".join(
+        f'<a href="/pillars/{s}.html">{n if lang == "zh" else s}</a>' for s, n in _pillar_cards)
+    _ptitle = "深度专题：" if lang == "zh" else "Deep dives: "
+    _pall = "全部专题" if lang == "zh" else "All topics"
+    pillar_bar = (f'<!-- PILLARS:START -->\n<div style="max-width:1100px;margin:20px auto 0;'
+                  f'padding:14px 20px;background:#f7f8fa;border-radius:10px;line-height:2.1">'
+                  f'<b>{_ptitle}</b>{_pl} · <a href="/pillars/index.html">{_pall}</a></div>\n'
+                  f'<!-- PILLARS:END -->')
     json_blocks = [
         {"@context": "https://schema.org", "@type": "WebPage", "name": data["h1"],
          "description": data["meta"], "url": url, "inLanguage": "zh-CN" if lang=="zh" else "en"},
@@ -1421,6 +1432,7 @@ def build_hub(lang):
 </head>
 <body>
 {nav_html(lang, topic)}
+{pillar_bar}
 
 <div class="page-hero">
   <h1>{data['h1']}</h1>
