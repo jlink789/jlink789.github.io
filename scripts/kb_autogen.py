@@ -32,6 +32,7 @@ SCRIPTS = str(Path(__file__).parent)
 if SCRIPTS not in sys.path:
     sys.path.insert(0, SCRIPTS)
 from kb_geo_render import build  # noqa: E402  复用统一渲染器与口径
+from beijing_time import today_str  # noqa: E402  库存时间戳按北京时间
 
 BAN = [
     "活性", "拼接", "拼缝", "拼花", "拼块", "分八块",
@@ -523,7 +524,7 @@ def ensure_inventory(pending, min_stock=3, batch=50):
 
     data["topics"].extend(built)
     data["used"].extend(picked)
-    data["updated"] = date.today().isoformat()
+    data["updated"] = today_str()
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"✅ 自动补货完成：新增 {len(built)} 条完整双语问答（跳过禁用词 {skipped} 条），"
           f"库存文件累计 {len(data['topics'])} 条 / 已用组合 {len(data['used'])} 个")

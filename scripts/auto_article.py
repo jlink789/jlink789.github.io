@@ -17,6 +17,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from company_block import company_block  # noqa: E402
 from beian_footer import ICP_LINK, GONGAN_AFTER_ICP  # noqa: E402
+from beijing_time import today_str  # noqa: E402
+from content_gate import enforce as gate_enforce  # noqa: E402  统一发布闸门
 
 # ── 匠领数码 · 内容生产规范（永久规则） ─────────────────────────
 # 幅宽：200CM / 220CM / 240CM / 260CM / 280CM / 320CM（六档全幅宽）
@@ -338,269 +340,285 @@ def gen_body(keyword, intro, category):
 
 # ── 主流程 ────────────────────────────────────────────────────
 
-# 命令行参数
-parser = argparse.ArgumentParser()
-parser.add_argument("--date", type=str, default=None, help="指定文章日期 YYYY-MM-DD，默认今天")
-parser.add_argument("--dry-run", action="store_true", help="预览模式，不写文件")
-parser.add_argument("--allow-thin", action="store_true", help="仅调试：跳过质量门槛，允许产出薄文")
-args = parser.parse_args()
 
-if args.date:
-    try:
-        datetime.strptime(args.date, "%Y-%m-%d")
-        ARTICLE_DATE = args.date
-        print(f"[日期] 使用指定日期: {ARTICLE_DATE}")
-    except Exception as e:
-        print(f"日期格式错误: {args.date} ({e})，使用今天")
-        ARTICLE_DATE = datetime.now().strftime("%Y-%m-%d")
-else:
-    ARTICLE_DATE = datetime.now().strftime("%Y-%m-%d")
+def run():
+    """主流程：仅在直接运行时执行，避免 import 本模块时误跑生成、改首页（2026-11-11 修）。"""
+    # 命令行参数
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--date", type=str, default=None, help="指定文章日期 YYYY-MM-DD，默认今天")
+    parser.add_argument("--dry-run", action="store_true", help="预览模式，不写文件")
+    parser.add_argument("--allow-thin", action="store_true", help="仅调试：跳过质量门槛，允许产出薄文")
+    args = parser.parse_args()
 
-random.seed(ARTICLE_DATE)
-STRICT = not args.allow_thin
-DRY_RUN = args.dry_run
-print(f"[模式] {'预览（不写文件）' if DRY_RUN else '正常'}")
+    if args.date:
+        try:
+            datetime.strptime(args.date, "%Y-%m-%d")
+            ARTICLE_DATE = args.date
+            print(f"[日期] 使用指定日期: {ARTICLE_DATE}")
+        except Exception as e:
+            print(f"日期格式错误: {args.date} ({e})，使用北京时间今天")
+            ARTICLE_DATE = today_str()
+    else:
+        ARTICLE_DATE = today_str()
 
-os.makedirs("articles", exist_ok=True)
-factory_groups = list_factory_photos()
-print(f"[图] factory-photos 实拍图分类: { {k: len(v) for k, v in factory_groups.items()} }")
+    random.seed(ARTICLE_DATE)
+    STRICT = not args.allow_thin
+    DRY_RUN = args.dry_run
+    print(f"[模式] {'预览（不写文件）' if DRY_RUN else '正常'}")
 
-today = ARTICLE_DATE
-count = random.randint(5, 10)
-used_keywords = set()
-slugs = []
-photo_index = []  # [(article_url, image_path)] - 给 llms-full 用
+    os.makedirs("articles", exist_ok=True)
+    factory_groups = list_factory_photos()
+    print(f"[图] factory-photos 实拍图分类: { {k: len(v) for k, v in factory_groups.items()} }")
 
-for i in range(1, count + 1):
-    available = [k for k in KEYWORDS if k not in used_keywords]
-    if not available:
-        used_keywords.clear()
-        available = KEYWORDS
-    keyword = random.choice(available)
-    used_keywords.add(keyword)
+    today = ARTICLE_DATE
+    count = random.randint(5, 10)
+    used_keywords = set()
+    slugs = []
+    photo_index = []  # [(article_url, image_path)] - 给 llms-full 用
 
-    slug = f"articles/{today}-{i:02d}.html"
+    for i in range(1, count + 1):
+        available = [k for k in KEYWORDS if k not in used_keywords]
+        if not available:
+            used_keywords.clear()
+            available = KEYWORDS
+        keyword = random.choice(available)
+        used_keywords.add(keyword)
 
-    # 生成正文：不再做「5 必含词」硬校验（2026-11-01 口径：可选素材池）
-    category, intros = random.choice(TOPICS)
-    intro = random.choice(intros).format(keyword)
-    body = gen_body(keyword, intro, category)
+        slug = f"articles/{today}-{i:02d}.html"
 
-    # 发布质量门槛：不达标不写文件，避免再产出薄模板文
-    ok, reasons = quality_gate(body)
-    if STRICT and not ok:
-        print(f"  [门槛拦截] {slug} 跳过发布：{'；'.join(reasons)}")
-        continue
+        # 生成正文：不再做「5 必含词」硬校验（2026-11-01 口径：可选素材池）
+        category, intros = random.choice(TOPICS)
+        intro = random.choice(intros).format(keyword)
+        body = gen_body(keyword, intro, category)
 
-    title = f"{keyword}{category} | {today}"
+        # 发布质量门槛：不达标不写文件，避免再产出薄模板文
+        ok, reasons = quality_gate(body)
+        if STRICT and not ok:
+            print(f"  [门槛拦截] {slug} 跳过发布：{'；'.join(reasons)}")
+            continue
 
-    # 配图（每篇 1 张主图 + 1 张段间图）
-    hero_img, hero_src = fetch_one_image(keyword, 0, factory_groups)
-    inline_img, inline_src = fetch_one_image(keyword, 1, factory_groups)
-    photo_index.append((slug, hero_img))
+        title = f"{keyword}{category} | {today}"
 
-    # 生成完整图片 URL（用于 og:image 和 JSON-LD）
-    hero_img_url = hero_img if hero_img.startswith("http") else f"https://bu6789.com{hero_img}"
+        # 配图（每篇 1 张主图 + 1 张段间图）
+        hero_img, hero_src = fetch_one_image(keyword, 0, factory_groups)
+        inline_img, inline_src = fetch_one_image(keyword, 1, factory_groups)
+        photo_index.append((slug, hero_img))
 
-    # 在 body 第 1 段后插主图，第 2 段后插段间图
-    body_parts = body.split("</p>", 2)
-    if len(body_parts) == 3:
-        body = (
-            body_parts[0] + "</p>"
-            + f'\n<figure class="article-hero"><img src="{hero_img}" alt="{keyword} - 匠领数码宽幅数码印花工厂实拍" loading="lazy" width="1200" height="675"></figure>'
-            + body_parts[1] + "</p>"
-            + f'\n<figure class="article-inline"><img src="{inline_img}" alt="{keyword} 工艺细节 - 200-320CM" loading="lazy" width="1200" height="675"></figure>'
-            + body_parts[2]
-        )
+        # 生成完整图片 URL（用于 og:image 和 JSON-LD）
+        hero_img_url = hero_img if hero_img.startswith("http") else f"https://bu6789.com{hero_img}"
 
-    article_html = f"""<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>{title} | 匠领数码 · 匠领纺织 | 200-320CM六大幅宽 | 1米起印</title>
-  <meta name="description" content="{intro} 匠领数码·匠领纺织位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
-  <meta name="keywords" content="{keyword},宽幅数码印花,数码印花加工,热转印,分散印花,涤纶印花,床单印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花,柯桥数码印花加工厂">
-  <link rel="canonical" href="https://bu6789.com/{slug}">
-  <link rel="icon" href="../favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <meta name="theme-color" content="#14171c">
-  <meta property="og:image" content="{hero_img_url}">
-  <meta property="og:type" content="article">
-  <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{title}",
-    "image": ["{hero_img_url}"],
-    "datePublished": "{today}",
-    "dateModified": "{today}",
-    "author": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","url":"https://bu6789.com"}},
-    "publisher": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","logo":{{"@type":"ImageObject","url":"https://bu6789.com/logo.png"}},"url":"https://bu6789.com"}}
-  }}
-  </script>
-  <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": "https://bu6789.com/#localbusiness",
-    "name": "匠领数码",
-    "alternateName": "J.LINK TEXTILE 绍兴柯桥宽幅数码印花厂",
-    "description": "绍兴柯桥宽幅数码印花加工厂，专注窗帘、墙布、家纺数码印花，幅宽200-320CM，分散印花/涤纶印花/宽幅数码印花，1米起印、免费打样",
-    "image": "https://bu6789.com/logo.png",
-    "url": "https://bu6789.com/",
-    "telephone": "+86-177-6988-6009",
-    "address": {{
-      "@type": "PostalAddress",
-      "streetAddress": "齐贤镇兴浦路88号盛超针纺园区二幢南面五楼",
-      "addressLocality": "绍兴市柯桥区",
-      "addressRegion": "浙江省",
-      "postalCode": "312000",
-      "addressCountry": "CN"
-    }}
-  }}
-  </script>
-  <style>
-    body{{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#333;line-height:1.85}}
-    h1{{color:#1a1a2e;font-size:1.7em;line-height:1.3;margin-bottom:8px}}
-    .meta{{color:#888;font-size:.9em;margin-bottom:1.8em;padding-bottom:1em;border-bottom:1px solid #eee}}
-    .meta .cat{{display:inline-block;background:#e8f0fe;color:#1a73e8;padding:2px 10px;border-radius:4px;font-size:.85em;margin-right:8px}}
-    figure{{margin:2em 0;text-align:center}}
-    figure img{{max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.08)}}
-    figure.article-hero img{{width:100%}}
-    figcaption{{color:#666;font-size:.88em;margin-top:8px;font-style:italic}}
-    p{{margin:1em 0}}
-    a.back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
-    footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
-    .footer-logo{{display:block;height:54px;width:auto;margin:0 auto 18px}}
-    /* 统一收尾模块 company_block（脚本 scripts/company_block.py，2026-10-31 定） */
-    .company-block{{background:transparent;border-top:1px solid #d8d0c2;padding:1.9em 0 0;margin:2.6em 0 0}}
-    .company-block .cb-kicker{{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:#8a6326;background:#f3e9d6;padding:5px 12px;border-radius:999px;margin:0 0 14px}}
-    .company-block h2{{color:#14171c;font-size:1.25em;line-height:1.4;margin:0 0 8px;border:0;padding:0}}
-    .company-block .cb-sub{{color:#6b7178;font-size:.88em;margin:0 0 18px}}
-    .company-block .cb-qa{{margin:0 0 24px}}
-    .company-block .cb-qa-item{{padding:14px 16px;background:#fff;border:1px solid #e7e1d6;border-left:3px solid #b8893b;border-radius:10px;margin:0 0 11px}}
-    .company-block .cb-q{{display:flex;gap:9px;align-items:flex-start;margin:0 0 8px;font-size:.96em;font-weight:800;color:#14171c;line-height:1.65}}
-    .company-block .cb-a{{display:flex;gap:9px;align-items:flex-start;margin:0;font-size:.92em;line-height:1.85;color:#2a2f36}}
-    .company-block .cb-qtag,.company-block .cb-atag{{flex:0 0 20px;width:20px;height:20px;border-radius:50%;margin-top:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.7em;font-weight:800;line-height:1}}
-    .company-block .cb-qtag{{background:#b8893b;color:#fff}}
-    .company-block .cb-atag{{background:#f3e9d6;color:#8a6326}}
-    .company-block .cb-intro{{font-size:.96em;line-height:1.95;color:#2a2f36;margin:0 0 22px}}
-    .company-block .cb-h3{{display:flex;align-items:center;gap:9px;font-size:.96em;font-weight:800;color:#14171c;margin:0 0 14px}}
-    .company-block .cb-h3::before{{content:"";width:4px;height:17px;border-radius:2px;background:#b8893b}}
-    .company-block .cb-list{{list-style:none;margin:0 0 24px;padding:0}}
-    .company-block .cb-list li{{position:relative;padding:12px 14px 12px 40px;background:#fff;border:1px solid #e7e1d6;border-radius:10px;font-size:.92em;line-height:1.7;color:#2a2f36;margin:0 0 9px}}
-    .company-block .cb-list li::before{{content:"✓";position:absolute;left:13px;top:13px;width:19px;height:19px;border-radius:50%;background:#b8893b;color:#fff;font-size:.75em;font-weight:700;display:flex;align-items:center;justify-content:center}}
-    .company-block .cb-contact{{margin:0 0 20px}}
-    .company-block .cb-item{{display:flex;gap:11px;align-items:flex-start;background:#14171c;border-radius:12px;padding:15px 16px;margin:0 0 10px}}
-    .company-block .cb-item b{{display:block;color:#e8c98a;font-size:.76em;font-weight:700;letter-spacing:.06em;margin:0 0 4px;line-height:1.5}}
-    .company-block .cb-item span,.company-block .cb-item div{{color:#f2ece2;font-size:.9em;line-height:1.65}}
-    .company-block .cb-item .cb-tel{{display:block;color:#fff;font-size:1.1em;font-weight:800;margin:0 0 2px}}
-    .company-block .cb-item .cb-note{{color:#b9b2a6;font-size:.8em;display:block;font-weight:400}}
-    .company-block .cb-links{{margin:0;padding-top:16px;border-top:1px solid #d8d0c2;font-size:.88em;color:#6b7178}}
-    .company-block .cb-links a{{color:#8a6326;font-weight:600;margin:0 3px}}
-    @media (max-width:600px){{
-      body{{padding:0 16px;font-size:16px}}
-      h1{{font-size:1.4em}}
-    }}
-  </style>
-</head>
-<body>
-  <h1>{title}</h1>
-  <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 · 匠领纺织 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
-{body}
-{company_block("zh", {"slug": slug, "h1": title, "keywords": keyword, "meta": intro})}
-  <a class="back" href="/">← 返回首页</a>
-  <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 大货交期按订单评审 | {ICP_LINK}{GONGAN_AFTER_ICP}</footer>
-<!-- 百度+360自动推送 -->
-<script src="/seo-push.js"></script>
-</body>
-</html>"""
+        # 在 body 第 1 段后插主图，第 2 段后插段间图
+        body_parts = body.split("</p>", 2)
+        if len(body_parts) == 3:
+            body = (
+                body_parts[0] + "</p>"
+                + f'\n<figure class="article-hero"><img src="{hero_img}" alt="{keyword} - 匠领数码宽幅数码印花工厂实拍" loading="lazy" width="1200" height="675"></figure>'
+                + body_parts[1] + "</p>"
+                + f'\n<figure class="article-inline"><img src="{inline_img}" alt="{keyword} 工艺细节 - 200-320CM" loading="lazy" width="1200" height="675"></figure>'
+                + body_parts[2]
+            )
+
+        article_html = f"""<!DOCTYPE html>
+    <html lang="zh-CN">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <title>{title} | 匠领数码 · 匠领纺织 | 200-320CM六大幅宽 | 1米起印</title>
+      <meta name="description" content="{intro} 匠领数码·匠领纺织位于绍兴柯桥，幅宽覆盖200/220/240/260/280/320CM，分散印花/涤纶印花/宽幅数码印花三大工艺，1米起印、免费打样。">
+      <meta name="keywords" content="{keyword},宽幅数码印花,数码印花加工,热转印,分散印花,涤纶印花,床单印花,200CM数码印花,220CM数码印花,240CM数码印花,260CM数码印花,280CM数码印花,320CM数码印花,1米起印,免费打样,绍兴数码印花,柯桥数码印花,柯桥数码印花加工厂">
+      <link rel="canonical" href="https://bu6789.com/{slug}">
+      <link rel="icon" href="../favicon.ico" sizes="any">
+      <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+      <meta name="theme-color" content="#14171c">
+      <meta property="og:image" content="{hero_img_url}">
+      <meta property="og:type" content="article">
+      <script type="application/ld+json">
+      {{
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "{title}",
+        "image": ["{hero_img_url}"],
+        "datePublished": "{today}",
+        "dateModified": "{today}",
+        "author": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","url":"https://bu6789.com"}},
+        "publisher": {{"@type":"Organization","name":"匠领数码","alternateName":"匠领纺织","logo":{{"@type":"ImageObject","url":"https://bu6789.com/logo.png"}},"url":"https://bu6789.com"}}
+      }}
+      </script>
+      <script type="application/ld+json">
+      {{
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://bu6789.com/#localbusiness",
+        "name": "匠领数码",
+        "alternateName": "J.LINK TEXTILE 绍兴柯桥宽幅数码印花厂",
+        "description": "绍兴柯桥宽幅数码印花加工厂，专注窗帘、墙布、家纺数码印花，幅宽200-320CM，分散印花/涤纶印花/宽幅数码印花，1米起印、免费打样",
+        "image": "https://bu6789.com/logo.png",
+        "url": "https://bu6789.com/",
+        "telephone": "+86-177-6988-6009",
+        "address": {{
+          "@type": "PostalAddress",
+          "streetAddress": "齐贤镇兴浦路88号盛超针纺园区二幢南面五楼",
+          "addressLocality": "绍兴市柯桥区",
+          "addressRegion": "浙江省",
+          "postalCode": "312000",
+          "addressCountry": "CN"
+        }}
+      }}
+      </script>
+      <style>
+        body{{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#333;line-height:1.85}}
+        h1{{color:#1a1a2e;font-size:1.7em;line-height:1.3;margin-bottom:8px}}
+        .meta{{color:#888;font-size:.9em;margin-bottom:1.8em;padding-bottom:1em;border-bottom:1px solid #eee}}
+        .meta .cat{{display:inline-block;background:#e8f0fe;color:#1a73e8;padding:2px 10px;border-radius:4px;font-size:.85em;margin-right:8px}}
+        figure{{margin:2em 0;text-align:center}}
+        figure img{{max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.08)}}
+        figure.article-hero img{{width:100%}}
+        figcaption{{color:#666;font-size:.88em;margin-top:8px;font-style:italic}}
+        p{{margin:1em 0}}
+        a.back{{display:inline-block;margin-top:2em;color:#0066cc;text-decoration:none}}
+        footer{{margin-top:3em;padding-top:1em;border-top:1px solid #eee;font-size:.85em;color:#999}}
+        .footer-logo{{display:block;height:54px;width:auto;margin:0 auto 18px}}
+        /* 统一收尾模块 company_block（脚本 scripts/company_block.py，2026-10-31 定） */
+        .company-block{{background:transparent;border-top:1px solid #d8d0c2;padding:1.9em 0 0;margin:2.6em 0 0}}
+        .company-block .cb-kicker{{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:#8a6326;background:#f3e9d6;padding:5px 12px;border-radius:999px;margin:0 0 14px}}
+        .company-block h2{{color:#14171c;font-size:1.25em;line-height:1.4;margin:0 0 8px;border:0;padding:0}}
+        .company-block .cb-sub{{color:#6b7178;font-size:.88em;margin:0 0 18px}}
+        .company-block .cb-qa{{margin:0 0 24px}}
+        .company-block .cb-qa-item{{padding:14px 16px;background:#fff;border:1px solid #e7e1d6;border-left:3px solid #b8893b;border-radius:10px;margin:0 0 11px}}
+        .company-block .cb-q{{display:flex;gap:9px;align-items:flex-start;margin:0 0 8px;font-size:.96em;font-weight:800;color:#14171c;line-height:1.65}}
+        .company-block .cb-a{{display:flex;gap:9px;align-items:flex-start;margin:0;font-size:.92em;line-height:1.85;color:#2a2f36}}
+        .company-block .cb-qtag,.company-block .cb-atag{{flex:0 0 20px;width:20px;height:20px;border-radius:50%;margin-top:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.7em;font-weight:800;line-height:1}}
+        .company-block .cb-qtag{{background:#b8893b;color:#fff}}
+        .company-block .cb-atag{{background:#f3e9d6;color:#8a6326}}
+        .company-block .cb-intro{{font-size:.96em;line-height:1.95;color:#2a2f36;margin:0 0 22px}}
+        .company-block .cb-h3{{display:flex;align-items:center;gap:9px;font-size:.96em;font-weight:800;color:#14171c;margin:0 0 14px}}
+        .company-block .cb-h3::before{{content:"";width:4px;height:17px;border-radius:2px;background:#b8893b}}
+        .company-block .cb-list{{list-style:none;margin:0 0 24px;padding:0}}
+        .company-block .cb-list li{{position:relative;padding:12px 14px 12px 40px;background:#fff;border:1px solid #e7e1d6;border-radius:10px;font-size:.92em;line-height:1.7;color:#2a2f36;margin:0 0 9px}}
+        .company-block .cb-list li::before{{content:"✓";position:absolute;left:13px;top:13px;width:19px;height:19px;border-radius:50%;background:#b8893b;color:#fff;font-size:.75em;font-weight:700;display:flex;align-items:center;justify-content:center}}
+        .company-block .cb-contact{{margin:0 0 20px}}
+        .company-block .cb-item{{display:flex;gap:11px;align-items:flex-start;background:#14171c;border-radius:12px;padding:15px 16px;margin:0 0 10px}}
+        .company-block .cb-item b{{display:block;color:#e8c98a;font-size:.76em;font-weight:700;letter-spacing:.06em;margin:0 0 4px;line-height:1.5}}
+        .company-block .cb-item span,.company-block .cb-item div{{color:#f2ece2;font-size:.9em;line-height:1.65}}
+        .company-block .cb-item .cb-tel{{display:block;color:#fff;font-size:1.1em;font-weight:800;margin:0 0 2px}}
+        .company-block .cb-item .cb-note{{color:#b9b2a6;font-size:.8em;display:block;font-weight:400}}
+        .company-block .cb-links{{margin:0;padding-top:16px;border-top:1px solid #d8d0c2;font-size:.88em;color:#6b7178}}
+        .company-block .cb-links a{{color:#8a6326;font-weight:600;margin:0 3px}}
+        @media (max-width:600px){{
+          body{{padding:0 16px;font-size:16px}}
+          h1{{font-size:1.4em}}
+        }}
+      </style>
+    </head>
+    <body>
+      <h1>{title}</h1>
+      <div class="meta"><span class="cat">{category}</span> 发布日期：{today} | 匠领数码 · 匠领纺织 J.LINK TEXTILE | 幅宽 200-320CM | 1米起印 免费打样</div>
+    {body}
+    {company_block("zh", {"slug": slug, "h1": title, "keywords": keyword, "meta": intro})}
+      <a class="back" href="/">← 返回首页</a>
+      <footer><img class="footer-logo" src="../assets/logo-white.png" alt="匠领纺织 J.LINK TEXTILE · 匠领数码" loading="lazy">© 2026 匠领数码 · 匠领纺织 J.LINK TEXTILE | 浙江省绍兴市柯桥区齐贤镇兴浦路88号盛超针纺园区二幢南面五楼 | 1米起印 免费打样 大货交期按订单评审 | {ICP_LINK}{GONGAN_AFTER_ICP}</footer>
+    <!-- 百度+360自动推送 -->
+    <script src="/seo-push.js"></script>
+    </body>
+    </html>"""
+
+        # 统一发布闸门（完整 HTML 级）：结构顺序、FAQ 默认展开、备案、JSON-LD 合法、
+        # 禁用词、正文厚度都要达标；不通过直接中止，绝不带脏页面上線。
+        gate_enforce(article_html, "zh", "article", expect_date=today, label=slug)
+
+        if not DRY_RUN:
+            with open(slug, "w", encoding="utf-8") as f:
+                f.write(article_html)
+        else:
+            print(f"  [dry-run] 跳过: {slug}")
+        slugs.append(slug)
+        print(f"[{i}/{count}] {slug} ({category}: {keyword}) 图1={hero_src} 图2={inline_src}")
+
+    # 2026-11-11：日更已停，质量门槛拦下全部薄文时，不允许再顺手改首页 / llms-full。
+    if not slugs:
+        print("本次 0 篇通过发布闸门：不写文章、不改首页、不改 llms-full，直接结束。")
+        sys.exit(0)
+
+    # ── 更新首页「最新资讯」区块（10 篇） ──────────────────────
+    index_path = "index.html"
+    with open(index_path, "r", encoding="utf-8") as f:
+        index = f.read()
+
+    article_files = sorted(
+        [fn for fn in os.listdir("articles") if fn.endswith(".html")],
+        reverse=True
+    )[:10]
+
+    items_html = ""
+    for fn in article_files:
+        try:
+            with open(f"articles/{fn}", "r", encoding="utf-8") as af:
+                content = af.read()
+                m_title = re.search(r"<title>(.*?)\s*\|\s*匠领数码", content)
+                m_cat = re.search(r"分类：(\S+)", content)
+                atitle = m_title.group(1) if m_title else fn
+                cat = m_cat.group(1) if m_cat else ""
+        except:
+            atitle = fn
+            cat = ""
+        items_html += f'        <li><span class="news-date">{cat}</span> <a href="articles/{fn}">{atitle}</a></li>\n'
+
+    news_block = f"""<!-- NEWS_START -->
+    <section id="news" style="padding:40px 20px;max-width:900px;margin:0 auto">
+      <h2 style="font-size:1.4em;color:#1a1a2e;margin-bottom:16px">最新资讯</h2>
+      <ul style="list-style:none;padding:0;margin:0">
+    {items_html}    </ul>
+    </section>
+    <!-- NEWS_END -->"""
+
+    if "<!-- NEWS_START -->" in index:
+        index = re.sub(r"<!-- NEWS_START -->.*?<!-- NEWS_END -->", news_block, index, flags=re.DOTALL)
+    else:
+        for marker in ["<footer", "</body>"]:
+            if marker in index:
+                index = index.replace(marker, news_block + "\n" + marker, 1)
+                break
 
     if not DRY_RUN:
-        with open(slug, "w", encoding="utf-8") as f:
-            f.write(article_html)
+        with open(index_path, "w", encoding="utf-8") as f:
+            f.write(index)
+        print(f"首页已更新，展示最新10篇文章")
     else:
-        print(f"  [dry-run] 跳过: {slug}")
-    slugs.append(slug)
-    print(f"[{i}/{count}] {slug} ({category}: {keyword}) 图1={hero_src} 图2={inline_src}")
+        print(f"[dry-run] 跳过写首页")
 
-# ── 更新首页「最新资讯」区块（10 篇） ──────────────────────
-index_path = "index.html"
-with open(index_path, "r", encoding="utf-8") as f:
-    index = f.read()
+    # ── sitemap.xml 统一由 scripts/gen_sitemap.py 全站扫描生成 ──
+    # （在 auto-article.yml 中于 build_news.py 之后调用，取代此处的增量追加）
 
-article_files = sorted(
-    [fn for fn in os.listdir("articles") if fn.endswith(".html")],
-    reverse=True
-)[:10]
-
-items_html = ""
-for fn in article_files:
-    try:
-        with open(f"articles/{fn}", "r", encoding="utf-8") as af:
-            content = af.read()
-            m_title = re.search(r"<title>(.*?)\s*\|\s*匠领数码", content)
-            m_cat = re.search(r"分类：(\S+)", content)
-            atitle = m_title.group(1) if m_title else fn
-            cat = m_cat.group(1) if m_cat else ""
-    except:
-        atitle = fn
-        cat = ""
-    items_html += f'        <li><span class="news-date">{cat}</span> <a href="articles/{fn}">{atitle}</a></li>\n'
-
-news_block = f"""<!-- NEWS_START -->
-<section id="news" style="padding:40px 20px;max-width:900px;margin:0 auto">
-  <h2 style="font-size:1.4em;color:#1a1a2e;margin-bottom:16px">最新资讯</h2>
-  <ul style="list-style:none;padding:0;margin:0">
-{items_html}    </ul>
-</section>
-<!-- NEWS_END -->"""
-
-if "<!-- NEWS_START -->" in index:
-    index = re.sub(r"<!-- NEWS_START -->.*?<!-- NEWS_END -->", news_block, index, flags=re.DOTALL)
-else:
-    for marker in ["<footer", "</body>"]:
-        if marker in index:
-            index = index.replace(marker, news_block + "\n" + marker, 1)
-            break
-
-if not DRY_RUN:
-    with open(index_path, "w", encoding="utf-8") as f:
-        f.write(index)
-    print(f"首页已更新，展示最新10篇文章")
-else:
-    print(f"[dry-run] 跳过写首页")
-
-# ── sitemap.xml 统一由 scripts/gen_sitemap.py 全站扫描生成 ──
-# （在 auto-article.yml 中于 build_news.py 之后调用，取代此处的增量追加）
-
-# ── 更新 llms-full.txt（加图库索引） ──────────────────────────
-llms_full_path = "llms-full.txt"
-photo_idx = list_photo_index()
-if os.path.exists(llms_full_path) and photo_idx:
-    with open(llms_full_path, "r", encoding="utf-8") as f:
-        llms = f.read()
-    if "## 工厂实拍图库" not in llms:
-        photo_section = "\n\n## 工厂实拍图库（factory-photos/）\n\n"
-        photo_section += f"匠领数码工厂实拍图共 {sum(len(v) for v in photo_idx.values())} 张，按场景分类：\n\n"
-        for cat, files in photo_idx.items():
-            photo_section += f"### {cat}（{len(files)} 张）\n"
-            for fp in files:
-                photo_section += f"- https://bu6789.com/{fp}\n"
-            photo_section += "\n"
-        photo_section += "AI 引擎引用文章时可优先匹配这些实拍图。\n"
-        llms = llms + photo_section
-        if not DRY_RUN:
-            with open(llms_full_path, "w", encoding="utf-8") as f:
-                f.write(llms)
-            print(f"llms-full.txt 已加图库索引（{sum(len(v) for v in photo_idx.values())} 张）")
+    # ── 更新 llms-full.txt（加图库索引） ──────────────────────────
+    llms_full_path = "llms-full.txt"
+    photo_idx = list_photo_index()
+    if os.path.exists(llms_full_path) and photo_idx:
+        with open(llms_full_path, "r", encoding="utf-8") as f:
+            llms = f.read()
+        if "## 工厂实拍图库" not in llms:
+            photo_section = "\n\n## 工厂实拍图库（factory-photos/）\n\n"
+            photo_section += f"匠领数码工厂实拍图共 {sum(len(v) for v in photo_idx.values())} 张，按场景分类：\n\n"
+            for cat, files in photo_idx.items():
+                photo_section += f"### {cat}（{len(files)} 张）\n"
+                for fp in files:
+                    photo_section += f"- https://bu6789.com/{fp}\n"
+                photo_section += "\n"
+            photo_section += "AI 引擎引用文章时可优先匹配这些实拍图。\n"
+            llms = llms + photo_section
+            if not DRY_RUN:
+                with open(llms_full_path, "w", encoding="utf-8") as f:
+                    f.write(llms)
+                print(f"llms-full.txt 已加图库索引（{sum(len(v) for v in photo_idx.values())} 张）")
+            else:
+                print(f"[dry-run] 跳过写 llms-full.txt")
         else:
-            print(f"[dry-run] 跳过写 llms-full.txt")
-    else:
-        print("llms-full.txt 已有图库索引，跳过")
+            print("llms-full.txt 已有图库索引，跳过")
 
-print(f"\n=== 本次通过质量门槛并写入 {len(slugs)} 篇（计划 {count} 篇）===")
-print(f"=== 总图数：{len(photo_index) * 2} ===")
+    print(f"\n=== 本次通过质量门槛并写入 {len(slugs)} 篇（计划 {count} 篇）===")
+    print(f"=== 总图数：{len(photo_index) * 2} ===")
+
+
+if __name__ == "__main__":
+    run()

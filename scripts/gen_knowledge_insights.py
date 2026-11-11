@@ -25,8 +25,10 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import gen_knowledge as G
-from company_block import company_block, qa_pairs
+from company_block import company_block, company_jsonld, qa_pairs
 from knowledge_insights_pool import INSIGHTS
+from beijing_time import today_bj
+from content_gate import enforce as gate_enforce
 
 SITE = G.SITE
 KB = G.KB
@@ -35,20 +37,37 @@ INS.mkdir(exist_ok=True, parents=True)
 META = INS / "meta.json"
 
 EPOCH = datetime.date(2026, 1, 1)
-RUN_DATE = datetime.date.today()
+# 2026-11-11 修：Actions runner 是 UTC，18:30 UTC 的定时任务用 date.today()
+# 会拿到「北京日期 - 1」，导致当天页面缺失。发布日期一律按北京时间算。
+RUN_DATE = today_bj()
 DATE = RUN_DATE.isoformat()
 
-# 中文核心参数速览块：统一准确规格，提升参数密度/长度/时效信号（中文 AI 引擎友好）
+# 核心参数速览：2026-11-11 由列表改为表格（百度飓风算法要求的「真实差异信息 /
+# 结构化参数」），并清掉旧版「整幅无拼接」禁用表述。中英各一张，硬数字全部来自事实卡。
 ZH_GLANCE = (
     "\n\n## 核心参数速览\n"
-    "- 六大标准幅宽：200 / 220 / 240 / 260 / 280 / 320CM，最高 320CM 整幅无拼接\n"
-    "- 三大工艺：分散印花、涤纶印花、宽幅数码印花\n"
-    "- 8 色墨水、1670 万色，色差 ΔE<1.5\n"
-    "- 4 级以上色牢度，耐日晒耐水洗\n"
-    "- 1米起印、免费打样（首单 1-2 个花型），无需制版\n"
-    "- 标准交期 5-7 个工作日，打样 1-2 天\n"
-    "- 8+ 条进口高速线 24 小时运行，月产 60 万米+\n"
-    "- OEKO-TEX 合规、SGS 合作，出口级品质"
+    "| 项目 | 我们匠领数码的标准 |\n"
+    "| --- | --- |\n"
+    "| 标准幅宽 | 200 / 220 / 240 / 260 / 280 / 320CM 六档，最高 320CM 整幅一次成、无切断 |\n"
+    "| 工艺 | 分散印花、涤纶印花、宽幅数码印花 |\n"
+    "| 色彩 | 8 色墨水、1670 万色；打样 ΔE≤2.0，成品对比确认样 ΔE≤1.5（同批同光源） |\n"
+    "| 品控 | 耐洗≥4 级、耐光≥5 级；缩水率≤3%、门幅偏差±2CM；720dpi；7 项逐米全检 + 双人复核 |\n"
+    "| 起订与打样 | 1 米起印，首单 1-2 花型免费打样，打样 1-2 天 |\n"
+    "| 交期与产能 | 常规 5-7 个工作日；月产能 60 万米，8+ 条进口高速产线 24 小时运转 |\n"
+    "| 合规 | OEKO-TEX Standard 100，出口订单按客户指定标准复核 |\n"
+)
+
+EN_GLANCE = (
+    "\n\n## Key Specifications\n"
+    "| Item | Our standard at J.LINK TEXTILE |\n"
+    "| --- | --- |\n"
+    "| Standard widths | 200 / 220 / 240 / 260 / 280 / 320CM, up to 320CM in one continuous piece |\n"
+    "| Processes | Disperse printing, polyester printing, wide-format digital printing |\n"
+    "| Colour | 8-colour inks, 16.7M colours; sampling ΔE≤2.0, bulk vs sealed sample ΔE≤1.5 |\n"
+    "| Quality | Wash fastness ≥grade 4, light fastness ≥grade 5; shrinkage ≤3%, width tolerance ±2CM; 720dpi; 7-point per-meter inspection with double check |\n"
+    "| Minimum & sampling | 1-meter minimum, 1-2 free sample designs on the first order, samples in 1-2 days |\n"
+    "| Lead time & capacity | 5-7 working days standard; 600,000 meters monthly on 8+ imported high-speed lines running 24 hours |\n"
+    "| Compliance | OEKO-TEX Standard 100; export orders rechecked to the buyer's specified standard |\n"
 )
 
 ZH_CHECKLIST_INTRO = "下单前逐项核对，可显著降低返工与色差风险："
@@ -93,28 +112,27 @@ def render_extra(data, lang):
         intro = ZH_CHECKLIST_INTRO if lang == "zh" else \
             "Check each item before ordering to reduce rework and color drift:"
         items = "\n".join(f"<li>{c}</li>" for c in checklist)
+        # 2026-11-11：增强模块并入正文容器，保证「收尾紧贴正文、与正文同宽」
         out += (
-            '<section><div class="container">'
             f'<h2>{"选型决策清单" if lang=="zh" else "Selection Checklist"}</h2>'
             f"<p>{intro}</p><ul class=\"kb-checklist\">{items}</ul>"
-            "</div></section>"
         )
 
     if myths:
         intro = ZH_MYTH_INTRO if lang == "zh" else \
             "Several misconceptions circulate in the industry; clarifying them helps rational selection:"
         rows = ""
+        _myth_tag = "误区：" if lang == "zh" else "Myth: "
+        _fact_tag = "正解：" if lang == "zh" else "Fact: "
         for myth, truth in myths:
             rows += (
                 '<div class="kb-myth"><p class="kb-myth-q">'
-                f'<b>{"误区："}</b>{myth}</p>'
-                f'<p class="kb-myth-a"><b>{"正解："}</b>{truth}</p></div>'
+                f'<b>{_myth_tag}</b>{myth}</p>'
+                f'<p class="kb-myth-a"><b>{_fact_tag}</b>{truth}</p></div>'
             )
         out += (
-            '<section><div class="container">'
             f'<h2>{"常见误区" if lang=="zh" else "Common Myths"}</h2>'
             f"<p>{intro}</p>{rows}"
-            "</div></section>"
         )
 
     if compare and len(compare) >= 2:
@@ -123,14 +141,12 @@ def render_extra(data, lang):
         for r in compare[1:]:
             body_rows += "<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>"
         out += (
-            '<section><div class="container">'
             f'<h2>{"方案对比" if lang=="zh" else "Option Comparison"}</h2>'
             '<table class="kb-compare"><thead><tr>'
             + "".join(f"<th>{h}</th>" for h in head)
             + "</tr></thead><tbody>"
             + body_rows
             + "</tbody></table>"
-            "</div></section>"
         )
     return out
 
@@ -157,7 +173,8 @@ def build_one(lang, run_date=None):
         f'  <link rel="alternate" hreflang="en" href="{en_url}">\n'
         f'  <link rel="alternate" hreflang="x-default" href="{zh_url}">'
     )
-    body = G.md_to_html(data["md"] + f"\n\n发布日期：{date_str}" + (G.EN_GLANCE if lang == "en" else ZH_GLANCE))
+    _pub = f"发布日期：{date_str}" if lang == "zh" else f"Published: {date_str}"
+    body = G.md_to_html(data["md"] + "\n\n" + _pub + (EN_GLANCE if lang == "en" else ZH_GLANCE))
     body = fix_kb_links(body, lang)
     faq_html = ""
     _faq_t = "常见问题" if lang == "zh" else "FAQ"
@@ -200,12 +217,26 @@ def build_one(lang, run_date=None):
     if _qaf:
         json_blocks.append(G.faq_jsonld(_qaf))
     json_blocks.append(G.breadcrumb_jsonld(trail))
+    # 第 4 块：Organization + ContactPoint，与收尾 NAP 对齐（每块独立 <script>，拼一段属非法）
+    json_blocks.append(json.loads(company_jsonld()))
     head_json = "\n".join(
         '<script type="application/ld+json">\n%s\n</script>'
         % json.dumps(b, ensure_ascii=False, indent=2)
         for b in json_blocks)
 
     topic = {"url_zh": url_zh, "url_en": url_en}
+    if lang == "zh":
+        cta_html = (
+            '<h2 style="color:#fff">需要宽幅数码印花代工？</h2>'
+            '<p style="color:rgba(255,255,255,.85)">告诉我们您的需求，张先生 24 小时内回复您的询单</p>'
+            '<a href="tel:+8617769886009">📞 立即联系张先生 17769886009</a>'
+        )
+    else:
+        cta_html = (
+            '<h2 style="color:#fff">Need wide-format digital printing?</h2>'
+            '<p style="color:rgba(255,255,255,.85)">Tell us your specs — Mr. Zhang replies within 24 hours</p>'
+            '<a href="tel:+8617769886009">📞 Call Mr. Zhang +86 177 6988 6009</a>'
+        )
     html = f"""<!DOCTYPE html>
 <html lang="{('zh-CN' if lang=='zh' else 'en')}">
 <head>
@@ -240,13 +271,7 @@ def build_one(lang, run_date=None):
 <section>
   <div class="container">
 {body}
-  </div>
-</section>
-
 {extra_html}
-
-<section>
-  <div class="container">
 {company_block(lang, ctx)}
   </div>
 </section>
@@ -255,9 +280,7 @@ def build_one(lang, run_date=None):
 
 <div class="container">
   <div class="cta-box">
-    <h2 style="color:#fff">需要宽幅数码印花代工？</h2>
-    <p style="color:rgba(255,255,255,.85)">告诉我们您的需求，张先生 24 小时内回复您的询单</p>
-    <a href="tel:+8617769886009">📞 立即联系张先生 17769886009</a>
+    {cta_html}
   </div>
 </div>
 
@@ -320,29 +343,43 @@ def build_index():
     print("已更新快报索引 index.html / index-en.html")
 
 
-def main(rebuild_all=False):
+def main(rebuild_all=False, dry_run=False):
     if rebuild_all:
+        # 全量重建会改动已上线页面，默认不使用；老板 2026-11-11 定「已上线不改」。
         meta = load_meta()
         for d, m in meta.items():
             try:
                 rd = datetime.date.fromisoformat(d)
             except ValueError:
                 continue
-            (INS / f"{d}.html").write_text(build_one("zh", rd), encoding="utf-8")
-            (INS / f"en-{d}.html").write_text(build_one("en", rd), encoding="utf-8")
+            if not dry_run:
+                (INS / f"{d}.html").write_text(build_one("zh", rd), encoding="utf-8")
+                (INS / f"en-{d}.html").write_text(build_one("en", rd), encoding="utf-8")
             print(f"已重建快报：{d}（{m['zh']}）")
-        build_index()
+        if not dry_run:
+            build_index()
         return
 
     zh_path = INS / f"{DATE}.html"
     en_path = INS / f"en-{DATE}.html"
     item = INSIGHTS[(RUN_DATE - EPOCH).days % len(INSIGHTS)]
+    print(f"北京发布日期：{DATE}｜今日选题：{item['zh']['h1']} / {item['en']['h1']}")
     if zh_path.exists() and en_path.exists():
         print(f"今日快报已存在（{DATE}），跳过正文生成，仅更新索引。")
     else:
-        zh_path.write_text(build_one("zh"), encoding="utf-8")
-        en_path.write_text(build_one("en"), encoding="utf-8")
-        print(f"已生成今日快报：{DATE}（{item['zh']['h1']}）")
+        zh_html = build_one("zh")
+        en_html = build_one("en")
+        # 发布闸门：任何一项不合规就不写文件、不写 meta、不更新索引（工作流随之失败，不会带脏页上线）
+        gate_enforce(zh_html, "zh", "insight", expect_date=DATE, label=f"insights/{DATE}")
+        gate_enforce(en_html, "en", "insight", expect_date=DATE, label=f"insights/en-{DATE}")
+        if dry_run:
+            print("[dry-run] 闸门已通过，未写任何文件")
+            return
+        zh_path.write_text(zh_html, encoding="utf-8")
+        en_path.write_text(en_html, encoding="utf-8")
+        print(f"✅ 今日快报已发布：{DATE}（{item['zh']['h1']}）")
+    if dry_run:
+        return
     meta = load_meta()
     meta[DATE] = {"slug": item["slug"], "zh": item["zh"]["h1"], "en": item["en"]["h1"]}
     save_meta(meta)
@@ -352,6 +389,7 @@ def main(rebuild_all=False):
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("--rebuild-all", action="store_true", help="按 meta.json 全量重建所有已发布快报")
+    ap.add_argument("--rebuild-all", action="store_true", help="按 meta.json 全量重建所有已发布快报（会改存量，慎用）")
+    ap.add_argument("--dry-run", action="store_true", help="只生成并过闸门，不写文件")
     args = ap.parse_args()
-    main(rebuild_all=args.rebuild_all)
+    main(rebuild_all=args.rebuild_all, dry_run=args.dry_run)

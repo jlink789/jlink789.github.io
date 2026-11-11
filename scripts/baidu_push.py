@@ -23,6 +23,9 @@ import urllib.request
 from pathlib import Path
 from datetime import datetime
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from beijing_time import today_str  # noqa: E402  北京日期筛选当天新文
+
 # ═══════════════════════════════════════════════════════════
 # 配置区
 # ═══════════════════════════════════════════════════════════
@@ -51,7 +54,7 @@ PRIORITY_URLS = [
 
 def get_today_articles() -> list:
     """获取今天生成的文章URL"""
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = today_str()
     urls = []
     if ARTICLES_DIR.exists():
         for f in sorted(ARTICLES_DIR.glob(f"{today}*.html"), reverse=True):

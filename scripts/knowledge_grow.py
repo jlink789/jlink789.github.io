@@ -25,6 +25,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
+if str(Path(__file__).parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).parent))
+from beijing_time import today_str  # noqa: E402  上线日期按北京时间
+
 STATE = ROOT / "scripts" / "knowledge_queue_state.json"
 LLMS_FILES = (ROOT / "llms.txt", ROOT / "llms-full.txt")
 SITE = "https://bu6789.com"
@@ -99,16 +103,28 @@ def main():
         return
 
     nxt = pending[0]
+    today = today_str()
+    print(f"北京发布日期：{today}")
+    print(f"今日专题：{nxt['slug']}｜{nxt['zh']['h1']} / {nxt['en']['h1']}")
+
+    # 发布闸门预检：只构建、不写文件。不合规直接抛错 → state / llms / 页面都不动，
+    # 工作流失败后下次重试仍抓同一个待发专题，不会把不合格的题「跳过」。
+    import gen_knowledge
+    gen_knowledge.main(
+        enforce_new={nxt["slug"]}, dry_run=True,
+        pub_dates={nxt["slug"]: today}, extra_topics=[nxt])
+
     live.add(nxt["slug"])
     state["live"] = sorted(live)
+    # 新页 datePublished 用真实北京上线日；老页没有 published 记录，保持原日期不变。
+    state.setdefault("published", {})[nxt["slug"]] = today
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"✅ 今日发布专题：{nxt['slug']}（{nxt['zh']['h1']}）")
 
     # 先同步 llms，再重生成页面；两者都只依赖 state，顺序不影响结果
     sync_llms(queue, live)
 
-    import gen_knowledge
-    gen_knowledge.main()
+    gen_knowledge.main(extra_topics=[nxt])
+    print(f"✅ 已上线中英双页（闸门通过）：{nxt['zh']['h1']} / {nxt['en']['h1']}")
 
     rest = len(pending) - 1
     print(f"剩余库存 {rest} 条（按每天 1 条可发 {rest} 天）")

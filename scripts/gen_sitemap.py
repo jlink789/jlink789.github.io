@@ -14,9 +14,13 @@ gen_sitemap.py — 全站 sitemap 生成器（单一数据源）
 """
 import re
 import subprocess
+import sys
 import xml.sax.saxutils as su
 from datetime import date
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from beijing_time import today_str  # noqa: E402  全站统一北京日期
 
 ROOT = Path(__file__).parent.parent
 SITE = "https://bu6789.com"
@@ -291,7 +295,7 @@ def build_alternates(relpath: str):
 
 def main():
     git_dates = get_git_dates()
-    today = date.today().isoformat()
+    today = today_str()
 
     pages = []
     for p in sorted(ROOT.rglob("*.html")):

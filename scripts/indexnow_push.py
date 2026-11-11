@@ -26,6 +26,9 @@ import urllib.error
 from pathlib import Path
 from datetime import datetime
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from beijing_time import today_str  # noqa: E402  北京日期筛选当天新文
+
 SITE = "https://bu6789.com"
 HOST = "bu6789.com"
 KEY = "98495fd3a172df1ba8e53313c1197dba"
@@ -49,7 +52,7 @@ def urls_from_sitemap() -> list:
 
 
 def urls_today() -> list:
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = today_str()
     if not ARTICLES_DIR.exists():
         return []
     return [f"{SITE}/articles/{f.name}" for f in sorted(ARTICLES_DIR.glob(f"{today}*.html"), reverse=True)]

@@ -27,6 +27,9 @@ import urllib.request
 from pathlib import Path
 from datetime import datetime
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from beijing_time import today_str, now_bj  # noqa: E402  北京日期 / 北京当前时刻
+
 # ═══════════════════════════════════════════════════════════
 # 配置区
 # ═══════════════════════════════════════════════════════════
@@ -76,7 +79,7 @@ def check_sitemap_freshness() -> dict:
     except Exception:
         return {"ok": False, "msg": f"lastmod 格式无法解析：{latest}"}
 
-    age_days = (datetime.now() - latest_dt.replace(tzinfo=None)).days
+    age_days = (now_bj().replace(tzinfo=None) - latest_dt.replace(tzinfo=None)).days
     if age_days > 7:
         return {
             "ok": False,
@@ -114,7 +117,7 @@ def ping_sitemap() -> list:
 
 def get_today_articles() -> list:
     """获取今天生成的文章URL"""
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = today_str()
     urls = []
     if ARTICLES_DIR.exists():
         for f in sorted(ARTICLES_DIR.glob(f"{today}*.html"), reverse=True):

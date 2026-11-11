@@ -25,6 +25,7 @@ ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(Path(__file__).parent))
 from company_block import company_block, company_jsonld, qa_pairs  # noqa: E402
 from beian_footer import ICP_LINK, GONGAN_AFTER_ICP  # noqa: E402
+from content_gate import enforce as gate_enforce  # noqa: E402
 KB = ROOT / "knowledge"
 KB.mkdir(exist_ok=True)
 TODAY = "2026-10-17"
@@ -32,6 +33,17 @@ SITE = "https://bu6789.com"
 
 SCORER = r"C:\Users\Administrator\.workbuddy\skills\geo-print-factory\scripts\geo_content_scorer.py"
 PY = r"C:\Users\Administrator\.workbuddy\binaries\python\versions\3.13.12\python.exe"
+
+STATE = ROOT / "scripts" / "knowledge_queue_state.json"
+
+
+def published_date(slug):
+    """队列专题的真实上线日（北京日期）；老专题没有记录则沿用固定 TODAY，已上线页面不变。"""
+    try:
+        st = json.loads(STATE.read_text(encoding="utf-8"))
+        return st.get("published", {}).get(slug) or TODAY
+    except Exception:
+        return TODAY
 
 # 英文页共享「核心参数速览」块：统一准确规格，提升参数密度/长度/时效信号（英文 AI 引擎友好）
 # 严禁词自检：仅用 320CM / 1-meter minimum / disperse·polyester·wide-format，不出现旧规格禁用词
@@ -160,7 +172,7 @@ def faq_jsonld(faq):
         ],
     }
 
-def article_jsonld(lang, data, url):
+def article_jsonld(lang, data, url, pub_date=None):
     return {
         "@context": "https://schema.org",
         "@type": "TechArticle",
@@ -171,8 +183,8 @@ def article_jsonld(lang, data, url):
             "@type": "Organization", "name": "匠领数码",
             "logo": {"@type": "ImageObject", "url": SITE + "/logo.png"},
         },
-        "datePublished": TODAY,
-        "dateModified": TODAY,
+        "datePublished": pub_date or TODAY,
+        "dateModified": pub_date or TODAY,
         "inLanguage": "zh-CN" if lang == "zh" else "en",
         "mainEntityOfPage": {"@type": "WebPage", "@id": url},
         "keywords": data["keywords"],
@@ -188,7 +200,7 @@ def breadcrumb_jsonld(trail):
         ],
     }
 
-def build_page(lang, topic, is_hub=False):
+def build_page(lang, topic, is_hub=False, pub_date=None):
     data = topic["zh"] if lang == "zh" else topic["en"]
     # 收尾问答的主题上下文：slug + 当篇标题/关键词/摘要 → 决定问答组（结合当篇内容）
     ctx = {
@@ -227,7 +239,8 @@ def build_page(lang, topic, is_hub=False):
             "url": url, "inLanguage": "zh-CN" if lang == "zh" else "en",
         })
     else:
-        json_blocks.append(article_jsonld(lang, data, url))
+        json_blocks.append(article_jsonld(
+            lang, data, url, pub_date or published_date(topic.get("slug", ""))))
     # FAQPage 同时覆盖「页面常见问题」与「收尾问答」（两者都在页面上可见）
     _qa = list(data.get("faq") or []) + list(qa_pairs(lang, ctx)[1])
     if _qa:
@@ -1299,6 +1312,38 @@ try:
 except Exception as _e:
     print(f"提示：增长队列未加载（{_e}），仅生成核心 10 专题。")
 
+# ── hub 展示层净化（2026-11-11） ───────────────────────────────────────
+# hub 每天随知识库增长重新生成，而早期 10 个核心专题的标题 / 简介里仍留着
+# 「整幅无拼接 / 拼缝 / 窄幅」等旧表述；若不净化，每天 03:10 会把禁用词重新写回线上。
+# 只作用于 hub 输出：已上线的专题正文按「已上线不改」口径保持原样（存量清理待老板点头），
+# 新发布专题由闸门逐页强制校验，本来就是干净的。
+_LEGACY_FIX = [
+    ("整幅无拼接", "整幅一次成"),
+    ("无拼接", "整幅一次成"),
+    ("无拼缝", "无切断"),
+    ("拼缝", "接缝"),
+    ("拼花", "花型"),
+    ("拼接", "分段"),
+    ("窄幅", "常规幅宽"),
+    ("断花", "图案中断"),
+    ("花型对不上", "图案错位"),
+    ("最大320CM", "最高 320CM"),
+    ("最宽320CM", "最高 320CM"),
+    ("100米起印", "1 米起印"),
+    ("100米起订", "1 米起印"),
+    ("活性印花", "分散印花"),
+]
+
+
+def _purge_legacy(html: str) -> str:
+    """把 hub 里残留的旧表述换成正面口径；「灵活性」等正常词不受影响。"""
+    html = html.replace("灵活性", "\x00LING\x00")
+    for old, new in _LEGACY_FIX:
+        html = html.replace(old, new)
+    html = html.replace("活性", "分散").replace("\x00LING\x00", "灵活性")
+    return html
+
+
 def _hub_topics_md(lang):
     lines = ["## 栏目导航"]
     for _t in T:
@@ -1461,22 +1506,46 @@ def build_hub(lang):
 </body>
 </html>
 """
-    return html
+    return _purge_legacy(html)
 
 # ───────────────────────── 主流程 ─────────────────────────
-def main():
-    written = []
+def main(enforce_new=None, dry_run=False, pub_dates=None, extra_topics=None):
+    """生成知识库全部页面。
+
+    enforce_new: 本次**新发布**的 slug 集合，只有这些页需要通过发布闸门；
+                 存量已上线页面按「已上线不改」口径不重建、不阻断、不校验。
+    dry_run    : 只构建 + 过闸门，不写任何文件（供 knowledge_grow.py 预检回滚用）。
+    pub_dates  : 新页的上线日期（北京日期），与预检/实写共用，保证 datePublished 一致。
+    extra_topics: 本次待发布但尚未写入 state 的专题对象，供预检与 hub 动态纳入。
+    """
+    enforce_new = set(enforce_new or ())
+    pub_dates = pub_dates or {}
+    if extra_topics:
+        known = {t["slug"] for t in T}
+        for t in extra_topics:
+            if t["slug"] not in known:
+                T.append(t)
+                known.add(t["slug"])
+
+    pending = []
     for lang in ("zh", "en"):
-        # hub
         p = KB / ("index.html" if lang == "zh" else "index-en.html")
-        p.write_text(build_hub(lang), encoding="utf-8")
-        written.append(str(p))
-        # topics
+        pending.append((p, build_hub(lang)))
         for t in T:
             p = KB / (t["url_zh"].split("/")[-1] if lang == "zh" else t["url_en"].split("/")[-1])
-            p.write_text(build_page(lang, t), encoding="utf-8")
-            written.append(str(p))
-    print(f"OK: 知识库生成完成，共 {len(written)} 个文件")
+            pub = pub_dates.get(t["slug"]) or published_date(t["slug"])
+            html = build_page(lang, t, pub_date=pub)
+            if t["slug"] in enforce_new:
+                gate_enforce(html, lang, "knowledge", expect_date=pub, label=t["slug"])
+            pending.append((p, html))
+
+    # 闸门全部通过之后才落盘，避免「写了一半才发现不合规」
+    if dry_run:
+        print(f"[dry-run] 发布闸门预检完成，未写文件（待生成 {len(pending)} 个页面）")
+        return
+    for p, html in pending:
+        p.write_text(html, encoding="utf-8")
+    print(f"OK: 知识库生成完成，共 {len(pending)} 个文件")
     if "--check" in sys.argv:
         check_scores()
 
