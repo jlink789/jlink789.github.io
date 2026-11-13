@@ -504,11 +504,30 @@ def ensure_inventory(pending, min_stock=3, batch=50):
     used = set(data["used"])
     print(f"自动补货触发：待发布 {pending} 条 < {min_stock} 条，已用组合 {len(used)} 个，开始生成 {batch} 条")
 
-    picked, built, skipped = [], [], 0
-    for combo in _all_combos():
+    # 按「未发维度覆盖率」补货（2026-11-13 改）：不再只按洗牌顺序凑够 batch 条，
+    # 而是优先挑用品类 / 幅宽 / 决策点 / 场景里当前出现次数最少的维度组合，
+    # 让库存的维度覆盖更均匀；同分时用固定种子洗牌序号兜底，顺序仍可复现。
+    from collections import Counter
+    dim_counter = Counter()
+    for slug in used:
+        for part in slug.split("-")[1:]:
+            dim_counter[part] += 1
+
+    def _dim_score(combo):
+        c, w, f, s = combo
+        ids = [c["id"], w["id"], f["id"]] + ([s["id"].replace("s-", "")] if s else [])
+        return sum(dim_counter[x] for x in ids)
+
+    candidates = []
+    for seq, combo in enumerate(_all_combos()):
         slug = _combo_slug(*combo)
         if slug in used:
             continue
+        candidates.append((_dim_score(combo), seq, combo, slug))
+    candidates.sort(key=lambda x: (x[0], x[1]))
+
+    picked, built, skipped = [], [], 0
+    for _score, _seq, combo, slug in candidates:
         if len(picked) >= batch:
             break
         topic = build([_make_data(*combo)])[0]
@@ -526,8 +545,14 @@ def ensure_inventory(pending, min_stock=3, batch=50):
     data["used"].extend(picked)
     data["updated"] = today_str()
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    used_parts = {p for s in data["used"] for p in s.split("-")}
+    cov = []
+    for name, items in (("品类", CATEGORIES), ("幅宽", WIDTHS), ("决策点", FOCUS), ("场景", SCENES)):
+        ids = [x["id"].replace("s-", "") for x in items]
+        cov.append(f"{name} {sum(1 for i in ids if i in used_parts)}/{len(ids)}")
     print(f"✅ 自动补货完成：新增 {len(built)} 条完整双语问答（跳过禁用词 {skipped} 条），"
           f"库存文件累计 {len(data['topics'])} 条 / 已用组合 {len(data['used'])} 个")
+    print(f"   维度覆盖率：{'，'.join(cov)}（按低频维度优先补货）")
     print(f"::notice::知识库库存低于 {min_stock} 条，已自动补充 {len(built)} 条完整问答")
     return len(built)
 

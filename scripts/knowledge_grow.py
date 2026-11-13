@@ -79,16 +79,54 @@ def sync_llms(queue, live):
             print(f"已同步 {f.name}：{len(rows)} 条增长专题")
 
 
-def main():
+def _build_with_facts(candidates, today, index, try_topics=12, try_offsets=8):
+    """组合签发：选证据 → 注入正文 → 单页闸位 → 跨页判重 → 不过就自动换证据 / 换题。
+
+    全程只构建 HTML，不写任何文件；返回 (注入后的 topic, {lang: html}, 判重统计) 或 None。
+    2026-11-13 起：每天每篇强制绑定 3 条低频事实单元 + 1 种体裁，
+    与所有已发页比 8-gram 指纹和事实集合，超阈值就在同一次工作流内换组合重试。
+    """
+    import gen_knowledge
+    import dedup_gate as D
+    import fact_library as FL
+    from content_gate import check as gate_check
+
+    tried = 0
+    for t in candidates[:try_topics]:
+        for off in range(try_offsets):
+            tried += 1
+            facts = FL.select_for(t["slug"], k=3, index=index, offset=off)
+            it = FL.inject_topic(t, facts, FL.genre_for(t["slug"], off))
+            htmls, reasons, last = {}, [], None
+            for lang in ("zh", "en"):
+                html = gen_knowledge.build_page(lang, it, pub_date=today)
+                htmls[lang] = html
+                _ok, g_rs, _st = gate_check(html, lang, "knowledge",
+                                            expect_date=today, label=t["slug"])
+                _dok, d_rs, d_st = D.check("knowledge", t["slug"], lang, html,
+                                           facts=it["_facts"], index=index)
+                last = d_st
+                reasons += g_rs + d_rs
+            if not reasons:
+                print(f"✅ 组合签发通过（第 {tried} 次尝试）｜事实 {it['_facts']}"
+                      f"｜体裁 {it['_genre']}｜与最近页相似度 {last['sim']}")
+                return it, htmls, last
+            if off == 0 or tried % 8 == 0:
+                print(f"   ↻ 第 {tried} 次组合被拦下，自动换证据/换题：{reasons[0][:90]}")
+    return None
+
+
+def main(dry_run=False):
     queue = load_queue()
     state = json.loads(STATE.read_text(encoding="utf-8"))
     live = set(state.get("live", []))
     pending = [t for t in queue if t["slug"] not in live]
     print(f"队列库存：共 {len(queue)} 条，已上线 {len(live)} 条，待发布 {len(pending)} 条")
 
-    # 自动补货：库存 < MIN_STOCK 时一次生成 BATCH 条完整问答并持久化，随后重新加载队列
+    # 自动补货：库存 < MIN_STOCK 时按「未发维度覆盖率」生成 BATCH 条并持久化
     import kb_autogen
-    added = kb_autogen.ensure_inventory(len(pending), min_stock=MIN_STOCK, batch=BATCH)
+    added = 0 if dry_run else kb_autogen.ensure_inventory(
+        len(pending), min_stock=MIN_STOCK, batch=BATCH)
     if added:
         queue = load_queue()
         pending = [t for t in queue if t["slug"] not in live]
@@ -102,29 +140,51 @@ def main():
         sync_llms(queue, live)
         return
 
-    nxt = pending[0]
     today = today_str()
     print(f"北京发布日期：{today}")
-    print(f"今日专题：{nxt['slug']}｜{nxt['zh']['h1']} / {nxt['en']['h1']}")
 
-    # 发布闸门预检：只构建、不写文件。不合规直接抛错 → state / llms / 页面都不动，
-    # 工作流失败后下次重试仍抓同一个待发专题，不会把不合格的题「跳过」。
+    import dedup_gate as D
+    import fact_library as FL
+    index = D.load_index()
+    picked = _build_with_facts(pending, today, index)
+    if not picked:
+        msg = ("组合签发失败：候选专题 × 证据组合 × 体裁全部被跨页判重或发布闸门拦下，"
+               "今天不写任何页面 / state / llms，下次运行仍抓同一批待发专题（不跳题）。"
+               "若持续出现，请往 fact_units.py 投喂新的真实信息。")
+        print("::error::" + msg)
+        raise SystemExit(1)
+
+    it, htmls, stats = picked
+    print(f"今日专题：{it['slug']}｜{it['zh']['h1']} / {it['en']['h1']}")
+
+    # 正式发布闸门预检：只构建、不写文件。不合规直接抛错 → state / llms / 页面都不动。
     import gen_knowledge
     gen_knowledge.main(
-        enforce_new={nxt["slug"]}, dry_run=True,
-        pub_dates={nxt["slug"]: today}, extra_topics=[nxt])
+        enforce_new={it["slug"]}, dry_run=True,
+        pub_dates={it["slug"]: today}, extra_topics=[it])
+    if dry_run:
+        print(f"[dry-run] 组合签发 + 双闸门全部通过，未写 state / llms / 页面 / 指纹索引")
+        return
 
-    live.add(nxt["slug"])
+    live.add(it["slug"])
     state["live"] = sorted(live)
     # 新页 datePublished 用真实北京上线日；老页没有 published 记录，保持原日期不变。
-    state.setdefault("published", {})[nxt["slug"]] = today
+    state.setdefault("published", {})[it["slug"]] = today
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # 先同步 llms，再重生成页面；两者都只依赖 state，顺序不影响结果
     sync_llms(queue, live)
+    gen_knowledge.main(extra_topics=[it])
 
-    gen_knowledge.main(extra_topics=[nxt])
-    print(f"✅ 已上线中英双页（闸门通过）：{nxt['zh']['h1']} / {nxt['en']['h1']}")
+    # 页面写盘成功后才记指纹；闸门失败绝不污染索引。
+    for lang in ("zh", "en"):
+        D.record("knowledge", it["slug"], lang, htmls[lang],
+                 facts=it["_facts"], genre=it["_genre"], date=today, index=index)
+    D.save_index(index)
+
+    print(f"✅ 已上线中英双页（闸门 + 判重通过）：{it['zh']['h1']} / {it['en']['h1']}")
+    h = FL.inventory_health(index)
+    print(f"库存健康度：已发页 {h['pages']}｜事实覆盖 {h['facts_used']}/{h['facts_total']}"
+          f"｜平均页间相似度 {h['avg_sim']}｜>0.50 页对 {h['pairs_over_limit']}/{h['pairs_sampled']}")
 
     rest = len(pending) - 1
     print(f"剩余库存 {rest} 条（按每天 1 条可发 {rest} 天）")
@@ -135,4 +195,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys as _sys
+    main(dry_run="--dry-run" in _sys.argv)

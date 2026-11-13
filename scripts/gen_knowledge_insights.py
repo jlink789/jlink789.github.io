@@ -28,7 +28,9 @@ import gen_knowledge as G
 from company_block import company_block, company_jsonld, qa_pairs
 from knowledge_insights_pool import INSIGHTS
 from beijing_time import today_bj
-from content_gate import enforce as gate_enforce
+from content_gate import enforce as gate_enforce, check as gate_check
+import fact_library as FL
+import dedup_gate as D
 
 SITE = G.SITE
 KB = G.KB
@@ -41,6 +43,142 @@ EPOCH = datetime.date(2026, 1, 1)
 # 会拿到「北京日期 - 1」，导致当天页面缺失。发布日期一律按北京时间算。
 RUN_DATE = today_bj()
 DATE = RUN_DATE.isoformat()
+
+# 2026-11-13 修：原选题用 INSIGHTS[(日期-EPOCH).days % 12]，池子只有 12 篇，
+# 每 12 天完整重复一轮。实测间隔 12 天的两份快报正文 8-gram 相似度 0.98~1.00。
+# 从 11-14 起改为「已发集合 + 固定种子洗牌」的无周期队列；此日期之前一律沿用旧算法，
+# 保证 --rebuild-all / 历史页重建字节不变（老板定：已上线页面不回补、不重命名、不重建）。
+NEW_PICK_FROM = datetime.date(2026, 11, 14)
+
+
+def pick_item(run_date=None):
+    """无周期选稿，返回 (选题, 第几圈)。
+
+    第一圈：按固定种子洗牌顺序取 meta.json 里从未发过的选题；
+    全部发过之后：取已发次数最少、最久未发的一篇，进入第二圈。
+    第二圈由 build_one 注入一组新的事实单元并给 H1 加角度后缀，
+    同一选题两次发布的正文实质不同，快报不再周期性复发。
+    """
+    import random
+    from collections import Counter
+    rd = run_date or RUN_DATE
+    if rd < NEW_PICK_FROM:
+        return INSIGHTS[(rd - EPOCH).days % len(INSIGHTS)], 0
+    meta = load_meta()
+    counts = Counter(m.get("slug") for m in meta.values())
+    order = list(INSIGHTS)
+    random.Random(20261113).shuffle(order)
+    for it in order:
+        if counts.get(it.get("slug"), 0) == 0:
+            return it, 0
+    last_seen = {}
+    for d, m in meta.items():
+        s = m.get("slug")
+        last_seen[s] = max(last_seen.get(s, ""), d)
+    order.sort(key=lambda it: (counts.get(it.get("slug"), 0),
+                               last_seen.get(it.get("slug"), "")))
+    chosen = order[0]
+    return chosen, counts.get(chosen.get("slug"), 1)
+
+
+def dynamic_item(lang, facts, genre, date_str):
+    """第二圈快报：由「本期事实组合」直接生成全新正文，不再复用 12 篇池里的旧 md。
+
+    旧池 12 篇发完后若原样重写，同一篇 md 骨架与新一期相似度 0.59~0.66，
+    注入事实也压不到 0.50 以下（2026-11-13 双链路 60 天模拟实测）。
+    改为每期以 3 条可核验外部事实为骨架：C(37,3)=7770 种证据组合 × 6 种体裁，
+    正文由证据集决定，决策角度可以复用但页面不再重复。
+    """
+    zh = lang == "zh"
+    ids = [f["id"] for f in facts]
+    tag = "·".join(ids)
+    tag_en = ", ".join(ids)
+    h1 = (f"本期依据 {tag}：三条外部事实怎么落到订单审单" if zh
+          else f"Evidence {tag_en}: Applying Three External Facts to Order Review")
+    layout = genre["layout"] if genre else "qa"
+    L = []
+    if zh:
+        L.append(f"我们公司（匠领数码 / J.LINK TEXTILE）在 {date_str} 这期快报里挑了三条可核验的外部依据"
+                 f"——{tag}，按「{layout}」的方式拆给采购与代工客户看：哪些是行业背景、哪些是强制要求、"
+                 "哪些必须回到封样与逐米全检来验收。下面每条都带出处，不写成我厂实测值。")
+    else:
+        L.append(f"We at J.LINK TEXTILE pick three verifiable external facts for the {date_str} "
+                 f"briefing, {tag_en}, and lay them out in a {layout} format for buyers and OEM clients: "
+                 "which are industry background, which are mandatory requirements, and which must be "
+                 "verified against a sealed sample and per-meter inspection. Every item carries a source "
+                 "and is never presented as our own measured figure.")
+    L.append("")
+    for f in facts:
+        label = f"{f['id']}｜{f['type']}" if zh else f["id"]
+        L.append(f"## 依据 {label}" if zh else f"## Evidence {label}")
+        L.append("")
+        L.append(f["zh"] if zh else f["en"])
+        L.append("")
+        L.append(f["hook_zh"] if zh else f["hook_en"])
+        L.append("")
+        if zh:
+            L.append(f"结合「{h1}」，这条依据主要用于回答「{f['words']}」这一类采购问题；"
+                     "我们公司（匠领数码 / J.LINK TEXTILE）把它放在审单的背景核对环节，"
+                     "实际验收仍以封样、同批同光源色差与 7 项逐米全检记录为准。")
+        else:
+            L.append(f"For \"{h1}\", this evidence addresses sourcing questions around {f['id']}. "
+                     "We at J.LINK TEXTILE use it as background at order review, while final acceptance "
+                     "follows the sealed sample, same-batch color difference and 7 per-meter checks.")
+        L.append("")
+    L.append("## 本期依据对照" if zh else "## Evidence Map")
+    L.append("")
+    L.append("| 依据 | 信息类型 | 与本篇的关联 |" if zh
+             else "| Evidence | Type | Relevance to this page |")
+    L.append("| --- | --- | --- |")
+    for f in facts:
+        if zh:
+            L.append(f"| {f['id']} | {f['type']} | 围绕「{h1}」，用于{f['words']}的决策核对 |")
+        else:
+            L.append(f"| {f['id']} | {f['id']} | Background check for {f['id']} in this briefing |")
+    L.append("")
+    L.append("## 小结" if zh else "## In Short")
+    L.append("")
+    if zh:
+        L.append(f"本期三条依据 {tag} 分别回答了不同环节的问题；我们公司（匠领数码 / J.LINK TEXTILE）"
+                 "把外部数据当背景、把封样与逐米全检当验收，1 米起印、首单 1-2 花型免费打样，"
+                 "客户可先出样再放量。")
+    else:
+        L.append(f"The three items {tag_en} answer different stages of sourcing. We at J.LINK TEXTILE "
+                 "treat external data as background and the sealed sample plus per-meter inspection as "
+                 "acceptance, with a 1-meter minimum and free sampling of 1-2 designs on the first order.")
+    md = "\n".join(L)
+
+    faq = []
+    for f in facts:
+        if zh:
+            faq.append((f"{f['id']} 这条依据与我们公司有什么关系？",
+                        f"{f['zh']} {f['hook_zh']}"))
+        else:
+            faq.append((f"How does {f['id']} relate to J.LINK TEXTILE?",
+                        f"{f['en']} {f['hook_en']}"))
+    if zh:
+        faq.append(("这些外部数据能直接当验收标准吗？",
+                    "不能。我们公司（匠领数码 / J.LINK TEXTILE）把行业数据与通用参数只作背景核对，"
+                    "实际验收以封样、同批同光源色差、门幅偏差 ±2CM 与 7 项逐米全检记录为准。"))
+    else:
+        faq.append(("Can external data be used directly as acceptance criteria?",
+                    "No. We at J.LINK TEXTILE use industry data and generic parameters as background only. "
+                    "Acceptance follows the sealed sample, same-batch color difference, width tolerance "
+                    "±2CM and 7 per-meter inspection records."))
+
+    return {
+        "h1": h1,
+        "hero": (f"我们公司（匠领数码 / J.LINK TEXTILE）本期解读 {tag} 三条外部依据。" if zh
+                 else f"We at J.LINK TEXTILE review three external facts: {tag_en}."),
+        "meta": (f"{h1}｜匠领数码柯桥宽幅数码印花源头工厂，带出处的外部依据与我厂验收口径对照。" if zh
+                 else f"{h1} | J.LINK TEXTILE, a Keqiao wide-format digital printing source factory, "
+                      "with sourced external evidence and our acceptance criteria."),
+        "keywords": (f"{','.join(ids)},外部依据,订单审单,匠领数码,宽幅数码印花" if zh
+                     else f"{','.join(ids)}, external evidence, order review, J.LINK TEXTILE, wide-format printing"),
+        "md": md,
+        "faq": faq,
+        "checklist": [], "myths": [], "compare": [],
+    }
 
 # 核心参数速览：2026-11-11 由列表改为表格（百度飓风算法要求的「真实差异信息 /
 # 结构化参数」），并清掉旧版「整幅无拼接」禁用表述。中英各一张，硬数字全部来自事实卡。
@@ -151,11 +289,22 @@ def render_extra(data, lang):
     return out
 
 
-def build_one(lang, run_date=None):
+def build_one(lang, run_date=None, facts=None, genre=None, cycle=0):
     rd = run_date or RUN_DATE
     date_str = rd.isoformat()
-    item = INSIGHTS[(rd - EPOCH).days % len(INSIGHTS)]
-    data = item[lang]
+    use_new = rd >= NEW_PICK_FROM
+    item, auto_cycle = pick_item(rd)
+    if not cycle:
+        cycle = auto_cycle
+    if use_new and facts is None:
+        facts = FL.select_for(f"insights/{date_str}", k=3, index=D.load_index())
+    if use_new and genre is None:
+        genre = FL.genre_for(f"insights/{date_str}", cycle)
+    if use_new and cycle > 0 and facts:
+        # 第二圈：旧池 12 篇的 md 骨架不能再复用，直接由本期事实组合生成全新正文。
+        data = dynamic_item(lang, facts, genre, date_str)
+    else:
+        data = item[lang]
     # 收尾问答的主题上下文：快报选题 slug + 当篇标题/关键词/摘要
     ctx = {
         "slug": item.get("slug", ""),
@@ -174,7 +323,11 @@ def build_one(lang, run_date=None):
         f'  <link rel="alternate" hreflang="x-default" href="{zh_url}">'
     )
     _pub = f"发布日期：{date_str}" if lang == "zh" else f"Published: {date_str}"
-    body = G.md_to_html(data["md"] + "\n\n" + _pub + (EN_GLANCE if lang == "en" else ZH_GLANCE))
+    extra_md = ""
+    if use_new and facts and cycle == 0:
+        extra_md = "\n\n" + FL.render_md(facts, lang, genre, data)
+    body = G.md_to_html(data["md"] + extra_md + "\n\n" + _pub
+                        + (EN_GLANCE if lang == "en" else ZH_GLANCE))
     body = fix_kb_links(body, lang)
     faq_html = ""
     _faq_t = "常见问题" if lang == "zh" else "FAQ"
@@ -362,14 +515,48 @@ def main(rebuild_all=False, dry_run=False):
 
     zh_path = INS / f"{DATE}.html"
     en_path = INS / f"en-{DATE}.html"
-    item = INSIGHTS[(RUN_DATE - EPOCH).days % len(INSIGHTS)]
-    print(f"北京发布日期：{DATE}｜今日选题：{item['zh']['h1']} / {item['en']['h1']}")
+    item, cycle = pick_item()
+    use_new = RUN_DATE >= NEW_PICK_FROM
+    print(f"北京发布日期：{DATE}｜今日选题：{item['zh']['h1']} / {item['en']['h1']}"
+          + (f"｜第 {cycle + 1} 圈（由本期事实组合生成全新正文）" if cycle else ""))
     if zh_path.exists() and en_path.exists():
         print(f"今日快报已存在（{DATE}），跳过正文生成，仅更新索引。")
     else:
-        zh_html = build_one("zh")
-        en_html = build_one("en")
-        # 发布闸门：任何一项不合规就不写文件、不写 meta、不更新索引（工作流随之失败，不会带脏页上线）
+        index = D.load_index()
+        slug_key = f"insights/{DATE}"
+        chosen = None
+        for off in range(8):
+            # 11-14 起：每篇快报绑定 3 条低频事实单元 + 一种体裁，并过跨页判重。
+            facts = FL.select_for(slug_key, k=3, index=index, offset=off) if use_new else None
+            genre = FL.genre_for(slug_key, cycle + off) if use_new else None
+            zh_html = build_one("zh", facts=facts, genre=genre, cycle=cycle)
+            en_html = build_one("en", facts=facts, genre=genre, cycle=cycle)
+            reasons, last = [], None
+            for lang, html, key_slug in (("zh", zh_html, DATE), ("en", en_html, "en-" + DATE)):
+                _ok, g_rs, _st = gate_check(html, lang, "insight",
+                                            expect_date=DATE, label=f"insights/{DATE}")
+                reasons += g_rs
+                if use_new:
+                    _dok, d_rs, d_st = D.check("insight", key_slug, lang, html,
+                                               facts=[f["id"] for f in facts], index=index)
+                    reasons += d_rs
+                    last = d_st
+            if not reasons:
+                chosen = (zh_html, en_html, facts, genre, last)
+                print(f"✅ 快报组合签发通过（第 {off + 1} 次尝试）｜"
+                      f"事实 {[f['id'] for f in facts] if facts else '历史模式'}"
+                      f"｜体裁 {genre['layout'] if genre else '-'}"
+                      f"｜与最近页相似度 {last['sim'] if last else '-'}")
+                break
+            print(f"   ↻ 第 {off + 1} 组被拦下，自动换证据：{reasons[0][:90]}")
+        if not chosen:
+            msg = ("每日快报组合签发失败：所有证据组合被闸门或跨页判重拦下，"
+                   "今天不写页面 / meta / 索引，下次重试不跳期。")
+            print("::error::" + msg)
+            raise SystemExit(1)
+
+        zh_html, en_html, facts, genre, stats = chosen
+        # 保留原有强制闸门（会打印厚度 / h2 / FAQ / JSON-LD 摘要）
         gate_enforce(zh_html, "zh", "insight", expect_date=DATE, label=f"insights/{DATE}")
         gate_enforce(en_html, "en", "insight", expect_date=DATE, label=f"insights/en-{DATE}")
         if dry_run:
@@ -378,6 +565,16 @@ def main(rebuild_all=False, dry_run=False):
         zh_path.write_text(zh_html, encoding="utf-8")
         en_path.write_text(en_html, encoding="utf-8")
         print(f"✅ 今日快报已发布：{DATE}（{item['zh']['h1']}）")
+        if use_new and facts:
+            ids = [f["id"] for f in facts]
+            D.record("insight", DATE, "zh", zh_html, facts=ids,
+                     genre=genre["layout"], date=DATE, index=index)
+            D.record("insight", "en-" + DATE, "en", en_html, facts=ids,
+                     genre=genre["layout"], date=DATE, index=index)
+            D.save_index(index)
+            h = FL.inventory_health(index)
+            print(f"库存健康度：已发页 {h['pages']}｜事实覆盖 {h['facts_used']}/{h['facts_total']}"
+                  f"｜平均页间相似度 {h['avg_sim']}")
     if dry_run:
         return
     meta = load_meta()
