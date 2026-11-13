@@ -11,6 +11,7 @@
     "curtain-oem",
     "curtain-printing-factory",
     "digital-printing-color-control",
+    "digital-printing-color-fastness",
     "digital-printing-width-options",
     "direct-wallcovering-printing",
     "export-quality",
@@ -36,6 +37,7 @@
   ],
   "note": "已上线专题 slug 列表；knowledge_grow.py 会把队列里第一个未上线专题加入此处并重新生成。",
   "published": {
-    "digital-printing-color-control": "2026-11-12"
+    "digital-printing-color-control": "2026-11-12",
+    "digital-printing-color-fastness": "2026-11-13"
   }
 }

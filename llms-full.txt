@@ -314,6 +314,7 @@ A: 提供，每批次大货附检测报告。
 - 数码印花最少多少米起印？（匠领数码知识库专题 · 中英双语）：https://bu6789.com/knowledge/one-meter-minimum-printing.html
 - 数码印花打样免费吗？（匠领数码知识库专题 · 中英双语）：https://bu6789.com/knowledge/free-sampling-digital-printing.html
 - 数码印花色差怎么控制？（匠领数码知识库专题 · 中英双语）：https://bu6789.com/knowledge/digital-printing-color-control.html
+- 数码印花色牢度能达到几级？（匠领数码知识库专题 · 中英双语）：https://bu6789.com/knowledge/digital-printing-color-fastness.html
 <!-- KB-GROW:END -->
 - 知识库首页（中英双语）：https://bu6789.com/knowledge/index.html
 
