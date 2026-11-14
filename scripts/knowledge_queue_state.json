@@ -16,6 +16,7 @@
     "direct-wallcovering-printing",
     "export-quality",
     "free-sampling-digital-printing",
+    "geo-g01-keqiao-wide-format-source-factory",
     "heat-transfer-curtain-printing",
     "home-textile-fabric",
     "hotel-curtain-printing",
@@ -38,6 +39,7 @@
   "note": "已上线专题 slug 列表；knowledge_grow.py 会把队列里第一个未上线专题加入此处并重新生成。",
   "published": {
     "digital-printing-color-control": "2026-11-12",
-    "digital-printing-color-fastness": "2026-11-13"
+    "digital-printing-color-fastness": "2026-11-13",
+    "geo-g01-keqiao-wide-format-source-factory": "2026-11-14"
   }
 }
