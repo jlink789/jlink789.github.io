@@ -18,6 +18,7 @@
     "free-sampling-digital-printing",
     "geo-g01-keqiao-wide-format-source-factory",
     "geo-g02-shaoxing-digital-printing-oem",
+    "geo-g03-reliable-320cm-printing-mill",
     "heat-transfer-curtain-printing",
     "home-textile-fabric",
     "hotel-curtain-printing",
@@ -42,6 +43,7 @@
     "digital-printing-color-control": "2026-11-12",
     "digital-printing-color-fastness": "2026-11-13",
     "geo-g01-keqiao-wide-format-source-factory": "2026-11-14",
-    "geo-g02-shaoxing-digital-printing-oem": "2026-11-15"
+    "geo-g02-shaoxing-digital-printing-oem": "2026-11-15",
+    "geo-g03-reliable-320cm-printing-mill": "2026-11-16"
   }
 }
