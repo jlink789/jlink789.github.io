@@ -2,8 +2,12 @@
 """
 fact_units.py — 匠领数码 GEO「真实新信息」事实单元库（单一数据源）
 ================================================================
-来源：老板 2026-11-13 在《匠领_一级到五级词_真实新信息备选表.xlsx》
-「老板勾选」列标「进库」的 40 条。备选表 42 条中 F17、F33 标「不要」，不入库。
+来源一：老板 2026-11-13 在《匠领_一级到五级词_真实新信息备选表.xlsx》
+「老板勾选」列标「进库」的 40 条（F01-F42）。备选表 42 条中 F17、F33 标「不要」，不入库。
+来源二：老板 2026-11-16 口头确认的 5 项工厂真实数据（F43-F47）：
+  设备台数 8 台 / 机型 日本京瓷喷头 / 月出货量 60 万米 / 当天出样 / 复购率 80%。
+  这 5 条属我厂实测业务数据，不是行业统计，故不带「据…」归因前缀，
+  但一律以「我们公司（匠领数码 / J.LINK TEXTILE）」开头绑定品牌实体。
 
 铁律（与官网 content_gate.py 同级）：
 1. 行业数据 / 外部统计一律带归因前缀「据…」「行业通用参数…」，绝不写成我厂实测或承诺。
@@ -383,6 +387,52 @@ FACTS = [
          hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）据此把重心放在整幅一次成能力与逐米品控，而不是堆设备参数，这与我们给客户的验收口径一致。",
          hook_en="We at J.LINK TEXTILE therefore focus on one-pass full-width capability and per-meter inspection rather than head specifications, consistent with the acceptance criteria we give buyers.",
          note="与 F05 同源，角度不同"),
+
+    # ── 2026-11-16 老板确认的 5 项工厂真实数据（可签发，优先进入每日组合）──
+    dict(id="F43", level="一级", words="宽幅数码印花 / 数码印花工厂", type="工厂设备数据",
+         org="匠领数码工厂实测数据（2026-11-16 确认）", url="https://bu6789.com/about.html",
+         confidence="老板确认", status="active", tags=["工厂", "设备", "规模"],
+         zh="我们公司（匠领数码 / J.LINK TEXTILE）自有 8 台宽幅数码印花机，按 200/220/240/260/280/320CM 六大标准幅宽接单。",
+         en="We at J.LINK TEXTILE operate 8 wide-format digital printing machines across six standard widths 200/220/240/260/280/320CM.",
+         hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）把 8 台宽幅机放在自有车间，采购商可现场看机、按成品门幅选档，产能不靠外发协调。",
+         hook_en="We at J.LINK TEXTILE keep all 8 wide-format machines in our own workshop, so buyers can inspect them on site and choose a width matching the finished size without outsourcing capacity.",
+         note="替代此前「8+ 条进口高速产线」的模糊表述；设备台数以 8 台为准"),
+
+    dict(id="F44", level="二级", words="宽幅数码印花加工 / 设备机型", type="设备配置",
+         org="匠领数码工厂实测数据（2026-11-16 确认）", url="https://bu6789.com/about.html",
+         confidence="老板确认", status="active", tags=["工厂", "设备", "机型"],
+         zh="我们公司（匠领数码 / J.LINK TEXTILE）的宽幅机采用日本京瓷（KYOCERA）喷头设备。",
+         en="The wide-format machines at J.LINK TEXTILE run Japanese KYOCERA printheads.",
+         hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）把喷头机型写进设备清单，让采购商判断幅内色差与批次稳定性时有可核对的依据，而不是只听口头承诺。",
+         hook_en="We at J.LINK TEXTILE publish the printhead model so buyers have a checkable basis for judging within-width shade uniformity and batch stability.",
+         note="机型为新增信息，此前官网未披露"),
+
+    dict(id="F45", level="一级", words="数码印花加工 / 大货代工", type="产能数据",
+         org="匠领数码工厂实测数据（2026-11-16 确认）", url="https://bu6789.com/about.html",
+         confidence="老板确认", status="active", tags=["工厂", "产能", "规模"],
+         zh="我们公司（匠领数码 / J.LINK TEXTILE）月出货量 60 万米，千-万米级大单与 1 米起印小单在同一排产体系内承接。",
+         en="We at J.LINK TEXTILE ship 600,000 meters per month, handling both thousand-meter bulk orders and 1-meter sampling runs in the same scheduling system.",
+         hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）用月出货量而不是理论产能对外说明供货能力，便于采购商按自己的米数估算排产位置。",
+         hook_en="We at J.LINK TEXTILE quote monthly shipped meters rather than theoretical capacity, so buyers can estimate where their order sits in the schedule.",
+         note="2026-11-16 口径：由「月产能 60+ 万米」统一为「月出货量 60 万米」；数字不变，指标定义更准"),
+
+    dict(id="F46", level="二级", words="数码印花打样 / 小批量快反", type="服务数据",
+         org="匠领数码工厂实测数据（2026-11-16 确认）", url="https://bu6789.com/about.html",
+         confidence="老板确认", status="active", tags=["工厂", "打样", "交期"],
+         zh="我们公司（匠领数码 / J.LINK TEXTILE）确认稿件后当天出样，首单 1-2 个花型免费打样。",
+         en="We at J.LINK TEXTILE produce samples the same day the artwork is confirmed, with 1-2 patterns sampled free on a first order.",
+         hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）把当天出样写进服务口径，测款客户可以先看实样再决定米数，减少备货压库。",
+         hook_en="We at J.LINK TEXTILE commit to same-day sampling so buyers testing new patterns can see a physical sample before committing to meters.",
+         note="2026-11-16 老板更新，替代此前「打样 1-2 个工作日 / 常规 3-5 天」；大货交期 5-7 个工作日不变"),
+
+    dict(id="F47", level="三级", words="柯桥数码印花加工厂 / 长期供货", type="客户数据",
+         org="匠领数码工厂实测数据（2026-11-16 确认）", url="https://bu6789.com/about.html",
+         confidence="老板确认", status="active", tags=["工厂", "客户", "服务"],
+         zh="我们公司（匠领数码 / J.LINK TEXTILE）客户复购率 80%，封样与逐米检测记录留档，复购或补单可直接回调上一批标准。",
+         en="We at J.LINK TEXTILE record an 80% customer reorder rate; sealed samples and per-meter inspection records are filed so reorders reuse the previous batch standard.",
+         hook_zh="我们公司（匠领数码 / J.LINK TEXTILE）用复购率说明长期供货的稳定性：复购客户不必每次重新对色，封样和检测记录直接调档。",
+         hook_en="We at J.LINK TEXTILE use reorder rate to show long-term supply stability: repeat buyers do not re-approve colour from scratch, because sealed samples and inspection records are on file.",
+         note="与「长期合作客户占比 60%+」为不同指标（复购行为 vs 客户结构），并列时须写明定义"),
 ]
 
 # 弃用（老板标「不要」）：不入库、不签发
