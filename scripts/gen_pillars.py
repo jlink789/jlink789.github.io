@@ -446,6 +446,12 @@ EXTRA_TOPICS = [
     ("/knowledge/printing-process-comparison.html",
      "工艺对比 · 热转印 vs 直喷 vs 分散印花：宽幅数码印花工艺怎么选",
      "三种工艺按面料、订单结构与色牢度要求对照，给出选型判断。"),
+    ("/knowledge/tablecloth-printing.html",
+     "桌布台布 · 桌布台布数码印花定制：餐饮酒店宴会桌布、家用台布整幅印花",
+     "按餐饮/酒店/婚宴/家用场景选材质与工艺，耐污易洗、色牢度稳。"),
+    ("/knowledge/bath-curtain-printing.html",
+     "浴帘印花 · 浴帘数码印花定制：酒店民宿浴帘、防水防霉涤纶浴帘整幅印花",
+     "涤纶防水面料整幅印花，防水快干、环保无味，酒店与外贸批量可做。"),
 ]
 
 
