@@ -1434,10 +1434,15 @@ def build_hub(lang):
     breadcrumb_html += "</div>"
     topic = {"url_zh": "/knowledge/index.html", "url_en": "/knowledge/index-en.html"}
     # 2026-11-11 五大深度支柱页入口：固化在生成器里，避免每日自动重生成把注入条冲掉
-    _pillar_cards = [("curtain", "窗帘印花"), ("wallcovering", "墙布印花"),
-                     ("home-textile", "家纺印花"), ("process", "工艺流程"), ("oem", "来图加工")]
+    _pillar_cards = [("/pillars/curtain.html", "窗帘印花", "curtain"),
+                     ("/pillars/wallcovering.html", "墙布印花", "wallcovering"),
+                     ("/pillars/home-textile.html", "家纺印花", "home textile"),
+                     ("/pillars/process.html", "工艺流程", "process"),
+                     ("/pillars/oem.html", "来图加工", "OEM"),
+                     ("/knowledge/background-wall-custom-printing.html", "背景墙定制", "background wall"),
+                     ("/knowledge/printing-process-comparison.html", "工艺对比", "process comparison")]
     _pl = " · ".join(
-        f'<a href="/pillars/{s}.html">{n if lang == "zh" else s}</a>' for s, n in _pillar_cards)
+        f'<a href="{u}">{n if lang == "zh" else en}</a>' for u, n, en in _pillar_cards)
     _ptitle = "深度专题：" if lang == "zh" else "Deep dives: "
     _pall = "全部专题" if lang == "zh" else "All topics"
     pillar_bar = (f'<!-- PILLARS:START -->\n<div style="max-width:1100px;margin:20px auto 0;'
