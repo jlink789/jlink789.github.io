@@ -25,12 +25,12 @@ TOPIC = {
 
 ## 1米起印与免费打样的意义
 
-传统印花要制版，起印量高、打样贵，小单不划算。数码印花加工无需制版，匠领数码支持 1米起印、免费打样：先用 1-2 天打样确认颜色与对花，封样后放大货，把色差与交期风险压到最低。
+传统印花要制版，起印量高、打样贵，小单不划算。数码印花加工无需制版，匠领数码支持 1米起印、免费打样：先当天出样确认颜色与对花，封样后放大货，把色差与交期风险压到最低。
 
 | 项目 | 小批量方案 |
 | --- | --- |
 | 最小起印 | 1米起印 |
-| 打样 | 免费打样，1-2 天出样 |
+| 打样 | 免费打样，确认稿件当天出样 |
 | 大货交期 | 5-7 个工作日 |
 | 补货 | 翻单快、按封样一致 |
 
@@ -75,7 +75,7 @@ TOPIC = {
         "faq": [
             ("小批量窗帘印花最小起印多少？", "匠领数码 1米起印、免费打样，电商测款、酒店配布、跨境试水都能小量开印，无需制版。"),
             ("小单窗帘也能整幅一次成吗？", "能。提供 200-320CM 六大标准幅宽、最高 320CM，宽幅直喷让几米的小单窗帘同样整幅一次成、对花精准。"),
-            ("小批量窗帘印花交期多久？", "免费打样 1-2 天出样，大货 5-7 个工作日交货，爆款可快反补货。"),
+            ("小批量窗帘印花交期多久？", "免费打样、确认稿件当天出样，大货 5-7 个工作日交货，爆款可快反补货。"),
             ("涤纶窗帘小单用什么工艺？", "多用热转印（分散印花），色彩饱和耐晒、换花型只换转印纸，天然适合多花型小批量；混纺走涤纶印花同样灵活。"),
         ],
     },
@@ -96,12 +96,12 @@ TOPIC = {
 
 ## Meaning of 1-Meter Minimum and Free Sampling
 
-Traditional printing needs screens, high minimums and costly sampling — poor for small runs. Digital printing needs no screens; J.LINK supports 1-meter minimum and free sampling: sample in 1-2 days to confirm color and match, seal, then bulk, minimizing risk.
+Traditional printing needs screens, high minimums and costly sampling — poor for small runs. Digital printing needs no screens; J.LINK supports 1-meter minimum and free sampling: get same-day samples after artwork approval to confirm color and match, seal, then bulk, minimizing risk.
 
 | Item | Small-batch plan |
 | --- | --- |
 | Minimum | 1-meter |
-| Sampling | Free, 1-2 days |
+| Sampling | Free, same-day after artwork approval |
 | Bulk lead time | 5-7 working days |
 | Reorder | Fast, consistent to sealed sample |
 
@@ -145,7 +145,7 @@ Summary: small-batch curtain printing wins on 1-meter minimum, free sampling and
         "faq": [
             ("What is the minimum for small-batch curtains?", "J.LINK offers 1-meter minimum with free sampling; e-commerce tests, hotel runs and cross-border trials can start small with no screens."),
             ("Can small curtains be seamless?", "Yes: six standard widths 200-320CM up to 320CM make even a few meters seamless and precisely matched."),
-            ("Lead time for small-batch curtains?", "Free sampling in 1-2 days, bulk in 5-7 working days, with fast replenishment for best-sellers."),
+            ("Lead time for small-batch curtains?", "Free sampling with same-day samples after artwork approval, bulk in 5-7 working days, with fast replenishment for best-sellers."),
             ("Which process for small polyester curtains?", "Mostly sublimation (disperse) — vivid, sun-resistant, swap paper for new designs; blends use polyester printing with equal flexibility."),
         ],
     },

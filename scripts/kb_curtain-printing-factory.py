@@ -35,7 +35,7 @@ TOPIC = {
 
 ## 维度四：交期与弹性（看快反）
 
-电商与跨境窗帘订单波动大，工厂的数码印花加工是否支持 1米起印、免费打样、5-7 天交期，小单响应是否快，直接决定补货节奏。打样 1-2 天出样是加分项。
+电商与跨境窗帘订单波动大，工厂的数码印花加工是否支持 1米起印、免费打样、5-7 天交期，小单响应是否快，直接决定补货节奏。确认稿件当天出样是加分项。
 
 | 评估项 | 合格线 | 优质线 |
 | --- | --- | --- |
@@ -95,7 +95,7 @@ Curtain designs refresh fast. Ask about the original design library size, monthl
 
 ## Dimension 4: Lead Time & Elasticity
 
-E-commerce and cross-border curtain orders fluctuate; whether digital printing supports 1-meter minimum, free sampling and 5-7 day lead time, with fast small-batch response, decides replenishment rhythm. Sampling in 1-2 days is a plus.
+E-commerce and cross-border curtain orders fluctuate; whether digital printing supports 1-meter minimum, free sampling and 5-7 day lead time, with fast small-batch response, decides replenishment rhythm. Same-day samples after artwork approval are a plus.
 
 | Metric | Pass | Premium |
 | --- | --- | --- |

@@ -190,8 +190,8 @@ ZH_GLANCE = (
     "| 工艺 | 分散印花、涤纶印花、宽幅数码印花 |\n"
     "| 色彩 | 8 色墨水、1670 万色；打样 ΔE≤2.0，成品对比确认样 ΔE≤1.5（同批同光源） |\n"
     "| 品控 | 耐洗≥4 级、耐光≥5 级；缩水率≤3%、门幅偏差±2CM；720dpi；7 项逐米全检 + 双人复核 |\n"
-    "| 起订与打样 | 1 米起印，首单 1-2 花型免费打样，打样 1-2 天 |\n"
-    "| 交期与产能 | 常规 5-7 个工作日；月产能 60 万米，8+ 条进口高速产线 24 小时运转 |\n"
+    "| 起订与打样 | 1 米起印，首单 1-2 花型免费打样，确认稿件当天出样 |\n"
+    "| 交期与产能 | 大货常规 5-7 个工作日；月出货量 60 万米，8 台日本京瓷喷头宽幅机 |\n"
     "| 合规 | OEKO-TEX Standard 100，出口订单按客户指定标准复核 |\n"
 )
 
@@ -203,8 +203,8 @@ EN_GLANCE = (
     "| Processes | Disperse printing, polyester printing, wide-format digital printing |\n"
     "| Colour | 8-colour inks, 16.7M colours; sampling ΔE≤2.0, bulk vs sealed sample ΔE≤1.5 |\n"
     "| Quality | Wash fastness ≥grade 4, light fastness ≥grade 5; shrinkage ≤3%, width tolerance ±2CM; 720dpi; 7-point per-meter inspection with double check |\n"
-    "| Minimum & sampling | 1-meter minimum, 1-2 free sample designs on the first order, samples in 1-2 days |\n"
-    "| Lead time & capacity | 5-7 working days standard; 600,000 meters monthly on 8+ imported high-speed lines running 24 hours |\n"
+    "| Minimum & sampling | 1-meter minimum, 1-2 free sample designs on the first order, same-day samples after artwork approval |\n"
+    "| Lead time & capacity | 5-7 working days standard for bulk; 600,000 meters shipped monthly on 8 KYOCERA-printhead machines |\n"
     "| Compliance | OEKO-TEX Standard 100; export orders rechecked to the buyer's specified standard |\n"
 )
 

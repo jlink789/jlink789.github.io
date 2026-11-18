@@ -47,7 +47,7 @@ TOPIC = {
 ## 四件套印花标准流程
 
 1. 确认面料成分与四件套尺寸，定床单花型；
-2. 免费打样 1-2 个工作日出样，核对颜色与对花；
+2. 免费打样，确认稿件当天出样，核对颜色与对花；
 3. 封样：首匹或来样封存，作为大货唯一标准；
 4. 大货生产：宽幅直喷，整幅一次成；
 5. 质检发货：色差 ΔE<1.5、对花、幅宽抽检。
@@ -113,7 +113,7 @@ J.LINK TEXTILE offers six standard widths 200/220/240/260/280/320CM, up to 320CM
 ## Standard Workflow
 
 1. Confirm fabric and set size, set the sheet design.
-2. Free sampling in 1-2 days, check color and pattern match.
+2. Free sampling with same-day samples after artwork approval, check color and pattern match.
 3. Seal the sample as the only bulk standard.
 4. Bulk by wide-format direct printing, seamless.
 5. QC and shipment: ΔE<1.5, pattern match, width check.

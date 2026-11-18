@@ -204,7 +204,7 @@ Summary: use disperse dye for saturated, sun-resistant polyester; polyester prin
 
 ## 标准代工流程
 1. 需求确认：幅宽（200-320CM）、面料（涤纶/化纤）、花型文件
-2. 免费打样：1-2 个工作日出样，确认颜色与对花
+2. 免费打样：确认稿件当天出样，确认颜色与对花
 3. 封样：来样或大货首匹封样，作为大货标准
 4. 大货生产：宽幅直喷，整幅无拼接
 5. 质检发货：色差、对花、幅宽抽检
@@ -215,7 +215,7 @@ Summary: use disperse dye for saturated, sun-resistant polyester; polyester prin
 | 加工幅宽 | 200/220/240/260/280/320CM |
 | 工艺 | 分散印花 / 涤纶印花 / 宽幅数码印花 |
 | 最小起印 | 1米起印、免费打样 |
-| 打样交期 | 1-2 个工作日 |
+| 打样交期 | 确认稿件当天出样 |
 | 大货交期 | 5-7 个工作日 |
 
 ## 为什么整幅无拼接重要
@@ -233,7 +233,7 @@ Summary: use disperse dye for saturated, sun-resistant polyester; polyester prin
 
 总结：窗帘代工走「打样→封样→大货」三段，整幅无拼接 + 1米起印 + 5-7天交期，把色差与交期风险压到最低。""",
             "faq": [
-                ("窗帘印花打样要多久？", "免费打样 1-2 个工作日出样，确认颜色与对花后再封样走大货。"),
+                ("窗帘印花打样要多久？", "免费打样确认稿件当天出样，确认颜色与对花后再封样走大货。"),
                 ("窗帘为什么强调整幅无拼接？", "落地帘、遮光帘有拼缝会对花错位一眼可见；宽幅整幅直喷规避拼接瑕疵，视觉更完整。"),
                 ("窗帘代工最小起印多少？", "1米起印、免费打样，适合电商补货、酒店工程与跨境快反的小批量订单。"),
             ],
@@ -650,7 +650,7 @@ Summary: consistency comes from sealed-sample baseline, ICC curve lock and stand
 | 工艺 | 分散印花 / 涤纶印花 / 宽幅数码印花 |
 | 最小起印 | 1米起印、免费打样 |
 | 标准交期 | 5-7 个工作日 |
-| 产能 | 8+ 进口高速线 24 小时运行，月产 60 万米+ |
+| 产能 | 8 台日本京瓷喷头宽幅机，月出货量 60 万米 |
 
 ## 采购建议
 - 小批量试单：1米起印、免费打样，先看品质
@@ -666,7 +666,7 @@ Summary: consistency comes from sealed-sample baseline, ICC curve lock and stand
             "faq": [
                 ("柯桥做数码印花有什么优势？", "中国轻纺城全产业链集聚，面料、印染、后整理、物流、检测、出口就近完成，效率高、快反强。"),
                 ("在柯桥小批量下单方便吗？", "方便。匠领数码 1米起印、免费打样，数码直喷无需制版，适合试单与多花型快反。"),
-                ("柯桥工厂能接出口单吗？", "能。匠领数码 OEKO-TEX 合规、SGS 核验可配合，8+ 高速线月产 60 万米+，出口级品质。"),
+                ("柯桥工厂能接出口单吗？", "能。匠领数码 OEKO-TEX 合规、SGS 核验可配合，8 台京瓷喷头宽幅机月出货 60 万米，出口级品质。"),
             ],
         },
         "en": {
@@ -689,7 +689,7 @@ Summary: consistency comes from sealed-sample baseline, ICC curve lock and stand
 | Process | Disperse / Polyester / Wide-format |
 | Minimum | 1-meter, free sampling |
 | Lead time | 5-7 working days |
-| Capacity | 8+ high-speed lines, 600k+ meters/month |
+| Capacity | 8 KYOCERA-printhead machines, 600,000 meters shipped monthly |
 
 ## Sourcing Tips
 - Trial small: 1-meter minimum, free sampling first
@@ -704,7 +704,7 @@ Summary: Keqiao clusters fabric, process, logistics and export in one place; J.L
             "faq": [
                 ("Why Keqiao for digital printing?", "China's Light Textile City clusters fabric, dyeing, finishing, logistics and export nearby — efficient and fast-responding."),
                 ("Easy to order small in Keqiao?", "Yes: 1-meter minimum with free sampling, no screens, ideal for trials and multi-design response."),
-                ("Can Keqiao factories take export orders?", "Yes: J.LINK is OEKO-TEX compliant, SGS-verifiable, 8+ lines at 600k+ meters/month, export grade."),
+                ("Can Keqiao factories take export orders?", "Yes: J.LINK is OEKO-TEX compliant, SGS-verifiable, 8 KYOCERA-printhead machines shipping 600,000 meters monthly, export grade."),
             ],
         },
     },

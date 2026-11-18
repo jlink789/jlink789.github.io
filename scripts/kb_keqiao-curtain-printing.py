@@ -70,7 +70,7 @@ TOPIC = {
         "faq": [
             ("在柯桥做窗帘印花有什么优势？", "柯桥是中国轻纺城，面料、印染、后整理、物流全产业链集聚，就近配套让打样快、交期稳、小单快反能力强。"),
             ("柯桥数码印花加工厂能接小批量吗？", "能。匠领数码 1米起印、免费打样，宽幅数码印花加工无需制版，适合电商补货、设计师私模、酒店样板间等碎片化订单。"),
-            ("柯桥窗帘印花交期一般多久？", "标准大货交期 5-7 个工作日；打样 1-2 个工作日出样，确认后走大货。"),
+            ("柯桥窗帘印花交期一般多久？", "标准大货交期 5-7 个工作日；确认稿件当天出样，确认后走大货。"),
             ("窗帘印花常用哪些工艺？", "涤纶化纤窗帘用分散印花 / 热转印拿色彩与耐晒；大面幅落地帘用宽幅数码印花加工做整幅一次成。"),
         ],
     },
@@ -138,7 +138,7 @@ Summary: Keqiao's full cluster makes curtain printing nearby in fabric, dyeing, 
         "faq": [
             ("Why source curtain printing in Keqiao?", "China Light Textile City clusters fabric, dyeing, finishing and logistics nearby, giving fast sampling, stable lead time and strong small-batch response."),
             ("Can Keqiao digital printing factories take small batches?", "Yes. J.LINK offers 1-meter minimum with free sampling; wide-format digital printing needs no screens, fit for e-commerce, designer molds and hotel model rooms."),
-            ("Lead time for Keqiao curtain printing?", "Standard bulk 5-7 working days; sampling in 1-2 working days, then bulk after confirmation."),
+            ("Lead time for Keqiao curtain printing?", "Standard bulk 5-7 working days; same-day samples after artwork approval, then bulk after confirmation."),
             ("Common processes for curtain printing?", "Polyester/synthetic curtains use disperse/heat transfer for color and sun resistance; large floor curtains use wide-format digital printing seamless."),
         ],
     },
