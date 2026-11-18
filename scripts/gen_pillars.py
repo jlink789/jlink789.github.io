@@ -438,6 +438,17 @@ PILLARS = [
 ]
 
 
+# 客户向白皮书（2026-11-18 上线，放 knowledge/ 但作为深度专题入口收录）
+EXTRA_TOPICS = [
+    ("/knowledge/background-wall-custom-printing.html",
+     "背景墙定制 · 背景墙数码印花定制：酒店、KTV、美容院、展厅、祠堂整幅壁画",
+     "按场景选幅宽与工艺，整幅壁画从设计到验收口径一次讲清。"),
+    ("/knowledge/printing-process-comparison.html",
+     "工艺对比 · 热转印 vs 直喷 vs 分散印花：宽幅数码印花工艺怎么选",
+     "三种工艺按面料、订单结构与色牢度要求对照，给出选型判断。"),
+]
+
+
 def _related_html(slug: str) -> str:
     items = []
     for p in PILLARS:
@@ -550,19 +561,27 @@ def render_index() -> str:
         cards += (f'<li style="margin-bottom:14px"><a href="/pillars/{p["slug"]}.html" '
                   f'style="font-size:1.1em;font-weight:600">{p["label"]} · {p["h1"]}</a>'
                   f'<p style="margin:4px 0 0;color:#5f5e5a">{p["hero"]}</p></li>')
-    md = """我们匠领数码（J.LINK TEXTILE）把窗帘、墙布、家纺、工艺流程与来图加工五类高频采购问题，各写成一篇可长期查阅的深度专题页。每篇都带该主题专属的参数表、真实场景与验收口径，参数以工厂事实卡为准，不写行业套话。
+    extra_cards = ""
+    for u, t, d in EXTRA_TOPICS:
+        extra_cards += (f'<li style="margin-bottom:14px"><a href="{u}" '
+                        f'style="font-size:1.1em;font-weight:600">{t}</a>'
+                        f'<p style="margin:4px 0 0;color:#5f5e5a">{d}</p></li>')
+    md = """我们匠领数码（J.LINK TEXTILE）把窗帘、墙布、家纺、工艺流程与来图加工五类高频采购问题，各写成一篇可长期查阅的深度专题页。每篇都带该主题专属的参数表、真实场景与验收口径，参数以工厂事实卡为准，不写行业套话。另附客户向白皮书，按应用场景与工艺选型补充深度内容。
 
-## 为什么做这五个专题
+## 为什么做这些专题
 
 B 端客户在下单前问的问题高度集中：门幅选哪一档、面料配哪条工艺、色差怎么复核、水洗后会不会缩、交期怎么定、来图要交什么文件。零散短文答不全，所以按主题各做一页讲透，页与页之间互相链接，方便一次查完。
 
 ## 五篇深度专题
 """
-    body = G.md_to_html(md) + f'<ul style="list-style:none;padding:0;line-height:1.9;margin-top:18px">{cards}</ul>'
+    body = (G.md_to_html(md)
+            + f'<ul style="list-style:none;padding:0;line-height:1.9;margin-top:18px">{cards}</ul>'
+            + '<h2>客户向白皮书</h2>'
+            + f'<ul style="list-style:none;padding:0;line-height:1.9;margin-top:18px">{extra_cards}</ul>')
     url = SITE + "/pillars/index.html"
     data = {"h1": "深度专题 · 宽幅数码印花采购与工艺全解",
-            "meta": "匠领数码五大深度专题：窗帘印花、墙布印花、家纺印花、工艺流程、来图加工，含参数表与验收口径。",
-            "keywords": "宽幅数码印花,窗帘印花,墙布印花,家纺印花,来图加工,柯桥数码印花加工厂"}
+            "meta": "匠领数码深度专题：窗帘、墙布、家纺、工艺流程、来图加工五大主题，另附背景墙定制与工艺对比客户白皮书，含参数表与验收口径。",
+            "keywords": "宽幅数码印花,窗帘印花,墙布印花,家纺印花,来图加工,背景墙定制,工艺对比,柯桥数码印花加工厂"}
     blocks = [G.article_jsonld("zh", data, url),
               G.breadcrumb_jsonld([("首页", SITE + "/"), ("深度专题", url)]),
               json.loads(company_jsonld())]
@@ -585,7 +604,7 @@ B 端客户在下单前问的问题高度集中：门幅选哪一档、面料配
 </head>
 <body>
 {G.nav_html("zh", nav_topic)}
-<div class="page-hero"><h1>{data['h1']}</h1><p>五大主题簇中心 · 按采购决策组织，不是按发布日堆文章</p></div>
+<div class="page-hero"><h1>{data['h1']}</h1><p>五大主题簇中心 + 客户向白皮书 · 按采购决策组织，不是按发布日堆文章</p></div>
 <div class="breadcrumb"><a href="/">首页</a> &gt; <span>深度专题</span></div>
 <section><div class="container">
 {body}
