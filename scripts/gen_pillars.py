@@ -452,6 +452,15 @@ EXTRA_TOPICS = [
     ("/knowledge/bath-curtain-printing.html",
      "浴帘印花 · 浴帘数码印花定制：酒店民宿浴帘、防水防霉涤纶浴帘整幅印花",
      "涤纶防水面料整幅印花，防水快干、环保无味，酒店与外贸批量可做。"),
+    ("/knowledge/carpet-mat-printing.html",
+     "地毯地垫 · 地毯地垫数码印花定制：酒店满铺地毯、商用工程地毯、入户地垫整幅印花",
+     "按铺设场景选基布与工艺，图案连续、耐污耐磨，工程单可分区排产。"),
+    ("/knowledge/advertising-exhibition-printing.html",
+     "广告会展 · 广告会展数码印花定制：舞台背景布、展会背景墙、旗帜条幅、灯箱布大幅印花",
+     "大幅画面整幅输出、色彩鲜艳，多场次多版本可按批次并行排产。"),
+    ("/knowledge/outdoor-shade-printing.html",
+     "户外遮阳 · 户外遮阳用品数码印花定制：遮阳篷布、露营帐篷、户外休闲椅面料整幅印花",
+     "按户外场景选面料与工艺，耐日晒、图案鲜艳，外贸订单可追溯。"),
 ]
 
 
@@ -586,8 +595,8 @@ B 端客户在下单前问的问题高度集中：门幅选哪一档、面料配
             + f'<ul style="list-style:none;padding:0;line-height:1.9;margin-top:18px">{extra_cards}</ul>')
     url = SITE + "/pillars/index.html"
     data = {"h1": "深度专题 · 宽幅数码印花采购与工艺全解",
-            "meta": "匠领数码深度专题：窗帘、墙布、家纺、工艺流程、来图加工五大主题，另附背景墙定制与工艺对比客户白皮书，含参数表与验收口径。",
-            "keywords": "宽幅数码印花,窗帘印花,墙布印花,家纺印花,来图加工,背景墙定制,工艺对比,柯桥数码印花加工厂"}
+            "meta": "匠领数码深度专题：窗帘、墙布、家纺、工艺流程、来图加工五大主题，另附背景墙、桌布、浴帘、地毯、广告会展、户外遮阳等客户向白皮书，含参数表与验收口径。",
+            "keywords": "宽幅数码印花,窗帘印花,墙布印花,家纺印花,来图加工,背景墙定制,地毯地垫,广告会展,户外遮阳,柯桥数码印花加工厂"}
     blocks = [G.article_jsonld("zh", data, url),
               G.breadcrumb_jsonld([("首页", SITE + "/"), ("深度专题", url)]),
               json.loads(company_jsonld())]
