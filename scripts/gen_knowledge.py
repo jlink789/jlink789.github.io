@@ -1442,7 +1442,10 @@ def build_hub(lang):
                      ("/knowledge/background-wall-custom-printing.html", "背景墙定制", "background wall"),
                      ("/knowledge/printing-process-comparison.html", "工艺对比", "process comparison"),
                      ("/knowledge/tablecloth-printing.html", "桌布台布", "tablecloth"),
-                     ("/knowledge/bath-curtain-printing.html", "浴帘印花", "bath curtain")]
+                     ("/knowledge/bath-curtain-printing.html", "浴帘印花", "bath curtain"),
+                     ("/knowledge/carpet-mat-printing.html", "地毯地垫", "carpet & mat"),
+                     ("/knowledge/advertising-exhibition-printing.html", "广告会展", "advertising & exhibition"),
+                     ("/knowledge/outdoor-shade-printing.html", "户外遮阳", "outdoor shade")]
     _pl = " · ".join(
         f'<a href="{u}">{n if lang == "zh" else en}</a>' for u, n, en in _pillar_cards)
     _ptitle = "深度专题：" if lang == "zh" else "Deep dives: "
