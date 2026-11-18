@@ -58,9 +58,9 @@ CATEGORIES = [
     },
     {
         "id": "wallcovering", "zh": "墙布", "en": "wallcovering",
-        "note_zh": "墙布印花我们按墙面高度选档，整幅壁画墙布走 320CM 整幅一次成、靠谱，横向连续图案完整走通。",
+        "note_zh": "墙布印花我们按墙面高度选档，整幅壁画墙布走 320CM 整幅一次成、无切断，横向连续图案完整走通。",
         "note_en": "We choose wallcovering widths by wall height; full-wall murals run on 320CM in one full-width pass with no cuts, keeping horizontal motifs intact.",
-        "table_zh": [("整幅壁画墙布", "320CM 整幅一次成、靠谱"),
+        "table_zh": [("整幅壁画墙布", "320CM 整幅一次成、无切断"),
                      ("酒店 / 样板间墙布", "按墙面高度选档，整理项评审时定"),
                      ("品牌墙布贴牌", "配色封样，包装按客户要求")],
         "table_en": [("Full-wall mural wallcovering", "320CM one full-width pass with no cuts"),
@@ -88,7 +88,7 @@ CATEGORIES = [
         "id": "hotel", "zh": "酒店工程", "en": "hotel projects",
         "note_zh": "酒店工程单我们按大堂净高与客房帘高选档，挑高大堂帘用 320CM 整幅一次成，投标样与验收口径一并给。",
         "note_en": "For hotel projects we choose widths by lobby and guestroom height, with tall lobby drapes on 320CM in one full-width pass, plus tender samples and acceptance criteria.",
-        "table_zh": [("挑高大堂落地帘", "320CM 整幅一次成、靠谱"),
+        "table_zh": [("挑高大堂落地帘", "320CM 整幅一次成、无切断"),
                      ("客房对开帘", "280CM / 320CM，按褶皱倍数算"),
                      ("大堂背景墙布", "320CM 整幅，连续图案完整")],
         "table_en": [("Tall lobby floor-length drapes", "320CM one full-width pass with no cuts"),
@@ -168,13 +168,13 @@ WIDTHS = [
      "use_zh": "适合常规落地帘与客房帘，按成品帘高选档。",
      "use_en": "fits standard floor-length and guestroom curtains, chosen by finished drop."},
     {"id": "w260", "zh": "260CM", "en": "260CM",
-     "use_zh": "常规落地帘常用档，整幅一次成、靠谱。",
+     "use_zh": "常规落地帘常用档，整幅一次成、无切断。",
      "use_en": "a common tier for floor-length curtains, in one full-width pass with no cuts."},
     {"id": "w280", "zh": "280CM", "en": "280CM",
      "use_zh": "适合大平层对开帘与较高客房帘，整幅一次成。",
      "use_en": "suited to large paired curtains and taller guestroom drapes in one full-width pass."},
     {"id": "w320", "zh": "320CM", "en": "320CM",
-     "use_zh": "六档里的旗舰档，挑高大堂帘与整幅壁画墙布用得最多，整幅一次成、靠谱。",
+     "use_zh": "六档里的旗舰档，挑高大堂帘与整幅壁画墙布用得最多，整幅一次成、无切断。",
      "use_en": "our flagship tier, used most for tall lobby drapes and full-wall murals in one full-width pass with no cuts."},
 ]
 
@@ -263,10 +263,10 @@ FOCUS = [
     {
         "id": "fullwidth", "zh": "整幅一次成", "en": "one-piece full width",
         "q_zh": "{w} {cat}能整幅一次成吗？", "q_en": "Can {w} {cat} Run in One Full-Width Pass?",
-        "lead_zh": "关于整幅，我们按成品所需门幅从六档标准幅宽里选一档，整幅一次成、靠谱，成品完整连贯、严丝合缝，省掉后期对位接续。",
+        "lead_zh": "关于整幅，我们按成品所需门幅从六档标准幅宽里选一档，整幅一次成、无切断，成品完整连贯、严丝合缝，省掉后期对位接续。",
         "lead_en": "On full-width output, we pick one of six standard widths by finished size and print in one full-width pass with no cuts — a continuous, precisely matched result with no later registration or joining.",
         "bullets_zh": [("一整幅到底", "成品完整连贯、严丝合缝，横向连续图案完整呈现。"),
-                       ("工序更少", "整幅一次成、靠谱，成品加工链条更短。"),
+                       ("工序更少", "整幅一次成、无切断，成品加工链条更短。"),
                        ("按尺寸选档", "六档标准幅宽选最贴合的一档，不必每张单都上 320CM。")],
         "bullets_en": [("Continuous panel", "A precisely matched result with horizontal motifs intact."),
                        ("Fewer steps", "One full-width pass with no cuts shortens downstream work."),
@@ -419,7 +419,7 @@ def _make_data(c, w, f, s=None):
                      f"We at J.LINK TEXTILE run our own wide lines in Keqiao and print {cat} on the {wid} tier. "
                      f"{f['lead_en']}"),
             "meta": (f"{title_q} 匠领数码（柯桥宽幅数码印花源头工厂）六档标准幅宽 200/220/240/260/280/320CM，"
-                     f"整幅一次成、靠谱，1 米起印、免费打样，7 项逐米全检。"
+                     f"整幅一次成、无切断，1 米起印、免费打样，7 项逐米全检。"
                      if zh else
                      f"{title_q} J.LINK TEXTILE, a Keqiao source factory, offers six standard widths 200-320CM, "
                      f"one full-width pass, a 1-meter minimum, free sampling and 7 per-meter checks."),
