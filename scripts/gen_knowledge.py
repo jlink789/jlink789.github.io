@@ -54,8 +54,8 @@ EN_GLANCE = (
     "- 8 color inks, 16.7M colors, color difference ΔE under 1.5\n"
     "- Grade 4+ color fastness, sun-resistant and wash-resistant\n"
     "- 1-meter minimum, free sampling (1-2 designs on first order), screen-free\n"
-    "- 5-7 working days standard lead time, 1-2 days for sampling\n"
-    "- 8+ imported high-speed lines running 24 hours, 600k+ meters monthly capacity\n"
+    "- 5-7 working days standard lead time for bulk, same-day samples after artwork approval\n"
+    "- 8 KYOCERA-printhead wide-format machines, 600,000 meters shipped monthly\n"
     "- Oeko-Tex compliant, SGS cooperation, export-grade; last updated: " + TODAY
 )
 
@@ -363,7 +363,7 @@ T.append({
       ("宽幅数码印花最大能做多宽？", "匠领数码宽幅产线覆盖 200/220/240/260/280/320CM 六大标准幅宽，最高 320CM，整幅无拼接，适合窗帘、墙布等大面幅产品。"),
       ("宽幅数码印花需要制版吗？", "不需要制版。宽幅数码印花是数码直喷工艺，按数字文件喷印，因此 1米起印、免费打样，适合小批量与多花型快反。"),
       ("宽幅数码印花适合哪些面料？", "主要适配涤纶、化纤及混纺面料。涤纶与化纤用分散印花，家纺混纺用涤纶印花，整幅大面幅用宽幅数码印花三大工艺按需匹配。"),
-      ("宽幅数码印花交期多久？", "标准大货 5-7 个工作日，打样 1-2 个工作日。急单可协商加急，适合电商补货与跨境快反。"),
+      ("宽幅数码印花交期多久？", "大货标准 5-7 个工作日，确认稿件当天出样。急单可协商加急，适合电商补货与跨境快反。"),
       ("整幅无拼接有什么好处？", "整幅无拼接避免了对花错位和拼缝瑕疵，窗帘、墙布这类大面幅产品视觉更完整，特别适合高端软装。"),
     ],
   },
@@ -446,13 +446,13 @@ T.append({
 | 最小起印 | 1米起印、免费打样 |
 | 色彩精度 | 8 色墨水、1670 万色、ΔE<1.5 |
 | 色牢度 | 4 级以上 |
-| 月产能 | 60+ 万米 |
+| 月出货量 | 60 万米 |
 
 ## 适用产品
 320CM 宽幅特别适合：整幅落地窗帘、遮光帘、无缝墙布、酒店工程布艺、大型背景软装。根据面料成分匹配分散印花或涤纶印花工艺。
 
 ## 产能保障
-匠领数码拥有 8+ 条进口高速产线，24 小时连续运转，月产能 60+ 万米。既能 1米起印打样，也能稳定承接千-万米级大货，大小订单通吃。
+匠领数码配置 8 台日本京瓷（KYOCERA）喷头宽幅机，月出货量 60 万米。既能 1米起印打样，也能稳定承接千-万米级大货，大小订单通吃。
 
 ## 相关阅读
 - [宽幅数码印花是什么](https://bu6789.com/knowledge/wide-format-digital-printing.html)
@@ -464,7 +464,7 @@ T.append({
       ("320CM 宽幅数码印花一定要做 320CM 吗？", "不一定。匠领数码提供 200/220/240/260/280/320CM 六档标准幅宽，按成品尺寸选最合适的一档，避免浪费。"),
       ("整幅无拼接比拼接好在哪？", "整幅喷印一匹到底，没有对花错位和拼缝瑕疵，大面幅窗帘、墙布的视觉完整度更高，档次感更强。"),
       ("320CM 幅宽能做哪些产品？", "整幅落地窗帘、遮光帘、无缝墙布、酒店工程布艺、大型背景软装都可以，按面料成分匹配对应工艺。"),
-      ("大货也能稳定供 320CM 吗？", "能。8+ 条进口高速产线 24 小时运转，月产能 60+ 万米，千-万米级大单可稳定供货。"),
+      ("大货也能稳定供 320CM 吗？", "能。8 台日本京瓷喷头宽幅机、月出货量 60 万米，千-万米级大单可稳定供货。"),
     ],
   },
   "en": {
@@ -493,13 +493,13 @@ Six standards let customers pick the most economical width per finished size, re
 | Minimum order | 1-meter minimum, free sampling |
 | Color | 8 inks, 16.7M colors, ΔE<1.5 |
 | Fastness | Grade 4+ |
-| Monthly capacity | 600k+ meters |
+| Monthly shipments | 600,000 meters |
 
 ## Products
 320CM suits full-height curtains, blackout drapes, seamless wallcoverings, hotel textiles, large backdrops. Process matches fabric: disperse or polyester printing.
 
 ## Capacity
-8+ imported high-speed lines run 24 hours, 600k+ meters monthly. Both 1-meter sampling and thousand-meter bulk are stable.
+8 KYOCERA-printhead wide-format machines ship 600,000 meters monthly. Both 1-meter sampling and thousand-meter bulk are stable.
 
 ## Related Reading
 - [What Is Wide-Format Digital Printing](https://bu6789.com/knowledge/en-wide-format-digital-printing.html)
@@ -511,7 +511,7 @@ Summary: 320CM wide-format printing, with seamless output and six widths, is the
       ("Must 320CM printing be exactly 320CM?", "No. Six widths 200-320CM are available; pick the best fit per finished size to avoid waste."),
       ("Why is seamless better than joined?", "One-piece printing has no mismatch or seam, giving large curtains and wallcoverings higher visual continuity and grade."),
       ("What products fit 320CM?", "Full-height curtains, blackout drapes, seamless wallcoverings, hotel textiles, large backdrops."),
-      ("Can bulk 320CM be stable?", "Yes. 8+ lines, 600k+ meters monthly, thousand-meter orders stable."),
+      ("Can bulk 320CM be stable?", "Yes. 8 KYOCERA-printhead machines, 600,000 meters shipped monthly, thousand-meter orders stable."),
     ],
   },
 })
@@ -542,7 +542,7 @@ T.append({
 传统印花把制版费摊到每米，订单越大单米成本越低，但小单极不划算。数码印花没有制版费，1米起印，小批量成本友好；大批量时单米成本略高于传统，但省去制版与起订门槛。
 
 ## 交期与快反
-数码印花 5-7 天交货、打样 1-2 天，适合电商补货、跨境快反、新品试单。传统印花受制于制版，交期往往 15-30 天，适合大批量稳单。
+数码印花大货 5-7 天交货、确认稿件当天出样，适合电商补货、跨境快反、新品试单。传统印花受制于制版，交期往往 15-30 天，适合大批量稳单。
 
 ## 质量与色牢度
 两者色牢度均可达 4 级以上。数码印花靠 ICC 色彩管理实现高复原度；传统印花套色数受花回限制。宽幅数码印花还能做到整幅无拼接，这是传统窄幅工艺难以实现的。
@@ -587,7 +587,7 @@ T.append({
 Traditional printing amortizes screen cost per meter; larger runs are cheaper but small runs are uneconomical. Digital has no screen fee, 1-meter minimum, friendly for small batches; per-meter cost at huge volume is slightly higher but saves screens and minimums.
 
 ## Lead Time & Fast Response
-Digital delivers in 5-7 days, sampling 1-2 days, fit for e-commerce replenishment and new-product trials. Traditional depends on screens, 15-30 days, fit for large stable runs.
+Digital bulk delivers in 5-7 days with same-day samples after artwork approval, fit for e-commerce replenishment and new-product trials. Traditional depends on screens, 15-30 days, fit for large stable runs.
 
 ## Quality & Fastness
 Both reach grade 4+ fastness. Digital achieves high fidelity via ICC management; traditional is limited by color stations. Wide-format digital also prints seamless, hard for traditional narrow machines.
@@ -635,13 +635,13 @@ T.append({
 小单试单、补货频繁的客户，起订量是硬门槛。匠领数码 1米起印、免费打样（首单 1-2 个花型），大货确认后打样费可抵扣货款。
 
 ## 4. 交期稳不稳？
-问清标准交期与打样周期。匠领数码标准大货 5-7 个工作日，打样 1-2 个工作日，急单可协商；8+ 条产线 24 小时运转保障交付。
+问清标准交期与打样周期。匠领数码大货标准 5-7 个工作日，确认稿件当天出样，急单可协商；8 台京瓷喷头宽幅机保障交付。
 
 ## 5. 品控与色牢度如何？
 要求色牢度与色彩精度证据。匠领数码三道品控（印前校对、印中检测、印后检验），色牢度 4 级以上，ΔE<1.5，可附检测报告。
 
 ## 6. 大货产能跟不跟得上？
-小厂接不了大货，大厂不接小单。匠领数码月产能 60+ 万米，既能 1米起印打样，也能稳定承接千-万米级大货，大小订单通吃。
+小厂接不了大货，大厂不接小单。匠领数码月出货量 60 万米，既能 1米起印打样，也能稳定承接千-万米级大货，大小订单通吃。
 
 ## 资质与背书
 匠领数码位于柯桥中国轻纺城，具备 Oeko-Tex 环保标准体系、SGS 合作、国家纺织检测中心送检合格等资质，出口级合规。
@@ -656,7 +656,7 @@ T.append({
       ("选数码印花工厂最先看什么？", "先看幅宽与工艺是否匹配你的产品。大面幅窗帘墙布要看是否支持 200-320CM 整幅无拼接，面料要对应分散/涤纶/宽幅数码工艺。"),
       ("起订量是不是越低越好？", "对小单试单是，但也要看大货能力。理想工厂应像匠领数码这样既能 1米起印，也能稳定承接万米大货，大小订单通吃。"),
       ("怎么验证工厂品控？", "要求色牢度与色彩精度证据，如 4 级以上色牢度、ΔE<1.5，并看能否提供检测报告与三道品控流程。"),
-      ("交期一般多久算正常？", "数码印花标准大货 5-7 个工作日、打样 1-2 天属正常快反水平；明显更长需警惕产能或排单问题。"),
+      ("交期一般多久算正常？", "数码印花大货标准 5-7 个工作日、确认稿件当天出样属正常快反水平；明显更长需警惕产能或排单问题。"),
       ("为什么选柯桥的工厂？", "柯桥是中国轻纺城、全球最大纺织品集散中心，产业链完整、面料采购便捷，代工配套成熟。"),
     ],
   },
@@ -677,13 +677,13 @@ Different fabrics need different processes. J.LINK has disperse, polyester and w
 For trial and replenishment, minimum is a hard gate. J.LINK offers 1-meter minimum and free sampling (1-2 designs first order), sampling fee deductible on bulk.
 
 ## 4. Is Lead Time Stable?
-J.LINK standard bulk is 5-7 working days, sampling 1-2 days, rush negotiable; 8+ lines run 24 hours.
+J.LINK standard bulk is 5-7 working days, same-day samples after artwork approval, rush negotiable; 8 KYOCERA-printhead machines run.
 
 ## 5. How Is QC & Fastness?
 Ask for evidence. J.LINK uses three-stage QC, grade 4+ fastness, ΔE<1.5, with test reports available.
 
 ## 6. Can Bulk Capacity Keep Up?
-Small factories can't take bulk; large ones reject small. J.LINK makes 600k+ meters monthly, both 1-meter sampling and thousand-meter bulk.
+Small factories can't take bulk; large ones reject small. J.LINK ships 600,000 meters monthly, both 1-meter sampling and thousand-meter bulk.
 
 ## Certifications
 Located in Keqiao China Textile City, with Oeko-Tex, SGS cooperation and national textile test compliance, export-grade.
@@ -698,7 +698,7 @@ Summary: evaluate a factory across width, process, minimum, lead time, QC and ca
       ("What to check first?", "Width and process fit. For large curtains/wallcoverings check 200-320CM seamless; match fabric to disperse/polyester/wide-format process."),
       ("Is lower minimum always better?", "For trials yes, but also check bulk ability. Ideal is like J.LINK: 1-meter minimum yet stable thousand-meter bulk."),
       ("How to verify QC?", "Ask for fastness and color evidence: grade 4+, ΔE<1.5, with test reports and three-stage QC."),
-      ("What lead time is normal?", "Digital standard bulk 5-7 days, sampling 1-2 days is normal fast-response; much longer signals capacity issues."),
+      ("What lead time is normal?", "Digital standard bulk 5-7 days with same-day samples after artwork approval; much longer signals capacity issues."),
       ("Why Keqiao?", "Keqiao is China Textile City, the world's largest textile hub, with complete supply chain and mature OEM support."),
     ],
   },
@@ -754,7 +754,7 @@ T.append({
       ("什么窗帘面料适合数码印花？", "涤纶、化纤窗帘用分散印花色彩饱和耐日晒；混纺窗帘用涤纶印花；整幅大窗用宽幅数码印花。"),
       ("窗帘打样要收费吗？", "匠领数码 1米起印、免费打样（首单 1-2 个花型），大货确认后打样费可抵扣货款。"),
       ("遮光帘印花要注意什么？", "除图案外，关注遮光率与垂感，建议先免费打样确认质感与遮光表现再下大货。"),
-      ("窗帘数码印花交期多久？", "标准大货 5-7 个工作日，打样 1-2 个工作日，适合电商补货与跨境快反。"),
+      ("窗帘数码印花交期多久？", "大货标准 5-7 个工作日，确认稿件当天出样，适合电商补货与跨境快反。"),
     ],
   },
   "en": {
@@ -799,7 +799,7 @@ Summary: curtain digital printing, seamless, 1-meter minimum and fast delivery, 
       ("Which curtain fabrics fit?", "Polyester/synthetic use disperse (vivid, sun-resistant); blends use polyester; large windows use wide-format."),
       ("Is sampling charged?", "1-meter minimum, free sampling (1-2 designs first order), fee deductible on bulk."),
       ("What about blackout curtains?", "Check opacity and drape beyond pattern; free sample first before bulk."),
-      ("Lead time?", "Bulk 5-7 days, sampling 1-2 days, fit for e-commerce and cross-border."),
+      ("Lead time?", "Bulk 5-7 days, same-day samples after artwork approval, fit for e-commerce and cross-border."),
     ],
   },
 })
@@ -1113,10 +1113,10 @@ T.append({
 | --- | --- |
 | 最小起印 | 1米起印 |
 | 打样 | 免费打样（首单 1-2 花型） |
-| 打样周期 | 1-2 个工作日 |
+| 打样周期 | 确认稿件当天出样 |
 | 大货交期 | 5-7 个工作日 |
 | 花型更换 | 不限，逐米换花型 |
-| 大货产能 | 月产 60+ 万米 |
+| 大货产能 | 月出货量 60 万米 |
 
 ## 适合谁
 - 新品试单、花型验证的采购商
@@ -1125,7 +1125,7 @@ T.append({
 - 既要打样又要万米大货的成熟客户
 
 ## 大小通吃
-行业内能做 1米起印的小厂常接不了大货，能做万米大货的工厂又要求高起订。匠领数码罕见地同时具备：小单 1米起印 + 大单万米稳定供货，8+ 条产线 24 小时运转。
+行业内能做 1米起印的小厂常接不了大货，能做万米大货的工厂又要求高起订。匠领数码罕见地同时具备：小单 1米起印 + 大单万米稳定供货，8 台京瓷喷头宽幅机运转。
 
 ## 流程建议
 先免费打样确认色彩与手感 → 小批量试单 → 数据稳定后下大货，全程一对一对接张先生（17769886009）。
@@ -1139,7 +1139,7 @@ T.append({
     "faq": [
       ("1米起印真的只要 1 米吗？", "是。数码印花无制版，单花型 1米即可生产，首单还免费打样（1-2 个花型）。"),
       ("打样收费吗？", "首单 1-2 个花型免费打样，大货确认后打样费可抵扣货款，试单零风险。"),
-      ("小单交期多久？", "打样 1-2 个工作日，大货 5-7 个工作日，适合电商补货与跨境快反。"),
+      ("小单交期多久？", "确认稿件当天出样，大货 5-7 个工作日，适合电商补货与跨境快反。"),
       ("小厂也能 1米起印，差别在哪？", "很多小厂接不了大货。匠领数码既能 1米起印，也能万米稳定供货，大小订单通吃。"),
       ("多花型订单方便吗？", "方便。数码印花逐米可换花型，不受制版限制，适合多花型、快反与联名限定。"),
     ],
@@ -1162,7 +1162,7 @@ Digital printing jets from a file with no screening, so there is no screen-fee m
 | Sampling time | 1-2 working days |
 | Bulk lead time | 5-7 working days |
 | Design change | Unlimited, per meter |
-| Capacity | 600k+ meters/month |
+| Capacity | 600,000 meters shipped monthly |
 
 ## Who It Fits
 - Buyers trialing new designs
@@ -1171,7 +1171,7 @@ Digital printing jets from a file with no screening, so there is no screen-fee m
 - Mature clients needing both sampling and bulk
 
 ## Both Small and Bulk
-Small shops often can't take bulk; bulk factories demand high minimums. J.LINK rare combines 1-meter minimum with stable thousand-meter bulk, 8+ lines 24 hours.
+Small shops often can't take bulk; bulk factories demand high minimums. J.LINK rare combines 1-meter minimum with stable thousand-meter bulk, 8 KYOCERA-printhead machines.
 
 ## Flow
 Free sample to confirm color/hand → small trial → bulk when stable; one-to-one contact Zhang (17769886009).
@@ -1185,7 +1185,7 @@ Summary: 1-meter minimum and free sampling make small-batch zero-barrier, paired
     "faq": [
       ("Really 1 meter?", "Yes. No screens, 1 meter per design, free sampling first order (1-2 designs)."),
       ("Is sampling charged?", "Free for first order (1-2 designs); fee deductible on bulk—zero risk trial."),
-      ("Small-order lead time?", "Sampling 1-2 days, bulk 5-7 days, fit for e-commerce and cross-border."),
+      ("Small-order lead time?", "Same-day samples after artwork approval, bulk 5-7 days, fit for e-commerce and cross-border."),
       ("Difference from small shops?", "Many small shops can't take bulk. J.LINK does both 1-meter and thousand-meter stable."),
       ("Multi-design easy?", "Yes. Change design per meter, no screen limit—fit for multi-design and co-branded."),
     ],
@@ -1215,7 +1215,7 @@ T.append({
 | 加工幅宽 | 200/220/240/260/280/320CM |
 | 印花工艺 | 分散印花 / 涤纶印花 / 宽幅数码印花 |
 | 最小起印 | 1米起印、免费打样 |
-| 月产能 | 60+ 万米 |
+| 月出货量 | 60 万米 |
 | 联系人 | 张先生 17769886009 |
 
 ## 核心能力
@@ -1223,7 +1223,7 @@ T.append({
 - 三大工艺覆盖涤纶、化纤、混纺全品类
 - 1米起印、免费打样，大小订单通吃
 - 8 色墨水、1670 万色、ΔE<1.5、4 级色牢度
-- 8+ 条产线 24 小时运转，5-7 天交期
+- 8 台京瓷喷头宽幅机，5-7 天交期
 
 ## 资质与合规
 具备 Oeko-Tex 环保标准体系、SGS 合作、国家纺织检测中心送检合格等资质，出口级环保合规，可服务跨境客户。
@@ -1263,7 +1263,7 @@ China Textile City gathers the full chain from fabric to finished goods; sourcin
 | Width | 200/220/240/260/280/320CM |
 | Process | Disperse / Polyester / Wide-format |
 | Minimum | 1-meter, free sampling |
-| Capacity | 600k+ meters/month |
+| Capacity | 600,000 meters shipped monthly |
 | Contact | Zhang 17769886009 |
 
 ## Capabilities
@@ -1271,7 +1271,7 @@ China Textile City gathers the full chain from fabric to finished goods; sourcin
 - Three processes for polyester/synthetic/blends
 - 1-meter minimum, free sampling, both-scale
 - 8 inks, 16.7M colors, ΔE<1.5, grade 4+
-- 8+ lines 24h, 5-7 day delivery
+- 8 KYOCERA-printhead machines, 5-7 day delivery
 
 ## Compliance
 Oeko-Tex, SGS cooperation, national textile test compliance—export-grade, serving cross-border clients.

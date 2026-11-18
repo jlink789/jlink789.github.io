@@ -33,7 +33,7 @@ TOPIC = {
 
 ## 交期与验收
 
-- 打样：1-2 个工作日出样，确认花色与对花
+- 打样：确认稿件当天出样，确认花色与对花
 - 大货：标准 5-7 个工作日，急单可排产沟通
 - 验收：按封样验色差、对花、幅宽；整幅一次成无分段处
 - 幅宽：200-320CM 整幅一次成，落地工程帘免接布
@@ -69,7 +69,7 @@ TOPIC = {
 总结：酒店工程帘靠封样 + ICC 曲线 + 标准化固色保障千间客房一个色，宽幅数码印花加工 5-7天交期、整幅一次成；匠领数码承接工程单与翻单。""",
         "faq": [
             ("酒店窗帘怎么保证批量一致？", "首匹封样为大货唯一标准，每条产线独立 ICC 曲线锁机差，批次间 ΔE<1.5，来样即大货。"),
-            ("工程帘交期一般多久？", "打样 1-2 天，标准大货 5-7 个工作日；急单可排产沟通，开业节点可控。"),
+            ("工程帘交期一般多久？", "确认稿件当天出样，标准大货 5-7 个工作日；急单可排产沟通，开业节点可控。"),
             ("酒店帘验收看什么？", "按封样验色差、对花、幅宽；整幅一次成无分段处，遮光帘遮光连续。"),
             ("工程单能小批量试单吗？", "能。1米起印、免费打样，柯桥数码印花加工厂翻单补货快，适合样板间先打样。"),
         ],
@@ -130,7 +130,7 @@ Table 2: Hotel project curtain specs
 Summary: hotel project curtains keep one color across rooms via sealed sample + ICC curves + standard fixing; wide-format digital printing 5-7 day lead time, seamless; J.LINK takes project orders and reorders.""",
         "faq": [
             ("How to keep hotel curtains consistent?", "First piece sealed as only bulk standard, independent ICC curve per line locks drift, batch ΔE<1.5, sample equals bulk."),
-            ("Lead time for project curtains?", "Sampling 1-2 days, standard bulk 5-7 working days; urgent schedulable, opening date可控."),
+            ("Lead time for project curtains?", "Same-day samples after artwork approval, standard bulk 5-7 working days; urgent schedulable, opening date可控."),
             ("What does hotel curtain acceptance check?", "Against sealed sample for color, match, width; seamless no seam, blackout continuous."),
             ("Can project orders trial small?", "Yes: 1-meter minimum with free sampling, Keqiao digital printing factory fast reorder, fit for model-room sampling first."),
         ],

@@ -33,7 +33,7 @@ TOPIC = {
 
 ## 直喷做墙布的优势
 
-直喷印花最大的优势是灵活。无需制版意味着 1米起印、免费打样成为常态，一个新花型从确认到出样只需 1-2 个工作日，品牌可以低成本试错。其次是整幅能力强：宽幅直喷配合 280-320CM 门幅，一面背景墙可以整幅一次成，图案连续不断。
+直喷印花最大的优势是灵活。无需制版意味着 1米起印、免费打样成为常态，一个新花型确认稿件后当天出样，品牌可以低成本试错。其次是整幅能力强：宽幅直喷配合 280-320CM 门幅，一面背景墙可以整幅一次成，图案连续不断。
 
 色彩方面，8 色墨水、1670 万色配合 ICC 曲线，把批次色差控在 ΔE<1.5，来样即大货，避免墙布上墙后色差明显。此外，直喷印花对花型版权更友好——数码文件即花型，原创与来样定制都清晰可溯，减少侵权风险。
 
@@ -88,7 +88,7 @@ Direct printing uses digital heads to jet ink onto fabric by the design, then fi
 
 ## Advantages of Direct Printing
 
-Flexibility is the biggest win: no screens means 1-meter minimum and free sampling are routine; a new design samples in 1-2 days, letting brands test cheaply. Second, full-width power: wide-format direct at 280-320CM prints one wall in a single piece with continuous pattern.
+Flexibility is the biggest win: no screens means 1-meter minimum and free sampling are routine; a new design gets same-day samples after artwork approval, letting brands test cheaply. Second, full-width power: wide-format direct at 280-320CM prints one wall in a single piece with continuous pattern.
 
 Color: 8 inks, 16.7M colors with ICC curves hold batch ΔE under 1.5, sample equals bulk. Direct printing is also IP-friendly — the digital file is the design, so original and custom-supplied work is clearly traceable, lowering infringement risk.
 

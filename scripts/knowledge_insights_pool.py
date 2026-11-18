@@ -31,7 +31,7 @@ INSIGHTS = [
 - **小批量多花型快反**：1米起印、免费打样，电商与跨境试款更轻，新品上架周期从按月缩短到按周。
 
 ## 数据与产能支撑
-支撑上述趋势的是真实的产能参数：六大标准幅宽（200/220/240/260/280/320CM）覆盖绝大多数落地帘与遮光帘；8 色墨水带来 1670 万色表现；8+ 条进口高速线 24 小时运行，月产 60 万米以上，单笔小单不挤占大货产能。标准交期 5-7 个工作日，打样 1-2 天即可封样。
+支撑上述趋势的是真实的产能参数：六大标准幅宽（200/220/240/260/280/320CM）覆盖绝大多数落地帘与遮光帘；8 色墨水带来 1670 万色表现；8 台日本京瓷喷头宽幅机、月出货量 60 万米，单笔小单不挤占大货产能。标准交期 5-7 个工作日，确认稿件当天出样。
 
 ## 对采购的实操要点
 选厂直接看三项：是否真宽幅（200-320CM 六档）、是否有 ICC 色彩管理、是否支持打样封样。三者齐备，落地帘与遮光帘的品质与交期才稳。此外要确认 4 级以上色牢度与 OEKO-TEX 合规，尤其是贴身与儿童房场景。
@@ -58,7 +58,7 @@ INSIGHTS = [
                 "要求出示 ICC 色彩管理流程，确认 ΔE<1.5 的管控能力",
                 "下单前先打样并封样，作为大货唯一对照标准",
                 "核实 4 级以上色牢度与 OEKO-TEX 合规（贴身/儿童房必查）",
-                "问清标准交期 5-7 天与打样 1-2 天是否含物流时间",
+                "问清标准交期 5-7 天与当天出样是否含物流时间",
                 "小单试款确认 1米起印、免费打样（首单 1-2 花型）政策",
                 "大花回/渐变图案务必做同花回对花确认，避免上下错位",
                 "确认多批次翻单的一致性方案（曲线锁机差）",
@@ -82,7 +82,7 @@ INSIGHTS = [
 - **Small-batch multi-design fast response**: 1-meter minimum and free sampling lighten e-commerce trials; launch cycles shrink from months to weeks.
 
 ## Data and capacity
-Real capacity backs the trend: six standard widths (200/220/240/260/280/320CM) cover most drapes and blackout curtains; 8 inks deliver 16.7M colors; 8+ high-speed lines run 24h with 600k+ meters/month, so small orders don't crowd bulk. Standard lead time is 5-7 working days; sampling takes 1-2 days to seal.
+Real capacity backs the trend: six standard widths (200/220/240/260/280/320CM) cover most drapes and blackout curtains; 8 inks deliver 16.7M colors; 8 KYOCERA-printhead machines ship 600,000 meters monthly, so small orders don't crowd bulk. Standard lead time is 5-7 working days; same-day samples after artwork approval.
 
 ## Takeaway for buyers
 Check three things when choosing a factory: real wide-format (six widths 200-320CM), ICC color management, and sampling-to-sealed-sample workflow. Also confirm grade 4+ fastness and OEKO-TEX compliance for skin-contact or kids' rooms.
@@ -109,7 +109,7 @@ Summary: 2026 curtain trends are seamless, big-repeat and high-fidelity; wide-fo
                 "Ask for ICC color management and ΔE<1.5 capability",
                 "Sample and seal before bulk as the only standard",
                 "Verify grade 4+ fastness and OEKO-TEX for skin-contact use",
-                "Clarify whether 5-7 day lead and 1-2 day sampling include logistics",
+                "Clarify whether 5-7 day lead and same-day sampling include logistics",
                 "Confirm 1-meter minimum and free sampling for trials",
                 "Do repeat-alignment check for big-repeat/gradient designs",
                 "Confirm cross-batch consistency plan (curve lock)",
@@ -139,7 +139,7 @@ Summary: 2026 curtain trends are seamless, big-repeat and high-fidelity; wide-fo
 我们按 200/220/240/260/280/320CM 六档幅宽整幅一次成，3 米高帘一次出图、图案连续，省去现场对花工序，施工更快、损耗更低。对工程方而言，少一道现场对花，等于少一个工期与返工变量。
 
 ## 数据与产能支撑
-工程单往往量大且集中，需要产能兜底：8+ 条进口高速线 24 小时运行，月产 60 万米以上；200-320CM 六档幅宽覆盖落地帘、遮光帘与工程墙布；4 级以上色牢度、OEKO-TEX 合规满足公共空间的环保与耐用要求。多门店翻单时，ICC 曲线锁机差保证跨批次 ΔE<1.5。
+工程单往往量大且集中，需要产能兜底：8 台日本京瓷喷头宽幅机、月出货量 60 万米；200-320CM 六档幅宽覆盖落地帘、遮光帘与工程墙布；4 级以上色牢度、OEKO-TEX 合规满足公共空间的环保与耐用要求。多门店翻单时，ICC 曲线锁机差保证跨批次 ΔE<1.5。
 
 ## 适用边界
 整幅一次成最适合落地帘、遮光帘、工程墙布与壁画；短帘或成品帘头按 200CM 档位出图即可，需按部位选幅宽。工程单务必先封样，并把封样留档到项目结束。
@@ -153,7 +153,7 @@ Summary: 2026 curtain trends are seamless, big-repeat and high-fidelity; wide-fo
             "faq": [
                 ("酒店工程帘最怕什么？", "同一花色跨批次、跨房间色差，以及大货与确认样不符，连锁品牌尤其敏感。"),
                 ("宽幅数码怎么解决？", "封样为唯一标准、ICC 曲线锁机差保证多批次一致，我们按六大标准幅宽整幅一次成、无切断。"),
-                ("工程单交期一般多长？", "标准 5-7 个工作日，打样 1-2 天封样；量大集中时可多线并行兜底。"),
+                ("工程单交期一般多长？", "标准 5-7 个工作日，确认稿件当天出样；量大集中时可多线并行兜底。"),
                 ("多门店翻单如何保证同色？", "每条产线独立 ICC 曲线锁机差，封样留档，跨批次 ΔE 控在 1.5 以内。"),
                 ("工程墙布也要整幅吗？", "壁画级与大面积墙布最吃整幅红利，整幅一次成视觉更完整、严丝合缝，施工也更快。"),
                 ("公共空间还要查什么合规？", "4 级以上色牢度与 OEKO-TEX 合规，满足环保与耐用要求。"),
@@ -190,7 +190,7 @@ Summary: 2026 curtain trends are seamless, big-repeat and high-fidelity; wide-fo
 We print a 3m drape in one continuous pass across our six standard widths 200-320CM, so the pattern runs top to bottom without a break and on-site matching is unnecessary — faster install, lower waste. For project buyers, one less on-site aligning step means one less schedule and rework variable.
 
 ## Data and capacity
-Project orders are large and concentrated, needing capacity backup: 8+ high-speed lines 24h, 600k+ meters/month; six widths 200-320CM cover drapes, blackout and project wallcovering; grade 4+ fastness and OEKO-TEX meet public-space durability and eco requirements. On multi-store reorders, ICC curves lock drift to ΔE<1.5.
+Project orders are large and concentrated, needing capacity backup: 8 KYOCERA-printhead machines, 600,000 meters shipped monthly; six widths 200-320CM cover drapes, blackout and project wallcovering; grade 4+ fastness and OEKO-TEX meet public-space durability and eco requirements. On multi-store reorders, ICC curves lock drift to ΔE<1.5.
 
 ## Fit and limits
 Full-width suits drapes, blackout and mural wallcovering; short valances can use the 200CM tier. Always seal the sample and archive it through project close.
@@ -204,7 +204,7 @@ Summary: project curtains need uniformity, integrity and control; wide-format pr
             "faq": [
                 ("What do hotel project curtains fear most?", "Color drift of one design across batches/rooms, and bulk differing from the approved sample."),
                 ("How does wide-format solve it?", "Sealed sample as the only standard and ICC curves lock drift; seamless printing removes seam risk."),
-                ("What is a typical project lead time?", "Standard 5-7 working days; sampling 1-2 days; large concentrated orders run on parallel lines."),
+                ("What is a typical project lead time?", "Standard 5-7 working days; same-day samples after artwork approval; large concentrated orders run on parallel lines."),
                 ("How to keep multi-store reorders same color?", "Per-line ICC curves lock drift; archive the sealed sample; cross-batch ΔE under 1.5."),
                 ("Does project wallcovering need full-width?", "Murals and large surfaces gain most — seamless, complete visual, faster install."),
                 ("What compliance for public spaces?", "Grade 4+ fastness and OEKO-TEX for eco and durability."),
@@ -245,7 +245,7 @@ Summary: project curtains need uniformity, integrity and control; wide-format pr
 柯桥（绍兴）是中国轻纺城，面料、印染、后整理、出口服务一站聚集。小单快返与出口单都能就地完成，物流与检测配套成熟，从打样到大货链路极短。
 
 ## 数据与产能支撑
-规模化工厂的产能是跨境卖家的底气：8+ 条进口高速线 24 小时运行，月产 60 万米以上，旺季多线并行不挤单；8 色墨水 1670 万色保证花色鲜活；4 级以上色牢度与 OEKO-TEX 合规直接对接海外准入。
+规模化工厂的产能是跨境卖家的底气：8 台日本京瓷喷头宽幅机、月出货量 60 万米，旺季多线并行不挤单；8 色墨水 1670 万色保证花色鲜活；4 级以上色牢度与 OEKO-TEX 合规直接对接海外准入。
 
 ## 实操要点
 先用 1-2 个花型免费打样，确认手感、色与克重；小批量试单验证工厂响应速度；爆款再加单并封样锁色。避免一上来就大货，降低试错成本。
@@ -264,7 +264,7 @@ Summary: project curtains need uniformity, integrity and control; wide-format pr
                 ("为什么看重小批量？", "跨境上新快、试款零库存压力，1米起印+免费打样最适配测品出单再放量的节奏。"),
                 ("出口合规要哪些文件？", "OEKO-TEX、SGS 第三方核验、环保墨达标，以及 4 级以上色牢度报告。"),
                 ("柯桥相比其他地方好在哪？", "面料、印染、后整理、出口服务一站聚集，打样到大货链路短、响应快。"),
-                ("旺季产能怎么保障？", "8+ 高速线 24 小时、月产 60 万米以上，可多线并行兜底大单。"),
+                ("旺季产能怎么保障？", "8 台京瓷喷头宽幅机、月出货量 60 万米，可多机并行兜底大单。"),
                 ("新手卖家怎么起步？", "先用 1-2 花型免费打样验证手感色，再小批量试单，爆款加单封样锁色。"),
             ],
             "checklist": [
@@ -300,7 +300,7 @@ Summary: project curtains need uniformity, integrity and control; wide-format pr
 Keqiao (Shaoxing) is China's Light Textile City, clustering fabric, dyeing, finishing and export services in one place. Small-batch and export orders complete locally with mature logistics and testing; the sampling-to-bulk chain is very short.
 
 ## Data and capacity
-Scale capacity is the seller's backbone: 8+ high-speed lines 24h, 600k+ meters/month, parallel lines in peak season; 8 inks at 16.7M colors keep motifs vivid; grade 4+ fastness and OEKO-TEX meet overseas access directly.
+Scale capacity is the seller's backbone: 8 KYOCERA-printhead machines, 600,000 meters shipped monthly, parallel lines in peak season; 8 inks at 16.7M colors keep motifs vivid; grade 4+ fastness and OEKO-TEX meet overseas access directly.
 
 ## Practical notes
 Start with 1-2 free-sampling designs to confirm hand feel, color and GSM; trial small to test responsiveness; scale and seal the winning SKU. Avoid jumping to bulk upfront to cut trial cost.
@@ -319,7 +319,7 @@ Summary: for cross-border, check wide-format, small-batch, export compliance and
                 ("Why small-batch matters?", "Fast launches with zero inventory risk; 1-meter minimum and free sampling fit test-then-scale cycles."),
                 ("Which export compliance docs?", "OEKO-TEX, SGS third-party verification, eco-ink compliance, grade 4+ fastness reports."),
                 ("Where does Keqiao beat others?", "Fabric, dyeing, finishing and export services clustered; short sampling-to-bulk chain, fast response."),
-                ("How is peak capacity secured?", "8+ lines 24h, 600k+ m/month, parallel lines back up large orders."),
+                ("How is peak capacity secured?", "8 KYOCERA-printhead machines, 600,000 meters shipped monthly, parallel lines back up large orders."),
                 ("How should new sellers start?", "Free-sample 1-2 designs to confirm hand/color/GSM, then trial small, scale and seal the winner."),
             ],
             "checklist": [
@@ -355,7 +355,7 @@ Summary: for cross-border, check wide-format, small-batch, export compliance and
 - **翻单→快**：同文件重印，5-7 天到账，爆款不断供。
 
 ## 数据与产能支撑
-这种柔性来自真实产能：8+ 条进口高速线 24 小时运行，月产 60 万米以上，既接 1 米试单也接万米大货；200-320CM 六档幅宽覆盖窗帘墙布家纺；1米起印 + 免费打样让电商可以「小步快跑」。
+这种柔性来自真实产能：8 台日本京瓷喷头宽幅机、月出货量 60 万米，既接 1 米试单也接万米大货；200-320CM 六档幅宽覆盖窗帘墙布家纺；1米起印 + 免费打样让电商可以「小步快跑」。
 
 ## 对商家的价值
 把「预测式生产」变成「响应式生产」，资金占用和滞销损耗都下降，尤其适合花纹多、季节强的窗帘墙布家纺。商家不再为押错花型买单，而是用真实销量反推生产。
@@ -391,7 +391,7 @@ Summary: for cross-border, check wide-format, small-batch, export compliance and
                 "多花型并行试水，用真实销量反推放量",
             ],
             "myths": [
-                ("数码印花只适合小单", "它既能 1 米试单也能万米大货，8+ 高速线月产 60 万米以上，大小通吃。"),
+                ("数码印花只适合小单", "它既能 1 米试单也能万米大货，8 台京瓷喷头宽幅机月出货 60 万米，大小通吃。"),
                 ("起印量低等于品质低", "同一条产线、同一 ICC 曲线，小单与大货品质一致。"),
                 ("小批量一定贵", "免去制版费后，小单单位成本可控，且试错总成本低得多。"),
             ],
@@ -399,7 +399,7 @@ Summary: for cross-border, check wide-format, small-batch, export compliance and
                 ["对比维度", "传统网印大货", "宽幅数码小批量"],
                 ["起印量", "通常数百至数千米", "1米起印"],
                 ["制版费", "需制版，版费摊薄到大货", "无需制版，零版费"],
-                ["交期", "制版+大货，周期长", "打样1-2天，大货5-7天"],
+                ["交期", "制版+大货，周期长", "当天出样，大货5-7天"],
                 ["库存风险", "预测式囤货，滞销高", "按需生产，卖多少印多少"],
                 ["适合", "单款海量稳定单", "多花型、季节强、试款"],
             ],
@@ -418,7 +418,7 @@ Summary: for cross-border, check wide-format, small-batch, export compliance and
 - **Reorder → fast**: reprint same file in 5-7 days, no stockout on hits.
 
 ## Data and capacity
-This flexibility comes from real capacity: 8+ high-speed lines 24h, 600k+ m/month, taking both 1m trials and 10k m bulk; six widths 200-320CM cover curtains/wallcoverings/home textiles; 1-meter minimum + free sampling let e-commerce move in small steps.
+This flexibility comes from real capacity: 8 KYOCERA-printhead machines, 600,000 meters shipped monthly, taking both 1m trials and 10k m bulk; six widths 200-320CM cover curtains/wallcoverings/home textiles; 1-meter minimum + free sampling let e-commerce move in small steps.
 
 ## Value to merchants
 Shifts from forecast production to response production; capital occupation and obsolescence both drop — ideal for pattern-rich, seasonal curtains, wallcoverings and home textiles. Merchants no longer pay for wrong patterns; real sales drive production.
@@ -454,7 +454,7 @@ Summary: digital printing removes screens and drops to 1-meter minimum, turning 
                 "Test many designs, scale by real sales",
             ],
             "myths": [
-                ("Digital only fits small orders", "It does 1m trials and 10k m bulk; 8+ lines at 600k+ m/month handle both."),
+                ("Digital only fits small orders", "It does 1m trials and 10k m bulk; 8 KYOCERA-printhead machines at 600,000 meters shipped monthly handle both."),
                 ("Low minimum means low quality", "Same line, same ICC curve; small and bulk quality match."),
                 ("Small-batch is always pricier", "No plate fee; unit cost is controlled and total trial cost is far lower."),
             ],
@@ -603,7 +603,7 @@ Summary: color complaints root in no seal or drift; fix with sealed-sample basel
 - **大花纹还原好**：渐变、写真级图案整幅连续，完整性高。
 
 ## 数据与产能支撑
-整幅效果靠硬参数托底：200-320CM 六档幅宽覆盖绝大多数墙面高度；8 色墨水 1670 万色还原细腻；8+ 高速线月产 60 万米以上，工程与家装大单都能接；4 级以上色牢度与 OEKO-TEX 满足室内环保。
+整幅效果靠硬参数托底：200-320CM 六档幅宽覆盖绝大多数墙面高度；8 色墨水 1670 万色还原细腻；8 台京瓷喷头宽幅机月出货 60 万米，工程与家装大单都能接；4 级以上色牢度与 OEKO-TEX 满足室内环保。
 
 ## 实操要点
 下单前提供墙面尺寸与花回方向，工厂按幅宽整幅出图；施工时由熟练师傅对位铺贴，虽已一次成图，仍需规范上胶与对位。异形或超高墙面要提前沟通出图方案。
@@ -655,7 +655,7 @@ Summary: color complaints root in no seal or drift; fix with sealed-sample basel
 - **Large motifs shine**: gradients and photo-level patterns aren't cut by seams.
 
 ## Data and capacity
-The seamless effect rests on hard specs: six widths 200-320CM cover most wall heights; 8 inks at 16.7M colors render finely; 8+ lines at 600k+ m/month take both project and residential large orders; grade 4+ fastness and OEKO-TEX meet indoor eco needs.
+The seamless effect rests on hard specs: six widths 200-320CM cover most wall heights; 8 inks at 16.7M colors render finely; 8 KYOCERA-printhead machines at 600,000 meters shipped monthly take both project and residential large orders; grade 4+ fastness and OEKO-TEX meet indoor eco needs.
 
 ## Practical notes
 Provide wall dimensions and repeat direction before ordering; the factory prints full-width by width. Skilled installers still align and paste, but with one less seam step — standardize gluing and positioning. Irregular or extra-tall walls need pre-discussed splitting.
@@ -715,7 +715,7 @@ Summary: seamless wallcovering uses full-width direct printing to remove seams a
 产线 OEKO-TEX 合规、与 SGS 合作、8 色墨水 ΔE<1.5 保还原，再叠加 200-320CM 六档幅宽整幅一次成、无切断，出口单与海外工程都能接。小批量快反（1米起印、免费打样）还能帮跨境卖家低库存试款。
 
 ## 数据与产能支撑
-规模化产线支撑合规与交付双要求：8+ 条进口高速线 24 小时运行，月产 60 万米以上；4 级以上色牢度、OEKO-TEX 合规与 SGS 配合是出厂标配；5-7 天标准交期适配跨境补货节奏。
+规模化产线支撑合规与交付双要求：8 台日本京瓷喷头宽幅机、月出货量 60 万米；4 级以上色牢度、OEKO-TEX 合规与 SGS 配合是出厂标配；5-7 天标准交期适配跨境补货节奏。
 
 ## 实操要点
 接出口单前先确认买家所需 OEKO-TEX 类别与 SGS 要求，预留检测周期；首批打样即按出口标准做，避免大货返工。
@@ -734,7 +734,7 @@ OEKO-TEX/SGS 对贴身、儿童、公共空间品类是硬门槛；纯装饰非�
                 ("出口单还要准备什么？", "SGS 第三方核验、4 级以上色牢度、环保水性墨，以及稳定的还原能力。"),
                 ("不同类别要求一样吗？", "不一样，贴身与儿童品类检测最严，需对应更高类别。"),
                 ("环保墨为什么重要？", "水性分散墨水低 VOC，满足室内与贴身环保，是合规基础。"),
-                ("产能怎么支撑出口补货？", "8+ 高速线月产 60 万米以上，5-7 天交期适配跨境节奏。"),
+                ("产能怎么支撑出口补货？", "8 台京瓷喷头宽幅机月出货 60 万米，5-7 天交期适配跨境节奏。"),
                 ("首批该怎么做避免返工？", "按出口标准打样，预留检测周期，封样锁色后再放大货。"),
             ],
             "checklist": [
@@ -772,7 +772,7 @@ A harmful-substance testing standard for chemical residues in fabric and finishe
 OEKO-TEX compliant line, SGS cooperation, 8 inks at ΔE<1.5, plus 200-320CM seamless direct printing — ready for export and overseas projects. Small-batch fast response (1-meter minimum, free sampling) also helps cross-border sellers trial at low inventory.
 
 ## Data and capacity
-Scale lines back both compliance and delivery: 8+ high-speed lines 24h, 600k+ m/month; grade 4+ fastness, OEKO-TEX and SGS are shipment standards; 5-7 day lead fits cross-border replenishment.
+Scale lines back both compliance and delivery: 8 KYOCERA-printhead machines, 600,000 meters shipped monthly; grade 4+ fastness, OEKO-TEX and SGS are shipment standards; 5-7 day lead fits cross-border replenishment.
 
 ## Practical notes
 Before export orders, confirm the required OEKO-TEX class and SGS needs, reserve testing time; sample to export standard from the first batch to avoid bulk rework.
@@ -791,7 +791,7 @@ Summary: OEKO-TEX is the harmful-substance compliance gate; with SGS, grade 4+ f
                 ("What else for export orders?", "SGS third-party verification, grade 4+ fastness, eco water-based ink and stable color fidelity."),
                 ("Are classes the same?", "No; skin-contact and children's require the strictest class."),
                 ("Why eco ink matters?", "Water-based disperse, low VOC, meets indoor and skin-contact eco — the compliance base."),
-                ("How does capacity support export?", "8+ lines at 600k+ m/month, 5-7 day lead fits cross-border rhythm."),
+                ("How does capacity support export?", "8 KYOCERA-printhead machines at 600,000 meters shipped monthly, 5-7 day lead fits cross-border rhythm."),
                 ("How to avoid rework on first batch?", "Sample to export standard, reserve testing time, seal then scale."),
             ],
             "checklist": [
@@ -824,7 +824,7 @@ Summary: OEKO-TEX is the harmful-substance compliance gate; with SGS, grade 4+ f
 - **面料集散**：涤纶、化纤、混纺、棉麻一站配齐，选料快、改样快。
 - **工艺完备**：印、染、后整理就近，打样到大货链路短，沟通成本低。
 - **出口服务成熟**：物流、检测、认证配套齐全，OEKO-TEX/SGS 一站式。
-- **快反强**：8+ 高速线 24 小时运行，月产 60 万米+，小单大单通吃。
+- **快反强**：8 台京瓷喷头宽幅机，月出货量 60 万米，小单大单通吃。
 
 ## 对比视角
 一些产业带擅长某类单品或低价大货，但软装要的是多品类、小批量、快交期、能出口，柯桥的集群恰好覆盖这条链路。单看单价柯桥未必最低，但综合「选料快 + 链路短 + 出口顺 + 快反强」，总交付成本与风险更优。
@@ -857,7 +857,7 @@ Summary: OEKO-TEX is the harmful-substance compliance gate; with SGS, grade 4+ f
                 "确认工厂 200-320CM 六档幅宽与整幅一次成、无切断",
                 "核实 1米起印、免费打样的小批量快反政策",
                 "出口单同步对接本地 OEKO-TEX/SGS 与物流",
-                "确认 8+ 高速线产能与 5-7 天交期",
+                "确认 8 台京瓷喷头宽幅机产能与 5-7 天交期",
                 "小批量试单验证响应速度后再放量",
                 "对比总交付成本（含链路与合规）而非仅单价",
                 "封样锁色，保证翻单跨批次一致",
@@ -879,7 +879,7 @@ Summary: OEKO-TEX is the harmful-substance compliance gate; with SGS, grade 4+ f
 - **Fabric hub**: polyester, synthetic, blend, cotton-linen in one place, fast material selection and revision.
 - **Complete process**: print, dye, finishing nearby, short sampling-to-bulk chain, low communication cost.
 - **Mature export services**: logistics, testing, certification ready, OEKO-TEX/SGS one-stop.
-- **Strong fast response**: 8+ high-speed lines 24h, 600k+ meters/month, small and big orders alike.
+- **Strong fast response**: 8 KYOCERA-printhead machines, 600,000 meters shipped monthly, small and big orders alike.
 
 ## Comparison view
 Some clusters excel at one product or low-price bulk, but soft furnishing needs multi-category, small-batch, fast lead and exportability — Keqiao's cluster covers exactly that chain. Unit price may not be lowest, but combined selection speed, short chain, smooth export and strong fast response, total delivery cost and risk are better.
@@ -1059,7 +1059,7 @@ Summary: sealing nails the standard to the swatch; with ICC curves and standard 
 大货前必须打样封样，确认手感与色；混纺成分不同，喷印参数按克重微调，避免晕染。床品对色牢度要求高（4 级以上），贴身更要 OEKO-TEX 合规。
 
 ## 数据与产能支撑
-床品快反靠真实产能：1米起印、免费打样让新品套件零压力试款；200-320CM 六档幅宽覆盖整幅床盖；8 色墨水 1670 万色还原花色；8+ 高速线月产 60 万米以上，大小单通吃；5-7 天交期适配电商节奏。
+床品快反靠真实产能：1米起印、免费打样让新品套件零压力试款；200-320CM 六档幅宽覆盖整幅床盖；8 色墨水 1670 万色还原花色；8 台京瓷喷头宽幅机月出货 60 万米，大小单通吃；5-7 天交期适配电商节奏。
 
 ## 实操要点
 先用 1-2 花型免费打样验证手感色牢度，小批量上架测款，爆款加单封样锁色。床盖等大尺寸按 280CM 或 320CM 档位整幅一次成，图案连续更完整。
@@ -1113,7 +1113,7 @@ Summary: sealing nails the standard to the swatch; with ICC curves and standard 
 Sample and seal before bulk to confirm hand feel and color; blend composition varies, so tune jet params by GSM to avoid bleeding. Bedding demands high fastness (grade 4+); skin-contact needs OEKO-TEX.
 
 ## Data and capacity
-Bedding fast response rests on real capacity: 1-meter minimum and free sampling trial sets at zero pressure; six widths 200-320CM cover full bedspreads; 8 inks at 16.7M colors; 8+ lines at 600k+ m/month; 5-7 day lead fits e-commerce.
+Bedding fast response rests on real capacity: 1-meter minimum and free sampling trial sets at zero pressure; six widths 200-320CM cover full bedspreads; 8 inks at 16.7M colors; 8 KYOCERA-printhead machines at 600,000 meters shipped monthly; 5-7 day lead fits e-commerce.
 
 ## Practical notes
 Free-sample 1-2 designs to test hand and fastness, list small, scale and seal the winner. Oversized covers must be full-width to avoid split images.
@@ -1171,7 +1171,7 @@ Summary: bedding uses polyester printing for hand feel, disperse for decor satur
 - **品质稳**：图案整幅连续，视觉更完整，近看无断点。
 
 ## 数据与产能支撑
-红利来自设备参数：六大标准幅宽 200/220/240/260/280/320CM，最高 320CM 整幅；8 色墨水 1670 万色保证大花纹还原；8+ 高速线月产 60 万米以上，工程与家装大单都能接；4 级以上色牢度与 OEKO-TEX 满足室内环保。
+红利来自设备参数：六大标准幅宽 200/220/240/260/280/320CM，最高 320CM 整幅；8 色墨水 1670 万色保证大花纹还原；8 台京瓷喷头宽幅机月出货 60 万米，工程与家装大单都能接；4 级以上色牢度与 OEKO-TEX 满足室内环保。
 
 ## 实操要点
 下单按实际幅宽选档（不必非 320CM，合适档位更省料）；提供花回方向与尺寸，工厂整幅一次成出图；施工仍需规范上胶对位。
@@ -1201,7 +1201,7 @@ Summary: bedding uses polyester printing for hand feel, disperse for decor satur
                 "核对 4 级以上色牢度与 OEKO-TEX 合规",
                 "施工规范上胶与对位，异形/超高墙提前分幅",
                 "确认整幅出图后的工期与损耗预估",
-                "工程大单确认 8+ 高速线产能兜底",
+                "工程大单确认 8 台京瓷喷头宽幅机产能兜底",
             ],
             "myths": [
                 ("用 200CM 档位出图也一样", "整幅一次成、无切断，图案严丝合缝，近看也没有断点。"),
@@ -1234,7 +1234,7 @@ A 3m floor drape uses the 320CM tier for one continuous print from top to bottom
 - **Stable quality**: the pattern stays whole, with no visible break up close.
 
 ## Data and capacity
-The dividend comes from specs: six standard widths 200/220/240/260/280/320CM, up to 320CM full; 8 inks at 16.7M colors; 8+ lines at 600k+ m/month for project and residential; grade 4+ fastness and OEKO-TEX for indoor eco.
+The dividend comes from specs: six standard widths 200/220/240/260/280/320CM, up to 320CM full; 8 inks at 16.7M colors; 8 KYOCERA-printhead machines at 600,000 meters shipped monthly for project and residential; grade 4+ fastness and OEKO-TEX for indoor eco.
 
 ## Practical notes
 Pick the right width by actual size (not always 320CM — right tier saves cloth); provide repeat direction and dimensions; still standardize gluing and positioning at install.
@@ -1299,7 +1299,7 @@ Summary: wide-format printing across six standard widths 200-320CM delivers one 
 人会有状态波动，体系把变量钉死：同文件、同曲线、同参数，输出才稳。品牌翻单、连锁工程、跨境长销款都吃这套。
 
 ## 数据与产能支撑
-体系依赖稳定产线：8 色墨水 1670 万色打底，ICC 曲线量化锁机差；200-320CM 六档幅宽整幅一次成让同幅内色相一致；4 级以上色牢度保证耐日晒耐水洗；8+ 高速线月产 60 万米以上，翻单不断供；1米起印、免费打样让新花型低门槛试水。
+体系依赖稳定产线：8 色墨水 1670 万色打底，ICC 曲线量化锁机差；200-320CM 六档幅宽整幅一次成让同幅内色相一致；4 级以上色牢度保证耐日晒耐水洗；8 台京瓷喷头宽幅机月出货 60 万米，翻单不断供；1米起印、免费打样让新花型低门槛试水。
 
 ## 叠加出口合规
 配合 OEKO-TEX 合规与 SGS 核验，长销款既能稳色又能出海，规避因化学残留被目的国退运。
@@ -1356,7 +1356,7 @@ Summary: wide-format printing across six standard widths 200-320CM delivers one 
 People fluctuate; a system pins variables: same file, same curve, same params, stable output. Brand reorders, chain projects and cross-border staples all rely on it.
 
 ## Data and capacity
-The system rests on stable lines: 8 inks at 16.7M colors, ICC curves quantify drift; six widths 200-320CM avoid seam micro-drift; grade 4+ fastness; 8+ lines at 600k+ m/month keep reorders stocked; 1-meter minimum and free sampling trial new designs cheaply.
+The system rests on stable lines: 8 inks at 16.7M colors, ICC curves quantify drift; six widths 200-320CM avoid seam micro-drift; grade 4+ fastness; 8 KYOCERA-printhead machines at 600,000 meters shipped monthly keep reorders stocked; 1-meter minimum and free sampling trial new designs cheaply.
 
 ## Plus export compliance
 With OEKO-TEX compliance and SGS verification, staples keep color and go overseas, avoiding destination-country rejection for residues.
