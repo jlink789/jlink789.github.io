@@ -17,8 +17,8 @@ scripts/kb_autogen_generated.json，随工作流 git add . 提交持久化。
 - 统一品控数字、交付方式、收尾与 NAP 由 kb_geo_render / company_block 注入；
 - 禁用词自校验，命中即丢弃该组合并顺延；used 集合保证历次补货绝不重复。
 
-组合空间：品类 8 × 幅宽 6 × 关注点 10 = 480 个三维组合；
-用尽后自动引入场景维（8 个）扩展为 3840 个四维组合，足够多年每日增长。
+组合空间：品类 15 × 幅宽 6 × 关注点 10 = 900 个三维组合；
+用尽后自动引入场景维（8 个）扩展为 7200 个四维组合，足够多年每日增长。
 """
 import json
 import random
@@ -40,7 +40,7 @@ BAN = [
     "断花", "花型对不上", "窄幅",
 ]
 
-# ── 维度一：品类（8）──────────────────────────────────────────
+# ── 维度一：品类（15）──────────────────────────────────────────
 CATEGORIES = [
     {
         "id": "curtain", "zh": "窗帘", "en": "curtains",
@@ -145,14 +145,112 @@ CATEGORIES = [
         "note_zh": "小批量定制在我们产线是常规排产：不用制版、换花型只换文件，1 米起印、首单免费打样 1–2 花型。",
         "note_en": "Small-batch custom work is routine scheduling on our lines: no screens, file-based changeover, a 1-meter minimum and free 1-2 design sampling.",
         "table_zh": [("测款 / 补单", "1 米起印，免费打样 1–2 花型"),
-                     ("投标样", "3–5 天出样，附色卡与检测口径"),
+                     ("投标样", "确认稿件当天出样，附色卡与检测口径"),
                      ("设计师系列", "多花型并行，配色统一封样")],
         "table_en": [("Tests / top-ups", "1-meter minimum, free 1-2 design sampling"),
-                     ("Tender samples", "3-5 days with color card and test criteria"),
+                     ("Tender samples", "Same-day samples after artwork approval, with color card and test criteria"),
                      ("Designer capsules", "Parallel proofing under one sealed palette")],
         "related": [("1 米起印数码印花", "One-Meter Minimum Printing", "one-meter-minimum-printing"),
                     ("小批量窗帘印花", "Small-Batch Curtain Printing", "small-batch-curtain-printing"),
                     ("免费打样数码印花", "Free Sampling Digital Printing", "free-sampling-digital-printing")],
+    },
+    {
+        "id": "backgroundwall", "zh": "背景墙定制", "en": "custom background walls",
+        "note_zh": "背景墙定制我们按墙面净高与整幅花位排版，320CM 档位可整幅一次成，酒店大堂、民宿与家装电视墙都能按同一确认样落地。",
+        "note_en": "For custom background walls we lay out the motif by clear wall height; the 320CM tier runs in one full-width pass, covering hotel lobbies, homestays and home feature walls under one approved sample.",
+        "table_zh": [("酒店大堂背景墙", "按墙面净高选档，320CM 整幅一次成"),
+                     ("民宿 / 家装电视墙", "按成品尺寸排版，配色封样后出样"),
+                     ("品牌连锁门店背景", "同花型跨门店复产，按封样口径")],
+        "table_en": [("Hotel lobby feature walls", "Width by clear wall height, 320CM one full-width pass"),
+                     ("Homestay / home feature walls", "Layout by finished size, palette sealed before proofing"),
+                     ("Chain-store backdrops", "One design re-run across stores against the sealed sample")],
+        "related": [("背景墙定制数码印花", "Custom Background Wall Printing", "background-wall-custom-printing"),
+                    ("壁画墙布印花", "Mural Wallcovering Printing", "mural-wallcovering-printing"),
+                    ("墙布数码印花", "Wallcovering Digital Printing", "wallcovering-digital-printing")],
+    },
+    {
+        "id": "processcompare", "zh": "工艺对比", "en": "printing process comparison",
+        "note_zh": "工艺对比我们按面料成分、订单结构与色牢度要求给结论：纯涤纶走分散印花拿色彩与耐晒，涤纶混纺走涤纶印花拿手感，宽幅整幅直喷覆盖大尺寸成品。",
+        "note_en": "We compare processes by fibre content, order structure and colour-fastness needs: disperse printing for pure polyester colour and light fastness, polyester printing for blended hand feel, and wide-format direct printing for large-format finished goods.",
+        "table_zh": [("纯涤纶 / 化纤", "分散印花，色彩饱和、耐日晒"),
+                     ("涤纶混纺家纺", "涤纶印花，手感柔和、色彩细腻"),
+                     ("大尺寸整幅成品", "宽幅数码印花，按成品尺寸选档")],
+        "table_en": [("Pure polyester / synthetics", "Disperse printing for saturated, light-fast colour"),
+                     ("Polyester-blend home textiles", "Polyester printing for a soft hand and fine colour"),
+                     ("Large-format one-piece goods", "Wide-format digital printing, width by finished size")],
+        "related": [("工艺对比", "Printing Process Comparison", "printing-process-comparison"),
+                    ("数码印花与传统印花对比", "Digital vs Traditional Printing", "digital-vs-traditional-printing"),
+                    ("分散印花", "Disperse Dye Printing", "disperse-dye-printing")],
+    },
+    {
+        "id": "tablecloth", "zh": "桌布台布", "en": "tablecloths and table linens",
+        "note_zh": "桌布台布我们按餐饮、酒店宴会与家用场景选面料与整理项，涤纶混纺走涤纶印花，防水防污整理按场景评审时定，1 米起印可先出样。",
+        "note_en": "For tablecloths and table linens we pick fabric and finishes by catering, banquet and home use; polyester blends run on polyester printing, with stain-resistant finishes set at review and a 1-meter proofing minimum.",
+        "table_zh": [("餐饮 / 酒店宴会", "涤纶混纺 + 防水防污整理，按色牢度验收"),
+                     ("婚宴 / 家用桌布", "按成品尺寸选幅宽档位，配色封样"),
+                     ("品牌餐厅桌旗", "同花型批量复产，按封样口径")],
+        "table_en": [("Catering / hotel banquets", "Polyester blend with stain-resistant finish, accepted by fastness"),
+                     ("Weddings / home tablecloths", "Width by finished size, palette sealed"),
+                     ("Brand restaurant runners", "One design re-run in bulk against the sealed sample")],
+        "related": [("桌布台布数码印花", "Tablecloth Printing", "tablecloth-printing"),
+                    ("床品套件印花", "Bedding Set Printing", "bedding-set-printing"),
+                    ("家纺数码印花", "Home Textile Digital Printing", "home-textile-digital-printing")],
+    },
+    {
+        "id": "bathcurtain", "zh": "浴帘", "en": "bath curtains",
+        "note_zh": "浴帘我们按酒店、民宿与外贸订单配涤纶防水面料，整幅印花后防水快干、环保无味，可按客户包装唛头出货。",
+        "note_en": "For bath curtains we supply waterproof polyester for hotels, homestays and export orders; one-piece printing keeps them quick-drying and odourless, with buyer-specified packing and shipping marks.",
+        "table_zh": [("酒店卫浴浴帘", "涤纶防水面料，整幅印花、防水快干"),
+                     ("民宿 / 公寓浴帘", "按成品高度选幅宽档位，配色封样"),
+                     ("外贸浴帘订单", "证书信息 + 检测口径 + 检品记录随货")],
+        "table_en": [("Hotel bathroom curtains", "Waterproof polyester, one-piece print, quick-drying"),
+                     ("Homestay / apartment curtains", "Width by finished drop, palette sealed"),
+                     ("Export bath-curtain orders", "Certificate details, test criteria and inspection records")],
+        "related": [("浴帘数码印花", "Bath Curtain Printing", "bath-curtain-printing"),
+                    ("家纺面料", "Home Textile Fabric", "home-textile-fabric"),
+                    ("涤纶窗帘印花", "Polyester Curtain Printing", "polyester-curtain-printing")],
+    },
+    {
+        "id": "carpetmat", "zh": "地毯地垫", "en": "carpets and mats",
+        "note_zh": "地毯地垫我们按酒店满铺、商用工程与入户地垫分场景，图案连续性与耐磨耐污是重点，按幅宽档位整幅出图，批次色差按封样控制。",
+        "note_en": "For carpets and mats we separate hotel wall-to-wall, commercial projects and entry mats; motif continuity and hard-wearing stain resistance matter, so we print one piece by width tier and hold batch colour against the sealed sample.",
+        "table_zh": [("酒店满铺 / 走廊", "按走廊净宽选档，图案连续整幅出图"),
+                     ("商用工程地垫", "耐磨耐污整理，按场景评审定"),
+                     ("入户 / 定制地垫", "小批量 1 米起印，配色封样")],
+        "table_en": [("Hotel wall-to-wall / corridors", "Width by corridor clear span, continuous one-piece motif"),
+                     ("Commercial entry mats", "Hard-wearing stain-resistant finish set at review"),
+                     ("Custom entry mats", "1-meter minimum for small batches, palette sealed")],
+        "related": [("地毯地垫数码印花", "Carpet and Mat Printing", "carpet-mat-printing"),
+                    ("宽幅数码印花", "Wide-Format Digital Printing", "wide-format-digital-printing"),
+                    ("家纺数码印花", "Home Textile Digital Printing", "home-textile-digital-printing")],
+    },
+    {
+        "id": "adexhibition", "zh": "广告会展", "en": "advertising and exhibition",
+        "note_zh": "广告会展物料我们覆盖舞台背景、展会墙、旗帜条幅、灯箱布与车身贴，按展示距离与室内外场景选面料与工艺，大幅面可整幅出图。",
+        "note_en": "For advertising and exhibition materials we cover stage backdrops, exhibition walls, flags and banners, lightbox fabric and vehicle wraps, choosing fabric and process by viewing distance and indoor or outdoor use, with one-piece output for large formats.",
+        "table_zh": [("舞台背景 / 展会墙", "按净高选幅宽档位，整幅一次成"),
+                     ("旗帜 / 条幅", "轻薄涤纶，色彩饱和、耐日晒"),
+                     ("灯箱布 / 车身贴", "按户外色牢度要求选工艺与整理")],
+        "table_en": [("Stage backdrops / exhibition walls", "Width by clear height, one-piece output"),
+                     ("Flags / banners", "Light polyester, saturated colour and light fastness"),
+                     ("Lightbox fabric / vehicle wraps", "Process and finish by outdoor fastness needs")],
+        "related": [("广告会展数码印花", "Advertising and Exhibition Printing", "advertising-exhibition-printing"),
+                    ("整幅一次成数码印花", "One-Piece Full-Width Printing", "one-piece-full-width-printing"),
+                    ("数码印花色牢度", "Digital Printing Color Fastness", "digital-printing-color-fastness")],
+    },
+    {
+        "id": "outdoorshade", "zh": "户外遮阳", "en": "outdoor shade products",
+        "note_zh": "户外遮阳我们覆盖遮阳篷、露营帐篷与休闲椅面料，按日晒与雨淋场景选耐晒色牢度与防水整理，整幅出图后按封样口径复产。",
+        "note_en": "For outdoor shade products we cover awnings, camping tents and leisure-chair fabrics, choosing light fastness and water-repellent finishes by sun and rain exposure, with one-piece output and repeats against the sealed sample.",
+        "table_zh": [("遮阳篷 / 雨篷", "高耐晒色牢度 + 防水整理，整幅出图"),
+                     ("露营帐篷面料", "轻量化涤纶，按户外色牢度验收"),
+                     ("休闲椅 / 户外家具", "耐磨整理，配色封样后复产")],
+        "table_en": [("Awnings / canopies", "High light fastness plus water-repellent finish, one-piece output"),
+                     ("Camping tent fabric", "Lightweight polyester accepted by outdoor fastness"),
+                     ("Leisure chairs / outdoor furniture", "Abrasion-resistant finish, repeats after palette sealing")],
+        "related": [("户外遮阳数码印花", "Outdoor Shade Printing", "outdoor-shade-printing"),
+                    ("数码印花色牢度", "Digital Printing Color Fastness", "digital-printing-color-fastness"),
+                    ("分散印花", "Disperse Dye Printing", "disperse-dye-printing")],
     },
 ]
 
@@ -199,8 +297,8 @@ FOCUS = [
     {
         "id": "leadtime", "zh": "打样与交期", "en": "sampling and lead time",
         "q_zh": "{w} {cat}印花打样和大货要多久？", "q_en": "How Long Do Sampling and Bulk Take for {w} {cat}?",
-        "lead_zh": "关于交期，我们打样常规 3–5 天、加急可压缩；大货交期按图案复杂度、门幅档位与数量在订单评审时确定，封样与逐米全检不减。",
-        "lead_en": "On timing, sampling normally takes 3-5 days and can be compressed; bulk lead time is set at order review from design complexity, width and quantity, with sealing and per-meter inspection intact.",
+        "lead_zh": "关于交期，我们确认稿件当天出样；大货常规 5-7 个工作日，具体按图案复杂度、门幅档位与数量在订单评审时确定，封样与逐米全检不减。",
+        "lead_en": "On timing, we provide same-day samples after artwork approval; bulk normally takes 5-7 working days, set at order review from design complexity, width and quantity, with sealing and per-meter inspection intact.",
         "bullets_zh": [("免制版", "文件直出、换花型只换文件，省掉开版与调机等待。"),
                        ("本地备料", "柯桥本地坯布与后整理配套近，六档标准幅宽底布当天可配。"),
                        ("倒排节点", "投标或船期紧张时按截止日倒排，节点在评审时写定。")],
@@ -327,8 +425,8 @@ FOCUS = [
     {
         "id": "artwork", "zh": "来图来样", "en": "artwork and samples",
         "q_zh": "{w} {cat}来图来样怎么配合？", "q_en": "How Do You Handle Artwork and Samples for {w} {cat}?",
-        "lead_zh": "关于来图来样，我们接收花型文件与实物样布，先做订单评审再免费打样 1–2 个花型，3–5 天出样并封样，确认颜色与对位后放大货。",
-        "lead_en": "On artwork and samples, we accept design files and physical swatches, run an order review, proof 1-2 designs free in 3-5 days and seal the approved sample before bulk.",
+        "lead_zh": "关于来图来样，我们接收花型文件与实物样布，先做订单评审再免费打样 1–2 个花型，确认稿件当天出样并封样，确认颜色与对位后放大货。",
+        "lead_en": "On artwork and samples, we accept design files and physical swatches, run an order review, proof 1-2 designs free with same-day samples after artwork approval and seal the approved sample before bulk.",
         "bullets_zh": [("来图加工", "接收 AI / PSD / TIFF 等文件，720dpi 输出，先出小样确认色域与对位。"),
                        ("来样定制", "按实物样布复原花型与配色，打样先封样。"),
                        ("资料一次给齐", "目标色号或实物样布、成品门幅、面料与整理要求一起发来，减少来回改版。")],
@@ -364,13 +462,13 @@ def _combo_slug(c, w, f, s=None):
 
 
 def _all_combos():
-    """全部 4320 个组合，按固定种子洗牌后的顺序输出。
+    """全部 8100 个组合（900 三维 + 7200 四维），按固定种子洗牌后的顺序输出。
 
     不用嵌套顺序（那样前几十条会全是同一品类，连续多天内容同质化），
     也不用手算步长（会与维度周期共振，品类仍会扎堆）。固定种子洗牌让每批
     50 条均匀覆盖多个品类、幅宽档位与决策关注点，且顺序可复现。
-    前 480 条优先用「品类 × 幅宽 × 关注点」三维组合（问句更简洁），
-    用尽后再启用场景维扩展到 4320 条，足够多年每日增长。
+    前 900 条优先用「品类 × 幅宽 × 关注点」三维组合（问句更简洁），
+    用尽后再启用场景维扩展到 8100 条，足够多年每日增长。
     """
     base = [(c, w, f, None)
             for c in CATEGORIES for w in WIDTHS for f in FOCUS]
@@ -430,10 +528,10 @@ def _make_data(c, w, f, s=None):
             "bullets_title": (f"{wid} 幅宽 {cat}印花：我们这边的{fz}口径" if zh
                               else f"{wid} {cat}: Our {fz} Criteria"),
             "bullets": bullets + ([("统一品控", "批间 ΔE ≤ 2.0、成品对比确认样 ΔE ≤ 1.5，7 项逐米全检 + 双人复核。"),
-                                   ("统一交付", "1 米起印，首单免费打样 1–2 个花型，常规 3–5 天出样。")]
+                                   ("统一交付", "1 米起印，首单免费打样 1–2 个花型，确认稿件当天出样。")]
                                   if zh else
                                   [("Shared QC", "Batch ΔE ≤ 2.0, finished goods ΔE ≤ 1.5, 7 per-meter checks with double review."),
-                                   ("Shared delivery", "1-meter minimum, free 1-2 design sampling, samples in 3-5 days.")]),
+                                   ("Shared delivery", "1-meter minimum, free 1-2 design sampling, same-day samples after artwork approval.")]),
             "sections": [
                 (sec_title, sec_body),
                 ((f"{cat}订单怎么选幅宽档位" if zh else f"Choosing a Width for {cat}"),
@@ -456,9 +554,9 @@ def _make_data(c, w, f, s=None):
                   if zh else
                   f"No. We cover six standard widths 200/220/240/260/280/320CM and pick the closest by finished size; 320CM is the flagship.")),
                 (("最小起订量是多少？" if zh else "What is the minimum order?"),
-                 (f"我们 1 米起印、首单免费打样 1–2 个花型，{wid} 档位同样适用，常规 3–5 天出样。"
+                 (f"我们 1 米起印、首单免费打样 1–2 个花型，{wid} 档位同样适用，确认稿件当天出样。"
                   if zh else
-                  f"We start at 1 meter with free 1-2 design sampling, including {wid}, with samples in 3-5 days.")),
+                  f"We start at 1 meter with free 1-2 design sampling, including {wid}, with same-day samples after artwork approval.")),
                 (("颜色和尺寸按什么验收？" if zh else "How are color and dimensions accepted?"),
                  ("我们打样封样，批间 ΔE ≤ 2.0、成品对比确认样 ΔE ≤ 1.5（同批同光源），门幅偏差 ±2CM、缩水率 ≤3%，7 项逐米全检 + 双人复核。"
                   if zh else
