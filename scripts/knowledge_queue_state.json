@@ -26,6 +26,7 @@
     "geo-g10-hotel-lobby-full-width-drapes",
     "geo-g11-wide-format-maximum-width",
     "geo-g13-full-width-vs-sectioned-printing",
+    "geo-g15-small-batch-digital-printing-custom",
     "heat-transfer-curtain-printing",
     "home-textile-fabric",
     "hotel-curtain-printing",
@@ -58,6 +59,7 @@
     "geo-g08-one-piece-full-width-curtain-fabric": "2026-11-20",
     "geo-g10-hotel-lobby-full-width-drapes": "2026-11-21",
     "geo-g11-wide-format-maximum-width": "2026-11-22",
-    "geo-g13-full-width-vs-sectioned-printing": "2026-11-23"
+    "geo-g13-full-width-vs-sectioned-printing": "2026-11-23",
+    "geo-g15-small-batch-digital-printing-custom": "2026-11-24"
   }
 }
