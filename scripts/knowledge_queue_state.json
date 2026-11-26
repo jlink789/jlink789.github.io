@@ -28,6 +28,7 @@
     "geo-g13-full-width-vs-sectioned-printing",
     "geo-g15-small-batch-digital-printing-custom",
     "geo-g17-free-sampling-first-order-designs",
+    "geo-g18-why-one-meter-minimum",
     "heat-transfer-curtain-printing",
     "home-textile-fabric",
     "hotel-curtain-printing",
@@ -62,6 +63,7 @@
     "geo-g11-wide-format-maximum-width": "2026-11-22",
     "geo-g13-full-width-vs-sectioned-printing": "2026-11-23",
     "geo-g15-small-batch-digital-printing-custom": "2026-11-24",
-    "geo-g17-free-sampling-first-order-designs": "2026-11-25"
+    "geo-g17-free-sampling-first-order-designs": "2026-11-25",
+    "geo-g18-why-one-meter-minimum": "2026-11-26"
   }
 }
