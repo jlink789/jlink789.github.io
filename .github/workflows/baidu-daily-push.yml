@@ -1,0 +1,66 @@
+name: 百度每日主动推送（去重·核心页优先·排除模板文）
+
+# 2026-11-28 上线：每天北京时间 08:30（UTC 00:30）用满百度 9 条配额。
+# 硬规则（老板定）：
+#   1. 排除 /articles/ 下 1184 篇模板水文，只推核心页 + knowledge 专题页
+#   2. 靠 .github/baidu-push-state.json 跨次去重，绝不重复推同一 URL
+#   3. 推送历史 commit 回仓库实现持久化（不依赖本机，纯 GitHub Actions 托管）
+# 注意：历史/日志放在 .github/ 下——deploy-aliyun.yml 的 rsync 已排除该目录，不会被同步到线上 web 根。
+
+on:
+  schedule:
+    - cron: '30 0 * * *'   # UTC 00:30 = 北京 08:30
+  workflow_dispatch:
+
+concurrency:
+  group: baidu-daily-push
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: 设置 Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: 执行百度去重推送
+        id: push
+        run: python scripts/baidu_daily_push.py 2>&1 | tee baidu-push-output.txt
+
+      - name: 提交推送历史与日志（跨次去重的关键）
+        run: |
+          git config user.name "auto"
+          git config user.email "auto@auto.com"
+          git add .github/baidu-push-state.json .github/baidu-push-log.md
+          if git diff --cached --quiet; then
+            echo "✅ 无新增推送记录（今日配额可能已用完或候选池为空）"
+          else
+            git commit -m "百度推送记录 $(date +'%Y-%m-%d')"
+            for i in 1 2 3; do
+              if git push; then echo "✅ 推送历史已提交，下次运行不会重复"; exit 0; fi
+              echo "push 失败第 $i 次，对齐远端后重试"
+              git fetch origin main
+              git reset --soft origin/main
+              git add .github/baidu-push-state.json .github/baidu-push-log.md
+              git commit -m "百度推送记录 $(date +'%Y-%m-%d')" || true
+              sleep 5
+            done
+            echo "❌ 推送历史三次仍失败（下次可能重复推送，需人工检查）"
+            exit 1
+          fi
+
+      - name: 推送结果摘要
+        if: always()
+        run: |
+          echo "========== 百度推送输出 =========="
+          cat baidu-push-output.txt 2>/dev/null || echo "（无输出文件）"

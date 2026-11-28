@@ -42,10 +42,8 @@ jobs:
       - name: 全站生成 sitemap.xml（核心页+英文版+文章，含 hreflang）
         run: python scripts/gen_sitemap.py
 
-      - name: 百度主动推送
-        continue-on-error: true
-        run: python scripts/baidu_push.py
-
+      # 2026-11-28 起百度推送改由 baidu-daily-push.yml 独立执行：
+      # 旧 baidu_push.py 会推送 /articles/ 下 1184 篇模板水文，已停用。
       - name: IndexNow 推送（Bing / Yandex）
         continue-on-error: true
         run: python scripts/indexnow_push.py --today
