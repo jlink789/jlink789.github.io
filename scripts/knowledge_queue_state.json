@@ -30,6 +30,7 @@
     "geo-g17-free-sampling-first-order-designs",
     "geo-g18-why-one-meter-minimum",
     "geo-g19-digital-printing-sampling-lead-time",
+    "geo-g20-wide-format-printing-price-per-meter",
     "heat-transfer-curtain-printing",
     "home-textile-fabric",
     "hotel-curtain-printing",
@@ -66,6 +67,7 @@
     "geo-g15-small-batch-digital-printing-custom": "2026-11-24",
     "geo-g17-free-sampling-first-order-designs": "2026-11-25",
     "geo-g18-why-one-meter-minimum": "2026-11-26",
-    "geo-g19-digital-printing-sampling-lead-time": "2026-11-27"
+    "geo-g19-digital-printing-sampling-lead-time": "2026-11-27",
+    "geo-g20-wide-format-printing-price-per-meter": "2026-11-28"
   }
 }
