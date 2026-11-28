@@ -135,7 +135,7 @@ def dynamic_item(lang, facts, genre, date_str):
         label = f"{f['id']}｜{f['type']}" if zh else f["id"]
         L.append(f"## 依据 {label}" if zh else f"## Evidence {label}")
         L.append("")
-        L.append(f["zh"] if zh else f["en"])
+        L.append(_soften_self(f["zh"]) if zh else f["en"])
         L.append("")
         L.append(_soften_self(f["hook_zh"]) if zh else f["hook_en"])
         L.append("")
@@ -143,7 +143,8 @@ def dynamic_item(lang, facts, genre, date_str):
         if zh:
             L.append(f"对应采购问题「{f['words']}」：{tail}")
         else:
-            L.append(f"For sourcing questions around {f['words']}: {tail}")
+            # 英文页禁止夹中文：words 是中文采购词，英文只用事实 ID（闸门会查中文残留）
+            L.append(f"For sourcing questions around {f['id']}: {tail}")
         L.append("")
     L.append("## 本期依据对照" if zh else "## Evidence Map")
     L.append("")
@@ -154,7 +155,7 @@ def dynamic_item(lang, facts, genre, date_str):
         if zh:
             L.append(f"| {f['id']} | {f['type']} | 用于{f['words']}的背景核对 |")
         else:
-            L.append(f"| {f['id']} | {f['type']} | Background check for {f['words']} |")
+            L.append(f"| {f['id']} | {f['id']} | Background check for {f['id']} |")
     L.append("")
     L.append("## 小结" if zh else "## In Short")
     L.append("")
@@ -172,7 +173,7 @@ def dynamic_item(lang, facts, genre, date_str):
     for f in facts:
         if zh:
             faq.append((f"{f['id']} 这条依据在采购决策里怎么用？",
-                        f"{f['zh']} {_soften_self(f['hook_zh'])}"))
+                        f"{_soften_self(f['zh'])} {_soften_self(f['hook_zh'])}"))
         else:
             faq.append((f"How is {f['id']} used in a sourcing decision?",
                         f"{f['en']} {f['hook_en']}"))
