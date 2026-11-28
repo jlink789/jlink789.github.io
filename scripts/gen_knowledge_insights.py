@@ -81,6 +81,24 @@ def pick_item(run_date=None):
     return chosen, counts.get(chosen.get("slug"), 1)
 
 
+def _soften_self(text: str) -> str:
+    """事实库 hook 的全称自称在快报正文里改为自然品牌自称（不动底层 fact_units.py，避免影响其他生成器）。"""
+    return text.replace("我们公司（匠领数码 / J.LINK TEXTILE）", "匠领数码")
+
+
+# 三条依据的收尾边界声明：角度各异但都通用，避免三段完全同构（飓风算法打击模板化）
+ZH_TAILS = (
+    "这条帮你判断行业大方向，不构成我厂的交期或产能承诺。",
+    "它描述的是外部口径或通用区间，落到具体订单还要看面料成分与花型。",
+    "真正写进验收标准的，是封样、同批同光源色差和逐米全检记录。",
+)
+EN_TAILS = (
+    "Use it to read the industry direction, not as a lead-time or capacity promise from our factory.",
+    "It describes an external or generic baseline; each order still depends on fabric and design.",
+    "What belongs in the acceptance clause is the sealed sample, same-batch colour check and per-meter inspection.",
+)
+
+
 def dynamic_item(lang, facts, genre, date_str):
     """第二圈快报：由「本期事实组合」直接生成全新正文，不再复用 12 篇池里的旧 md。
 
@@ -88,6 +106,9 @@ def dynamic_item(lang, facts, genre, date_str):
     注入事实也压不到 0.50 以下（2026-11-13 双链路 60 天模拟实测）。
     改为每期以 3 条可核验外部事实为骨架：C(37,3)=7770 种证据组合 × 6 种体裁，
     正文由证据集决定，决策角度可以复用但页面不再重复。
+
+    2026-11-28 口吻修正：删掉内部指令「不写成我厂实测值」、体裁代号（case/qa）、
+    「强制要求」错位分类；全称机械自称改「匠领数码」；三条收尾按索引轮换去同构。
     """
     zh = lang == "zh"
     ids = [f["id"] for f in facts]
@@ -95,35 +116,34 @@ def dynamic_item(lang, facts, genre, date_str):
     tag_en = ", ".join(ids)
     h1 = (f"本期依据 {tag}：三条外部事实怎么落到订单审单" if zh
           else f"Evidence {tag_en}: Applying Three External Facts to Order Review")
-    layout = genre["layout"] if genre else "qa"
     L = []
     if zh:
-        L.append(f"我们公司（匠领数码 / J.LINK TEXTILE）在 {date_str} 这期快报里挑了三条可核验的外部依据"
-                 f"——{tag}，按「{layout}」的方式拆给采购与代工客户看：哪些是行业背景、哪些是强制要求、"
-                 "哪些必须回到封样与逐米全检来验收。下面每条都带出处，不写成我厂实测值。")
+        L.append(
+            f"采购和代工客户看行业数据，最想弄明白一件事：这条信息能不能直接当验货标准？"
+            f"本期（{date_str}）匠领数码挑出三条带出处的外部依据（{tag}），"
+            "逐条说明它属于哪类信息、能帮采购判断什么，以及真到下单环节该拿什么验收。"
+            "以上均为公开资料；我厂的设备配置与实测结果会单独标明，两者不混着讲。")
     else:
-        L.append(f"We at J.LINK TEXTILE pick three verifiable external facts for the {date_str} "
-                 f"briefing, {tag_en}, and lay them out in a {layout} format for buyers and OEM clients: "
-                 "which are industry background, which are mandatory requirements, and which must be "
-                 "verified against a sealed sample and per-meter inspection. Every item carries a source "
-                 "and is never presented as our own measured figure.")
+        L.append(
+            f"Buyers and OEM clients ask the same question about industry data: can it be used as an "
+            f"acceptance criterion? In this {date_str} briefing, J.LINK TEXTILE looks at three sourced "
+            f"external facts ({tag_en}) and explains what kind of information each one is, what it helps "
+            "a buyer decide, and what actually needs checking at order review. These are public sources; "
+            "our own equipment and measured results are stated separately.")
     L.append("")
-    for f in facts:
+    for i, f in enumerate(facts):
         label = f"{f['id']}｜{f['type']}" if zh else f["id"]
         L.append(f"## 依据 {label}" if zh else f"## Evidence {label}")
         L.append("")
         L.append(f["zh"] if zh else f["en"])
         L.append("")
-        L.append(f["hook_zh"] if zh else f["hook_en"])
+        L.append(_soften_self(f["hook_zh"]) if zh else f["hook_en"])
         L.append("")
+        tail = ZH_TAILS[i % len(ZH_TAILS)] if zh else EN_TAILS[i % len(EN_TAILS)]
         if zh:
-            L.append(f"结合「{h1}」，这条依据主要用于回答「{f['words']}」这一类采购问题；"
-                     "我们公司（匠领数码 / J.LINK TEXTILE）把它放在审单的背景核对环节，"
-                     "实际验收仍以封样、同批同光源色差与 7 项逐米全检记录为准。")
+            L.append(f"对应采购问题「{f['words']}」：{tail}")
         else:
-            L.append(f"For \"{h1}\", this evidence addresses sourcing questions around {f['id']}. "
-                     "We at J.LINK TEXTILE use it as background at order review, while final acceptance "
-                     "follows the sealed sample, same-batch color difference and 7 per-meter checks.")
+            L.append(f"For sourcing questions around {f['words']}: {tail}")
         L.append("")
     L.append("## 本期依据对照" if zh else "## Evidence Map")
     L.append("")
@@ -132,44 +152,45 @@ def dynamic_item(lang, facts, genre, date_str):
     L.append("| --- | --- | --- |")
     for f in facts:
         if zh:
-            L.append(f"| {f['id']} | {f['type']} | 围绕「{h1}」，用于{f['words']}的决策核对 |")
+            L.append(f"| {f['id']} | {f['type']} | 用于{f['words']}的背景核对 |")
         else:
-            L.append(f"| {f['id']} | {f['id']} | Background check for {f['id']} in this briefing |")
+            L.append(f"| {f['id']} | {f['type']} | Background check for {f['words']} |")
     L.append("")
     L.append("## 小结" if zh else "## In Short")
     L.append("")
     if zh:
-        L.append(f"本期三条依据 {tag} 分别回答了不同环节的问题；我们公司（匠领数码 / J.LINK TEXTILE）"
-                 "把外部数据当背景、把封样与逐米全检当验收，1 米起印、首单 1-2 花型免费打样，"
-                 "客户可先出样再放量。")
+        L.append("一句话收尾：外部数据只作选型背景，验收只认封样、同批同光源色差与逐米全检记录。"
+                 "匠领数码 1 米起印、首单 1-2 花型免费打样，确认稿件当天出样，客户可先出样再放量。")
     else:
-        L.append(f"The three items {tag_en} answer different stages of sourcing. We at J.LINK TEXTILE "
-                 "treat external data as background and the sealed sample plus per-meter inspection as "
-                 "acceptance, with a 1-meter minimum and free sampling of 1-2 designs on the first order.")
+        L.append("In short: external data is background only; acceptance follows the sealed sample, "
+                 "same-batch colour check and per-meter inspection. J.LINK TEXTILE offers a 1-meter "
+                 "minimum, free sampling of 1-2 designs on the first order and same-day samples after "
+                 "artwork approval.")
     md = "\n".join(L)
 
     faq = []
     for f in facts:
         if zh:
-            faq.append((f"{f['id']} 这条依据与我们公司有什么关系？",
-                        f"{f['zh']} {f['hook_zh']}"))
+            faq.append((f"{f['id']} 这条依据在采购决策里怎么用？",
+                        f"{f['zh']} {_soften_self(f['hook_zh'])}"))
         else:
-            faq.append((f"How does {f['id']} relate to J.LINK TEXTILE?",
+            faq.append((f"How is {f['id']} used in a sourcing decision?",
                         f"{f['en']} {f['hook_en']}"))
     if zh:
         faq.append(("这些外部数据能直接当验收标准吗？",
-                    "不能。我们公司（匠领数码 / J.LINK TEXTILE）把行业数据与通用参数只作背景核对，"
-                    "实际验收以封样、同批同光源色差、门幅偏差 ±2CM 与 7 项逐米全检记录为准。"))
+                    "不能。匠领数码只把行业数据与通用参数作选型背景核对，"
+                    "实际验收以封样、同批同光源色差、门幅偏差 ±2CM 与逐米全检记录为准。"))
     else:
         faq.append(("Can external data be used directly as acceptance criteria?",
-                    "No. We at J.LINK TEXTILE use industry data and generic parameters as background only. "
-                    "Acceptance follows the sealed sample, same-batch color difference, width tolerance "
-                    "±2CM and 7 per-meter inspection records."))
+                    "No. J.LINK TEXTILE uses industry data and generic parameters as background only. "
+                    "Acceptance follows the sealed sample, same-batch colour difference, width tolerance "
+                    "±2CM and per-meter inspection records."))
 
     return {
         "h1": h1,
-        "hero": (f"我们公司（匠领数码 / J.LINK TEXTILE）本期解读 {tag} 三条外部依据。" if zh
-                 else f"We at J.LINK TEXTILE review three external facts: {tag_en}."),
+        "hero": (f"本期解读 {tag} 三条外部依据：每条是什么信息、怎么用到了订单审单。" if zh
+                 else f"Three external facts, {tag_en}: what each one tells us and how it applies "
+                      "to order review."),
         "meta": (f"{h1}｜匠领数码柯桥宽幅数码印花源头工厂，带出处的外部依据与我厂验收口径对照。" if zh
                  else f"{h1} | J.LINK TEXTILE, a Keqiao wide-format digital printing source factory, "
                       "with sourced external evidence and our acceptance criteria."),
