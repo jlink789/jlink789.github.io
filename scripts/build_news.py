@@ -362,7 +362,16 @@ def build_news_html(data: list, lang: str = "zh") -> str:
 
 
 def update_index_news(data: list) -> int:
-    """同步首页 news 区块为最新 10 篇。返回是否实际改动。"""
+    """2026-11-28 起停用：首页 news 区块改由 update_index_insights.py 取知识快报数据。
+
+    articles/ 批量水文已停更，旧逻辑会把首页刷回 11-07 的老文章。
+    本函数保留但不写首页，仅返回 0，避免手动触发 auto-article 时冲掉快报内容。
+    """
+    return 0
+
+
+def _update_index_news_legacy(data: list) -> int:
+    """历史实现（articles 取数），保留备查，不再调用。"""
     if not INDEX_HTML.exists():
         return 0
     content = INDEX_HTML.read_text(encoding="utf-8")

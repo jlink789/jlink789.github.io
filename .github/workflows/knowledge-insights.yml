@@ -30,6 +30,9 @@ jobs:
       - name: 生成每日知识快报
         run: python scripts/gen_knowledge_insights.py
 
+      - name: 刷新首页「最新资讯」为知识快报
+        run: python scripts/update_index_insights.py
+
       - name: 重建 sitemap.xml
         run: python scripts/gen_sitemap.py
 
